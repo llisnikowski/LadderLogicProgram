@@ -2,7 +2,8 @@ TEMPLATE = subdirs
 
 
 SUBDIRS += \
-    App
+    App \
+    uTest
 
 DISTFILES += \
     .gitignore
