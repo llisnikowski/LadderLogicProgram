@@ -1,6 +1,13 @@
 #include "componentLd.hpp"
 
-ComponentLd::ComponentLd()
-{
+namespace Ld{
 
+ComponentLd::ComponentLd(QQuickItem *parent)
+    :QQuickPaintedItem{parent}
+{
 }
+
+
+
+
+} // namespace Ld

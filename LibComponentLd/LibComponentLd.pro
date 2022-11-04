@@ -9,10 +9,16 @@ CONFIG += c++17
 
 
 SOURCES += \
-    componentLd.cpp
+    componentLd.cpp \
+    drag.cpp \
+    input.cpp \
+    output.cpp
 
 HEADERS += \
-    componentLd.hpp
+    componentLd.hpp \
+    drag.hpp \
+    input.hpp \
+    output.hpp
 
 # Default rules for deployment.
 unix {

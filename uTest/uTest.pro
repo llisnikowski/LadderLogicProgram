@@ -13,6 +13,7 @@ INCLUDEPATH += \
 
 
 SOURCES += \
+    ComponentLd-Test.cpp \
     googletest/src/gtest-all.cc \
     googlemock/src/gmock-all.cc \
     main.cpp \

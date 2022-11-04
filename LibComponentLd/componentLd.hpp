@@ -3,14 +3,18 @@
 
 #include <QQuickPaintedItem>
 
+namespace Ld{
+
 class ComponentLd : public QQuickPaintedItem
 {
     Q_OBJECT
 public:
-    ComponentLd();
+    explicit ComponentLd(QQuickItem *parent = nullptr);
 
 signals:
 
 };
+
+} // namespace Ld
 
 #endif // COMPONENTLD_HPP
