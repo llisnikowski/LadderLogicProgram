@@ -12,13 +12,21 @@ SOURCES += \
     componentLd.cpp \
     drag.cpp \
     input.cpp \
-    output.cpp
+    output.cpp \
+    coil.cpp \
+    contact.cpp \
+    line.cpp \
+    node.cpp
 
 HEADERS += \
     componentLd.hpp \
     drag.hpp \
     input.hpp \
-    output.hpp
+    output.hpp \
+    coil.hpp \
+    contact.hpp \
+    line.hpp \
+    node.hpp
 
 # Default rules for deployment.
 unix {

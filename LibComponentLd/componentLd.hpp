@@ -12,14 +12,14 @@
 namespace Ld{
 
 /*!
- * \brief ComponentLd jest klasą bazową dla klas takich jak Coil, Contact,
- * Timer itp..
+ * \brief ComponentLd jest klasą bazową dla klas symboli z języka LD takich
+ *  jak Coil, Contact, Line, Timer itp..
  *
  *  Dziedzyczy po klacie
  *  <a href="https://doc.qt.io/qt-5/qquickpainteditem.html">QQuickPaintedItem</a>
  *  która udostępnia wirtualną metodę
  *  <a href="https://doc.qt.io/qt-5/qquickpainteditem.html#paint">
- *  paint(QPainter *painter)</a> pozwalającą na wyświetlanie objektu
+ *  paint(QPainter *painter)</a> pozwalającą na wyświetlanie objektu.
  */
 class ComponentLd : public QQuickPaintedItem
 {

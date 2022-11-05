@@ -1,3 +1,9 @@
+/*!
+ * \file componentLd.cpp
+ * \brief
+ * \author Łukasz Liśnikowski
+*/
+
 #include "componentLd.hpp"
 
 namespace Ld{

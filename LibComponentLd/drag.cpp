@@ -1,3 +1,9 @@
+/*!
+ * \file drag.cpp
+ * \brief
+ * \author Łukasz Liśnikowski
+*/
+
 #include "drag.hpp"
 
 namespace Ld{

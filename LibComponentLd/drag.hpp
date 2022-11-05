@@ -12,8 +12,8 @@
 namespace Ld{
 
 /*!
- * \brief Drag jest klasą udostępniającą interfejs przeciągania symbolu
- * za pomocą myszki.
+ * \brief Klasa Drag udostępnia interfejs przeciągania obiektu na ekranie za
+ *  pomocą myszki.
  */
 class Drag : public ComponentLd
 {
