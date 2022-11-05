@@ -1,3 +1,9 @@
+/*!
+ * \file drag.hpp
+ * \brief
+ * \author Łukasz Liśnikowski
+*/
+
 #ifndef DRAG_HPP
 #define DRAG_HPP
 
@@ -5,7 +11,10 @@
 
 namespace Ld{
 
-
+/*!
+ * \brief Drag jest klasą udostępniającą interfejs przeciągania symbolu
+ * za pomocą myszki.
+ */
 class Drag : public ComponentLd
 {
     Q_OBJECT

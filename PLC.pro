@@ -7,4 +7,5 @@ SUBDIRS += \
     uTest
 
 DISTFILES += \
-    .gitignore
+    .gitignore \
+    DoxyConfigPl
