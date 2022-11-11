@@ -1,10 +1,10 @@
 /*!
  * \file coil.cpp
- * \brief
  * \author Łukasz Liśnikowski
 */
 
 #include "coil.hpp"
+#include "ldPainter.hpp"
 
 namespace Ld {
 
@@ -17,6 +17,12 @@ Coil::Coil(QQuickItem *parent)
 {
 }
 
+
+void Coil::paint(QPainter *painter)
+{
+    if(!ldPainter_) return;
+    ldPainter_->drawCoil(*painter);
+}
 
 
 } //namespace Ld

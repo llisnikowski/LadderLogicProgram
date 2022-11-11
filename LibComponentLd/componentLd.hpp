@@ -11,6 +11,8 @@
 
 namespace Ld{
 
+class LdPainter;
+
 /*!
  * \brief ComponentLd jest klasą bazową dla klas symboli z języka LD takich
  *  jak Coil, Contact, Line, Timer itp..
@@ -27,8 +29,11 @@ class ComponentLd : public QQuickPaintedItem
 public:
     explicit ComponentLd(QQuickItem *parent = nullptr);
 
-private:
+    void setLdPainter(LdPainter *ldPainter);
+    LdPainter *getLdPainter();
 
+protected:
+    LdPainter *ldPainter_;
 };
 
 } // namespace Ld

@@ -2,8 +2,9 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG += thread
-CONFIG -= qt
+#CONFIG -= qt
 
+QT += quick
 
 INCLUDEPATH += \
     googletest/include \
@@ -14,6 +15,8 @@ INCLUDEPATH += \
 
 SOURCES += \
     ComponentLd-Test.cpp \
+    LdPainter-Test.cpp \
+    SymbolsBar-Test.cpp \
     googletest/src/gtest-all.cc \
     googlemock/src/gmock-all.cc \
     main.cpp \

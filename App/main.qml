@@ -19,7 +19,7 @@ ApplicationWindow {
         anchors.fill: parent
         orientation: Qt.Horizontal
         clip: true
-        Item {
+        LdSymbolsBar {
             id: symbolsView
             clip: true
             implicitWidth: 80

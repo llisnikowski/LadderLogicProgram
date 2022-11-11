@@ -1,6 +1,5 @@
 /*!
  * \file coil.hpp
- * \brief
  * \author Łukasz Liśnikowski
 */
 
@@ -19,6 +18,8 @@ class Coil : public Output
     Q_OBJECT
 public:
     explicit Coil(QQuickItem *parent = nullptr);
+
+    void paint(QPainter *painter) override;
 };
 
 } //namespace Ld

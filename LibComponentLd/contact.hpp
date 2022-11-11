@@ -1,6 +1,5 @@
 /*!
  * \file contact.hpp
- * \brief
  * \author Łukasz Liśnikowski
 */
 
@@ -19,6 +18,8 @@ class Contact : public Input
     Q_OBJECT
 public:
     explicit Contact(QQuickItem *parent = nullptr);
+
+    void paint(QPainter *painter) override;
 };
 
 

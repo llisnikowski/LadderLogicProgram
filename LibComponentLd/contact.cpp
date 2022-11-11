@@ -1,10 +1,11 @@
 /*!
  * \file contact.cpp
- * \brief
  * \author Łukasz Liśnikowski
 */
 
 #include "contact.hpp"
+#include "ldPainter.hpp"
+#include <QDebug>
 
 namespace Ld {
 
@@ -17,6 +18,12 @@ Contact::Contact(QQuickItem *parent)
 {
 }
 
+
+void Contact::paint(QPainter *painter)
+{
+    if(!ldPainter_) return;
+    ldPainter_->drawContact(*painter);
+}
 
 
 } //namespace Ld
