@@ -9,7 +9,7 @@
 
 using namespace testing;
 
-TEST(LdPaineter, SizeTest)
+TEST(LD_Paineter, SizeTest)
 {
     Ld::Painter painter{241.23, 2.354};
 

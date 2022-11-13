@@ -11,7 +11,7 @@
 
 using namespace testing;
 
-TEST(SymbolsBar, SetLdPainter)
+TEST(LD_SymbolsBar, SetLdPainter)
 {
     Ld::SymbolsBar symbolsBar;
     Ld::Painter ldPainter{1,1};
@@ -24,7 +24,7 @@ TEST(SymbolsBar, SetLdPainter)
 }
 
 
-TEST(SymbolsBar, SetNewParentItem)
+TEST(LD_SymbolsBar, SetNewParentItem)
 {
     Ld::SymbolsBar symbolsBar;
     QQuickItem parentItem;

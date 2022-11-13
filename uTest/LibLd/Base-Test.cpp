@@ -9,7 +9,7 @@
 
 using namespace testing;
 
-class MockComponentLd : public Ld::Base
+class MockBaseLd : public Ld::Base
 {
 public:
 protected:
@@ -17,15 +17,15 @@ protected:
 };
 
 
-TEST(ComponentLd, setPainter)
+TEST(LD_Base, setPainter)
 {
-    auto compLd = std::make_shared<MockComponentLd>();
+    auto base = std::make_shared<MockBaseLd>();
     Ld::Painter ldPainter(1, 1);
 
-    EXPECT_TRUE(compLd->getLdPainter() == nullptr);
+    EXPECT_TRUE(base->getLdPainter() == nullptr);
 
     // TODO EXPECT_CALL(*compLd, paint(_));
-    compLd->setLdPainter(&ldPainter);
+    base->setLdPainter(&ldPainter);
 
-    EXPECT_TRUE(compLd->getLdPainter() == &ldPainter);
+    EXPECT_TRUE(base->getLdPainter() == &ldPainter);
 }
