@@ -4,8 +4,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPen>
-#include "ldPainter.hpp"
-#include "qnamespace.h"
+#include "../LibComponentLd/ldPainter.hpp"
 
 
 using namespace testing;

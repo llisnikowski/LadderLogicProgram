@@ -2,8 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-//#include "contact.hpp"
-//#include "coil.hpp"
+
 #include "ldPainter.hpp"
 #include "symbolsBar.hpp"
 
@@ -17,10 +16,6 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-
-//    qmlRegisterType<Ld::Contact>("LdContact",1,0,"LdContact");
-//    qmlRegisterType<Ld::Coil>("LdCoil",1,0,"LdCoil");
-//    qmlRegisterType<Ld::LdPainter>("LdPainter",1,0,"LdPainter");
 
     ldSymbolsBar.setLdPainter(&mainLdPainter);
 

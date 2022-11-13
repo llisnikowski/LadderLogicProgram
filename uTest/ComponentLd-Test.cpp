@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
 #include <gmock/gmock.h>
+#include <memory>
 
 #include "componentLd.hpp"
+#include <QPainter>
 #include "ldPainter.hpp"
 
 using namespace testing;
@@ -10,6 +12,7 @@ using namespace testing;
 class MockComponentLd : public Ld::ComponentLd
 {
 public:
+protected:
     MOCK_METHOD1(paint, void(QPainter *painter));
 };
 
