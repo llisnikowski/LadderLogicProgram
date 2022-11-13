@@ -4,7 +4,7 @@
  * \author Łukasz Liśnikowski
 */
 
-#include "componentLd.hpp"
+#include "base.hpp"
 
 namespace Ld{
 
@@ -13,7 +13,7 @@ namespace Ld{
  * \brief Konstructor klasy ComponentLd.
  * \param parent: Rodzic/Element nadrzędny.
  */
-ComponentLd::ComponentLd(QQuickItem *parent)
+Base::Base(QQuickItem *parent)
     :QQuickPaintedItem{parent}, ldPainter_{}
 {
 }
@@ -27,7 +27,7 @@ ComponentLd::ComponentLd(QQuickItem *parent)
  * \param ldPainter: Wskaźnik do nowo używanej klasy.
  * \see getLdPainter()
  */
-void ComponentLd::setLdPainter(LdPainter *ldPainter)
+void Base::setLdPainter(Painter *ldPainter)
 {
     this->ldPainter_ = ldPainter;
     update();
@@ -38,7 +38,7 @@ void ComponentLd::setLdPainter(LdPainter *ldPainter)
  * \return Wskaźnik do używanej klasy LdPainter.
  * \see setLdPainter()
  */
-LdPainter *ComponentLd::getLdPainter()
+Painter *Base::getLdPainter()
 {
     return ldPainter_;
 }

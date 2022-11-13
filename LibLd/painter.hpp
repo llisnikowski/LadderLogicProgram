@@ -30,11 +30,11 @@ namespace Ld {
 /*!
  * \brief LdPainter jest klasą odpowiedzialną za rysowanie symboli Ld.
  */
-class LdPainter : public QObject
+class Painter : public QObject
 {
     QML_ELEMENT
 public:
-    LdPainter(float cellSize, float penSize);
+    Painter(float cellSize, float penSize);
 
     /*!
      * \brief Zwraca domyślną szerokość symbolów.

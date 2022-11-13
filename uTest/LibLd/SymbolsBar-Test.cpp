@@ -4,7 +4,7 @@
 #include "contact.hpp"
 #include "qobject.h"
 #include "symbolsBar.hpp"
-#include "ldPainter.hpp"
+#include "painter.hpp"
 #include "contact.hpp"
 #include "coil.hpp"
 
@@ -14,7 +14,7 @@ using namespace testing;
 TEST(SymbolsBar, SetLdPainter)
 {
     Ld::SymbolsBar symbolsBar;
-    Ld::LdPainter ldPainter{1,1};
+    Ld::Painter ldPainter{1,1};
 
     EXPECT_TRUE(symbolsBar.getLdPainter() == nullptr);
 

@@ -16,13 +16,13 @@ SymbolsBar::SymbolsBar()
 }
 
 
-void SymbolsBar::setLdPainter(LdPainter *ldPainter)
+void SymbolsBar::setLdPainter(Painter *ldPainter)
 {
     this->ldPainter_ = ldPainter;
     update();
 }
 
-LdPainter *SymbolsBar::getLdPainter()
+Painter *SymbolsBar::getLdPainter()
 {
     return ldPainter_;
 }

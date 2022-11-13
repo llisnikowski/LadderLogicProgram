@@ -4,7 +4,7 @@
 */
 
 #include "coil.hpp"
-#include "ldPainter.hpp"
+#include "painter.hpp"
 
 namespace Ld {
 

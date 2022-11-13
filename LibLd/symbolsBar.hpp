@@ -8,7 +8,7 @@
 #include <QQuickItem>
 
 namespace Ld {
-class LdPainter;
+class Painter;
 
 /*!
  * \brief SymbolsBar jest klasą odpowiedzialną za utworzenie paska z symbolami Ld.
@@ -18,14 +18,14 @@ class SymbolsBar : public QQuickItem
     Q_OBJECT
 public:
     SymbolsBar();
-    void setLdPainter(LdPainter *ldPainter);
-    LdPainter *getLdPainter();
+    void setLdPainter(Painter *ldPainter);
+    Painter *getLdPainter();
 
 public slots:
     void setNewParentItem(QQuickItem *parentItem);
 
 private:
-    LdPainter *ldPainter_;
+    Painter *ldPainter_;
 };
 
 

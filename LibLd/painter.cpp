@@ -2,7 +2,7 @@
  * \file ldPainter.cpp
  * \author Łukasz Liśnikowski
 */
-#include "ldPainter.hpp"
+#include "painter.hpp"
 #include <QPainter>
 #include <QPen>
 #include <QDebug>
@@ -14,7 +14,7 @@ namespace Ld {
  * \param cellSize: Domyślna szerokość symbolu w pixelach.
  * \param penSize: Domyślna grubość pędzla.
  */
-LdPainter::LdPainter(float cellSize, float penSize)
+Painter::Painter(float cellSize, float penSize)
     :cellSize_{cellSize},
     penSize_{penSize},
     verticalLineX_{CONTACT_V_LINE_X_FACTORY * cellSize},
@@ -30,7 +30,7 @@ LdPainter::LdPainter(float cellSize, float penSize)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void LdPainter::drawContact(QPainter &painter)
+void Painter::drawContact(QPainter &painter)
 {
     painter.setPen(QPen(Qt::white, penSize_));
     drawContactContour(painter);
@@ -41,7 +41,7 @@ void LdPainter::drawContact(QPainter &painter)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void LdPainter::drawCoil(QPainter &painter)
+void Painter::drawCoil(QPainter &painter)
 {
     painter.setPen(QPen(Qt::white, penSize_));
     drawCoilContour(painter);
@@ -52,7 +52,7 @@ void LdPainter::drawCoil(QPainter &painter)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void LdPainter::drawContactContour(QPainter &painter)
+void Painter::drawContactContour(QPainter &painter)
 {
     drawVerticalPairLine(painter, verticalLineX_, verticalLineHeight_);
     drawHorizontalPairLine(painter, verticalLineX_);
@@ -63,7 +63,7 @@ void LdPainter::drawContactContour(QPainter &painter)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void LdPainter::drawCoilContour(QPainter &painter)
+void Painter::drawCoilContour(QPainter &painter)
 {
     drawPairArc(painter, coilArcAngle_, coilArcRadius_, coilArcOffsetX_);
     drawHorizontalPairLine(painter,
@@ -81,7 +81,7 @@ void LdPainter::drawCoilContour(QPainter &painter)
  * \param height: Długość linii.
  * \see drawVerticalLine().
  */
-void LdPainter::drawVerticalPairLine(QPainter &painter, float x, float height)
+void Painter::drawVerticalPairLine(QPainter &painter, float x, float height)
 {
     drawVerticalLine(painter, x, height);
     drawVerticalLine(painter, cellSize_ - x, height);
@@ -97,7 +97,7 @@ void LdPainter::drawVerticalPairLine(QPainter &painter, float x, float height)
  * \param height: Długość linii.
  * \see drawVerticalPairLine().
  */
-void LdPainter::drawVerticalLine(QPainter &painter, float x, float height)
+void Painter::drawVerticalLine(QPainter &painter, float x, float height)
 {
     painter.drawLine(x, cellSize_ / 2 - height / 2,
                      x, cellSize_ / 2 + height / 2);
@@ -113,7 +113,7 @@ void LdPainter::drawVerticalLine(QPainter &painter, float x, float height)
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  * \param x: Pozycja X linii.
  */
-void LdPainter::drawHorizontalPairLine(QPainter &painter, float x)
+void Painter::drawHorizontalPairLine(QPainter &painter, float x)
 {
     painter.drawLine(0, cellSize_ / 2, x, cellSize_ / 2);
     painter.drawLine(cellSize_ - x, cellSize_ / 2,
@@ -129,7 +129,7 @@ void LdPainter::drawHorizontalPairLine(QPainter &painter, float x)
  * \param radius: Promień łuku.
  * \param offsetX: Przesunięcię wzdłuż osi X.
  */
-void LdPainter::drawPairArc(QPainter &painter, float angle, float radius, float offsetX)
+void Painter::drawPairArc(QPainter &painter, float angle, float radius, float offsetX)
 {
     painter.drawArc(getCenteredRect(radius * 2, radius * 2, offsetX), (-angle/2 + 180) * 16, angle * 16);
     painter.drawArc(getCenteredRect(radius * 2, radius * 2, -offsetX), (-angle/2) * 16, angle * 16);
@@ -144,7 +144,7 @@ void LdPainter::drawPairArc(QPainter &painter, float angle, float radius, float 
  * \return Obiekt prostokąta
  * <a href="https://doc.qt.io/qt-5/qrectf.html">QRectF</a>.
  */
-QRectF LdPainter::getCenteredRect(float width, float height, float offsetX, float offsetY)
+QRectF Painter::getCenteredRect(float width, float height, float offsetX, float offsetY)
 {
     float halfDifferenceWidth = (cellSize_ - width) / 2;
     float halfDifferenceHeight = (cellSize_ - height) / 2;

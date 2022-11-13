@@ -7,7 +7,7 @@
 #ifndef DRAG_HPP
 #define DRAG_HPP
 
-#include "componentLd.hpp"
+#include "base.hpp"
 
 namespace Ld{
 
@@ -15,7 +15,7 @@ namespace Ld{
  * \brief Klasa Drag udostępnia interfejs przeciągania obiektu na ekranie za
  *  pomocą myszki.
  */
-class Drag : public ComponentLd
+class Drag : public Base
 {
     Q_OBJECT
 public:

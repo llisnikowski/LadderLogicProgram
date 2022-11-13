@@ -4,7 +4,7 @@
 */
 
 #include "contact.hpp"
-#include "ldPainter.hpp"
+#include "painter.hpp"
 #include <QDebug>
 
 namespace Ld {

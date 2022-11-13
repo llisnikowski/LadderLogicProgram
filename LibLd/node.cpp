@@ -1,21 +1,22 @@
 /*!
- * \file line.cpp
+ * \file node.cpp
  * \brief
  * \author Łukasz Liśnikowski
 */
 
-#include "line.hpp"
+#include "node.hpp"
 
 namespace Ld {
 
 /*!
- * \brief Konstructor klasy Line
+ * \brief Konstructor klasy Node
  * \param parent: rodzic/element nadrzędny
  */
-Line::Line(QQuickItem *parent)
-    :ComponentLd(parent)
+Node::Node(QQuickItem *parent)
+    :Base(parent)
 {
 }
+
 
 
 

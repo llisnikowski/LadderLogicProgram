@@ -3,13 +3,13 @@
 #include <gmock/gmock.h>
 #include <memory>
 
-#include "componentLd.hpp"
+#include "base.hpp"
 #include <QPainter>
-#include "ldPainter.hpp"
+#include "painter.hpp"
 
 using namespace testing;
 
-class MockComponentLd : public Ld::ComponentLd
+class MockComponentLd : public Ld::Base
 {
 public:
 protected:
@@ -20,7 +20,7 @@ protected:
 TEST(ComponentLd, setPainter)
 {
     auto compLd = std::make_shared<MockComponentLd>();
-    Ld::LdPainter ldPainter(1, 1);
+    Ld::Painter ldPainter(1, 1);
 
     EXPECT_TRUE(compLd->getLdPainter() == nullptr);
 

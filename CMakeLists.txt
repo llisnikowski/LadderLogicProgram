@@ -22,11 +22,11 @@ file(GLOB MAIN_FILE
 )
 
 file(GLOB PROJECT_HEADERS  
-     LibComponentLd/*.hpp
+     LibLd/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
-    LibComponentLd/*.cpp
+    LibLd/*.cpp
 )
 
 set(PROJECT_RESOURSES
@@ -65,7 +65,7 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}
-  ${CMAKE_SOURCE_DIR}/LibComponentLD
+  ${CMAKE_SOURCE_DIR}/LibLd
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -102,6 +102,7 @@ file(GLOB GTEST_FILE
 
 file(GLOB UTEST_SOURCES
     uTest/*.cpp
+    uTest/LibLd/*.cpp
 )
 
 
@@ -139,7 +140,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/uTest/googlemock/include
   ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/uTest
-  ${CMAKE_SOURCE_DIR}/LibComponentLD
+  ${CMAKE_SOURCE_DIR}/LibLd
 )
 
 

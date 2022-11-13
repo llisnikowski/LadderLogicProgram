@@ -13,7 +13,7 @@ namespace Ld{
  * \param parent: rodzic/element nadrzędny
  */
 Drag::Drag(QQuickItem *parent)
-    :ComponentLd{parent}
+    :Base{parent}
 {
 }
 

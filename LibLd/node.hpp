@@ -8,14 +8,14 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include "componentLd.hpp"
+#include "base.hpp"
 
 namespace Ld {
 
 /*!
  * \brief Klasa Coil udostępnia symbol węzła z języka LD.
  */
-class Node : public ComponentLd
+class Node : public Base
 {
     Q_OBJECT
 public:

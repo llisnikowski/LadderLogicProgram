@@ -3,11 +3,11 @@
 #include <QQmlContext>
 
 
-#include "ldPainter.hpp"
+#include "painter.hpp"
 #include "symbolsBar.hpp"
 
 
-Ld::LdPainter mainLdPainter{64, 2};
+Ld::Painter mainLdPainter{64, 2};
 Ld::SymbolsBar ldSymbolsBar;
 
 

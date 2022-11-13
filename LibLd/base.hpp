@@ -11,7 +11,7 @@
 
 namespace Ld{
 
-class LdPainter;
+class Painter;
 
 /*!
  * \brief ComponentLd jest klasą bazową dla klas symboli z języka LD takich
@@ -23,17 +23,17 @@ class LdPainter;
  *  <a href="https://doc.qt.io/qt-5/qquickpainteditem.html#paint">
  *  paint(QPainter *painter)</a> pozwalającą na wyświetlanie objektu.
  */
-class ComponentLd : public QQuickPaintedItem
+class Base : public QQuickPaintedItem
 {
     Q_OBJECT
 public:
-    explicit ComponentLd(QQuickItem *parent = nullptr);
+    explicit Base(QQuickItem *parent = nullptr);
 
-    void setLdPainter(LdPainter *ldPainter);
-    LdPainter *getLdPainter();
+    void setLdPainter(Painter *ldPainter);
+    Painter *getLdPainter();
 
 protected:
-    LdPainter *ldPainter_;
+    Painter *ldPainter_;
 };
 
 } // namespace Ld
