@@ -1,5 +1,5 @@
 /*!
- * \file componentLd.cpp
+ * \file base.cpp
  * \brief
  * \author Łukasz Liśnikowski
 */
@@ -10,7 +10,7 @@ namespace Ld{
 
 
 /*!
- * \brief Konstructor klasy ComponentLd.
+ * \brief Konstructor klasy Base.
  * \param parent: Rodzic/Element nadrzędny.
  */
 Base::Base(QQuickItem *parent)
@@ -19,26 +19,26 @@ Base::Base(QQuickItem *parent)
 }
 
 /*!
- * \brief Ustawia klase LdPainter odpowiedzialną za wyświetlanie na ekranie.
+ * \brief Ustawia klase Painter odpowiedzialną za wyświetlanie na ekranie.
  *
  * Wywołanie funkcji powoduję również wyświetlenie symbolu wywołując funkcję
  * <a href="https://doc.qt.io/qt-5/qquickpainteditem.html#update">
  * QQuickPaintedItem::update()</a>.
- * \param ldPainter: Wskaźnik do nowo używanej klasy.
+ * \param ldPainter: Wskaźnik do klasy Painter.
  * \see getLdPainter()
  */
-void Base::setLdPainter(Painter *ldPainter)
+void Base::setPainter(Painter *ldPainter)
 {
     this->ldPainter_ = ldPainter;
     update();
 }
 
 /*!
- * \brief Zwraca klase LdPainter przypisaną do obiektu.
+ * \brief Zwraca klase Painter przypisaną do obiektu.
  * \return Wskaźnik do używanej klasy LdPainter.
  * \see setLdPainter()
  */
-Painter *Base::getLdPainter()
+Painter *Base::getPainter()
 {
     return ldPainter_;
 }

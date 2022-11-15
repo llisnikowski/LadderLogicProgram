@@ -38,12 +38,12 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     auto contact = new Contact(this);
     contact->setWidth(64);
     contact->setHeight(64);
-    contact->setLdPainter(ldPainter_);
+    contact->setPainter(ldPainter_);
     auto coil = new Coil(this);
     coil->setWidth(64);
     coil->setHeight(64);
     coil->setY(64);
-    coil->setLdPainter(ldPainter_);
+    coil->setPainter(ldPainter_);
 }
 
 

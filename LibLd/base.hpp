@@ -29,8 +29,8 @@ class Base : public QQuickPaintedItem
 public:
     explicit Base(QQuickItem *parent = nullptr);
 
-    void setLdPainter(Painter *ldPainter);
-    Painter *getLdPainter();
+    void setPainter(Painter *ldPainter);
+    Painter *getPainter();
 
 protected:
     Painter *ldPainter_;

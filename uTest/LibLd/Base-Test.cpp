@@ -22,10 +22,10 @@ TEST(LD_Base, setPainter)
     auto base = std::make_shared<MockBaseLd>();
     Ld::Painter ldPainter(1, 1);
 
-    EXPECT_TRUE(base->getLdPainter() == nullptr);
+    EXPECT_TRUE(base->getPainter() == nullptr);
 
     // TODO EXPECT_CALL(*compLd, paint(_));
-    base->setLdPainter(&ldPainter);
+    base->setPainter(&ldPainter);
 
-    EXPECT_TRUE(base->getLdPainter() == &ldPainter);
+    EXPECT_TRUE(base->getPainter() == &ldPainter);
 }

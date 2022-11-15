@@ -1,5 +1,5 @@
 /*!
- * \file ldPainter.hpp
+ * \file lPainter.hpp
  * \author Łukasz Liśnikowski
 */
 #ifndef LDPAINTER_H
