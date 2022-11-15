@@ -23,14 +23,16 @@ file(GLOB MAIN_FILE
 
 file(GLOB PROJECT_HEADERS  
      LibLd/*.hpp
+     Network/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
     LibLd/*.cpp
+    Network/*.cpp
 )
 
 set(PROJECT_RESOURSES
-        App/qml.qrc
+    App/qml.qrc
 )
 
 file(GLOB OTHER_FILES
@@ -66,6 +68,7 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/LibLd
+  ${CMAKE_SOURCE_DIR}/Network
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -104,6 +107,7 @@ file(GLOB GTEST_FILE
 file(GLOB UTEST_SOURCES
     uTest/*.cpp
     uTest/LibLd/*.cpp
+    uTest/Network/*.cpp
 )
 
 
@@ -143,6 +147,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/uTest
   ${CMAKE_SOURCE_DIR}/LibLd
+  ${CMAKE_SOURCE_DIR}/Network
 )
 
 

@@ -48,6 +48,17 @@ void Painter::drawCoil(QPainter &painter)
 }
 
 /*!
+ * \brief Funkcja odpowiedzialna za rysowanie symbolu linii.
+ * \param painter: Referencja do klasy
+ * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
+ */
+void Painter::drawLine(QPainter &painter)
+{
+    painter.setPen(QPen(Qt::white, penSize_));
+    drawHoryzontalLine(painter);
+}
+
+/*!
  * \brief Funkcja rysująca sam styk.
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
@@ -149,6 +160,16 @@ QRectF Painter::getCenteredRect(float width, float height, float offsetX, float 
     float halfDifferenceWidth = (cellSize_ - width) / 2;
     float halfDifferenceHeight = (cellSize_ - height) / 2;
     return QRectF{halfDifferenceWidth + offsetX, halfDifferenceHeight + offsetY, width, height};
+}
+
+/*!
+ * \brief Funkcja rysująca prostą linię od lewej do prawej.
+ * \param painter: Referencja do klasy
+ * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
+ */
+void Painter::drawHoryzontalLine(QPainter &painter)
+{
+    painter.drawLine(0, cellSize_ / 2, cellSize_, cellSize_ / 2);
 }
 
 

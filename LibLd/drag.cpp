@@ -84,7 +84,7 @@ QDrag *Drag::createQDrag(QMouseEvent &event)
 }
 
 /*!
- * \brief Tworzy kontener danych możliwy dla wydarzenia przeciągania.
+ * \brief Tworzy kontener danych dla wydarzenia przeciągania.
  * \param event: Wydarzenie
  * <a href="https://doc.qt.io/qt-5/qmouseevent.html">QMouseEvent</a>.
  * \return Wskaźnik do utworzonego obiektu
@@ -103,7 +103,7 @@ QMimeData *Drag::createDragData(QMouseEvent &event)
 }
 
 /*!
- * \brief Tworzy obraz dla wydarzenia przeciągania.
+ * \brief Tworzy ikonę przeciągania.
  * \return Obraz
  * <a href="https://doc.qt.io/qt-5/qpixmap.html">QPixmap</a>.
  */

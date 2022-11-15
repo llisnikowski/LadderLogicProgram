@@ -49,6 +49,7 @@ public:
 
     void drawContact(QPainter &painter);
     void drawCoil(QPainter &painter);
+    void drawLine(QPainter &painter);
 
 private:
     void drawContactContour(QPainter &painter);
@@ -58,6 +59,7 @@ private:
     void drawHorizontalPairLine(QPainter &painter, float x);
     void drawPairArc(QPainter &painter, float angle, float radiusX, float offsetX = 0);
     QRectF getCenteredRect(float width, float height, float offsetX = 0, float offsetY = 0);
+    void drawHoryzontalLine(QPainter &painter);
 
     /*!
      * \brief Ddomyślną szerokość symbolów w pixelach.

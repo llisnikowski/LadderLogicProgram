@@ -20,6 +20,8 @@ class Line : public Base
     Q_OBJECT
 public:
     explicit Line(QQuickItem *parent = nullptr);
+
+    void paint(QPainter *painter) override;
 };
 
 
