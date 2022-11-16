@@ -26,7 +26,7 @@ ApplicationWindow {
             SplitView.minimumWidth: 70
             SplitView.maximumWidth: 100
         }
-        Item {
+        ProgramView {
             id: programView
             clip: true
             SplitView.minimumWidth: 50

@@ -20,12 +20,12 @@ protected:
 TEST(LD_Base, setPainter)
 {
     auto base = std::make_shared<MockBaseLd>();
-    Ld::Painter ldPainter(1, 1);
+    Ld::Painter painter(1, 1);
 
     EXPECT_TRUE(base->getPainter() == nullptr);
 
     // TODO EXPECT_CALL(*compLd, paint(_));
-    base->setPainter(&ldPainter);
+    base->setPainter(&painter);
 
-    EXPECT_TRUE(base->getPainter() == &ldPainter);
+    EXPECT_TRUE(base->getPainter() == &painter);
 }

@@ -4,5 +4,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>ToolMenu.qml</file>
         <file>LdSymbolsBar.qml</file>
+        <file>ProgramView.qml</file>
     </qresource>
 </RCC>

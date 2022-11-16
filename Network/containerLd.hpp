@@ -6,6 +6,7 @@
 
 namespace Ld {
 class Base;
+class Factory;
 }
 
 // -I-+-I-+-I-+-O-
@@ -35,8 +36,12 @@ public:
     const Array & getArray() const {return container_;}
     Item getItem(uint line, uint x);
 
+    void setFactory(Ld::Factory *factory);
+    Ld::Factory *getFactory();
+
 private:
     Array container_;
+    Ld::Factory * factory_;
 };
 
 #endif // CONTAINERLD_HPP

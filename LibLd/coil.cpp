@@ -5,6 +5,7 @@
 
 #include "coil.hpp"
 #include "painter.hpp"
+#include <QDebug>
 
 namespace Ld {
 

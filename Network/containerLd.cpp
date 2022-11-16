@@ -1,5 +1,6 @@
 #include "containerLd.hpp"
 #include "line.hpp"
+#include "factory.hpp"
 
 ContainerLd::ContainerLd(QQuickItem *parent)
     : QQuickItem{parent},
@@ -8,7 +9,7 @@ ContainerLd::ContainerLd(QQuickItem *parent)
                Line{INPUTS_IN_LINE_2 * NUMBERS_OBJECTS_PER_INPUT},
                Line{INPUTS_IN_LINE_3 * NUMBERS_OBJECTS_PER_INPUT}}
 {
-    container_[0][0] = new Ld::Line(this);
+//
 }
 
 ContainerLd::Item ContainerLd::getItem(uint line, uint x)
@@ -16,4 +17,17 @@ ContainerLd::Item ContainerLd::getItem(uint line, uint x)
     if(line >= container_.count()) return nullptr;
     if(x >= container_[line].count()) return nullptr;
     return container_.at(line).at(x);
+}
+
+
+void ContainerLd::setFactory(Ld::Factory *factory)
+{
+    qDebug() << "setFactory";
+    this->factory_ = factory;
+    container_[0][0] = factory_->createLine(this);
+}
+
+Ld::Factory *ContainerLd::getFactory()
+{
+    return factory_;
 }

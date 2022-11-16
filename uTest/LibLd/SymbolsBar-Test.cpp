@@ -2,9 +2,10 @@
 #include <gmock/gmock-matchers.h>
 
 #include "contact.hpp"
+#include "factory.hpp"
+#include "painter.hpp"
 #include "qobject.h"
 #include "symbolsBar.hpp"
-#include "painter.hpp"
 #include "contact.hpp"
 #include "coil.hpp"
 
@@ -14,27 +15,58 @@ using namespace testing;
 TEST(LD_SymbolsBar, SetLdPainter)
 {
     Ld::SymbolsBar symbolsBar;
-    Ld::Painter ldPainter{1,1};
+    Ld::Factory factory;
 
-    EXPECT_TRUE(symbolsBar.getLdPainter() == nullptr);
+    EXPECT_TRUE(symbolsBar.getFactory() == nullptr);
 
-    symbolsBar.setLdPainter(&ldPainter);
+    symbolsBar.setFactory(&factory);
 
-    EXPECT_TRUE(symbolsBar.getLdPainter() == &ldPainter);
+    EXPECT_TRUE(symbolsBar.getFactory() == &factory);
 }
 
 
-TEST(LD_SymbolsBar, SetNewParentItem)
+TEST(LD_SymbolsBar, SetNewParentItem_NoFactory)
 {
     Ld::SymbolsBar symbolsBar;
     QQuickItem parentItem;
 
     EXPECT_EQ(symbolsBar.childItems().count(), 0);
 
+    symbolsBar.setNewParentItem(nullptr);
+    EXPECT_EQ(symbolsBar.childItems().count(), 0);
+
     symbolsBar.setNewParentItem(&parentItem);
 
     EXPECT_TRUE(symbolsBar.parentItem() == &parentItem);
-    EXPECT_EQ(symbolsBar.childItems().count(), 2);
-    EXPECT_TRUE(symbolsBar.findChild<Ld::Contact *>());
-    EXPECT_TRUE(symbolsBar.findChild<Ld::Coil *>());
+    EXPECT_EQ(symbolsBar.childItems().count(), 0);
+}
+
+TEST(LD_SymbolsBar, SetNewParentItem_TestFactory_NullPainter)
+{
+    Ld::SymbolsBar symbolsBar;
+    QQuickItem parentItem;
+    Ld::Factory factory;
+    symbolsBar.setFactory(&factory);
+
+    symbolsBar.setNewParentItem(&parentItem);
+    auto contact = symbolsBar.findChild<Ld::Contact *>();
+    auto coil = symbolsBar.findChild<Ld::Coil *>();
+    EXPECT_FALSE(contact->getPainter());
+    EXPECT_FALSE(coil->getPainter());
+}
+
+TEST(LD_SymbolsBar, SetNewParentItem_TestFactory)
+{
+    Ld::SymbolsBar symbolsBar;
+    QQuickItem parentItem;
+    Ld::Painter painter{12,1};
+    Ld::Factory factory;
+    factory.setPainter(&painter);
+    symbolsBar.setFactory(&factory);
+
+    symbolsBar.setNewParentItem(&parentItem);
+    auto contact = symbolsBar.findChild<Ld::Contact *>();
+    auto coil = symbolsBar.findChild<Ld::Coil *>();
+    EXPECT_TRUE(contact->getPainter() == &painter);
+    EXPECT_TRUE(coil->getPainter() == &painter);
 }

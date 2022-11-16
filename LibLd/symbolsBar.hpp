@@ -5,10 +5,12 @@
 #ifndef SYMBOLSBAR_H
 #define SYMBOLSBAR_H
 
+
 #include <QQuickItem>
 
 namespace Ld {
 class Painter;
+class Factory;
 
 /*!
  * \brief SymbolsBar jest klasą odpowiedzialną za utworzenie paska z symbolami Ld.
@@ -18,14 +20,14 @@ class SymbolsBar : public QQuickItem
     Q_OBJECT
 public:
     SymbolsBar();
-    void setLdPainter(Painter *ldPainter);
-    Painter *getLdPainter();
+    void setFactory(Factory *factory);
+    Factory *getFactory();
 
 public slots:
     void setNewParentItem(QQuickItem *parentItem);
 
 private:
-    Painter *ldPainter_;
+    Factory *factory_;
 };
 
 

@@ -5,26 +5,26 @@
 #include "symbolsBar.hpp"
 #include "contact.hpp"
 #include "coil.hpp"
+#include "factory.hpp"
 #include <QDebug>
 
 namespace Ld {
 
 SymbolsBar::SymbolsBar()
-    :ldPainter_{}
+    :factory_{}
 {
 
 }
 
-
-void SymbolsBar::setLdPainter(Painter *ldPainter)
+void SymbolsBar::setFactory(Factory *factory)
 {
-    this->ldPainter_ = ldPainter;
+    this->factory_ = factory;
     update();
 }
 
-Painter *SymbolsBar::getLdPainter()
+Factory *SymbolsBar::getFactory()
 {
-    return ldPainter_;
+    return factory_;
 }
 
 
@@ -35,15 +35,10 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     setHeight(parentItem->height());
     setParentItem(parentItem);
 
-    auto contact = new Contact(this);
-    contact->setWidth(64);
-    contact->setHeight(64);
-    contact->setPainter(ldPainter_);
-    auto coil = new Coil(this);
-    coil->setWidth(64);
-    coil->setHeight(64);
-    coil->setY(64);
-    coil->setPainter(ldPainter_);
+    if(!factory_) return;
+    factory_->createContact(this);
+    auto coil = factory_->createCoil(this);
+    coil->setY(factory_->getObjectSize());
 }
 
 

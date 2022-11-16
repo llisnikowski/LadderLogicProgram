@@ -2,14 +2,16 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-
+#include "config.hpp"
+#include "factory.hpp"
+#include "networkList.hpp"
 #include "painter.hpp"
 #include "symbolsBar.hpp"
 
-
-Ld::Painter mainLdPainter{64, 2};
+Ld::Factory factory;
+Ld::Painter mainPainter{LD_OBJECT_SIZE, LD_PEN_WIDTH};
 Ld::SymbolsBar ldSymbolsBar;
-
+NetworkList networkList;
 
 int main(int argc, char *argv[])
 {
@@ -17,12 +19,15 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    ldSymbolsBar.setLdPainter(&mainLdPainter);
+    factory.setPainter(&mainPainter);
+    ldSymbolsBar.setFactory(&factory);
+    networkList.setFactory(&factory);
 
 
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
+    engine.rootContext()->setContextProperty("networkList", &networkList);
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
