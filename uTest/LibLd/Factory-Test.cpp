@@ -1,6 +1,5 @@
 #include "factory.hpp"
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 #include "line.hpp"
 #include "contact.hpp"
 #include "coil.hpp"

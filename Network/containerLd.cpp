@@ -20,14 +20,9 @@ ContainerLd::Item ContainerLd::getItem(uint line, uint x)
 }
 
 
-void ContainerLd::setFactory(Ld::Factory *factory)
-{
-    qDebug() << "setFactory";
-    this->factory_ = factory;
-    container_[0][0] = factory_->createLine(this);
-}
 
-Ld::Factory *ContainerLd::getFactory()
+void ContainerLd::changedFactory()
 {
-    return factory_;
+    if(factory_)
+        container_[0][0] = factory_->createLine(this);
 }

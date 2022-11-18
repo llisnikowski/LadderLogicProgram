@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 
 #include "line.hpp"
 #include "containerLd.hpp"
+#include "factory.hpp"
 
 using namespace testing;
 
@@ -24,6 +24,33 @@ TEST(ContainterLd, constructor)
 TEST(ContainterLd, empty)
 {
     ContainerLd container;
+
+    EXPECT_FALSE(container.getItem(0, 0));
+    EXPECT_FALSE(container.getItem(1, 0));
+    EXPECT_FALSE(container.getItem(0, 1));
+    EXPECT_FALSE(container.getItem(1, 1));
+    EXPECT_FALSE(container.getItem(3, 0));
+    EXPECT_FALSE(container.getItem(0, 20));
+}
+
+TEST(ContainterLd, setFactoryNullprt)
+{
+    ContainerLd container;
+    container.setFactory(nullptr);
+
+    EXPECT_FALSE(container.getItem(0, 0));
+    EXPECT_FALSE(container.getItem(1, 0));
+    EXPECT_FALSE(container.getItem(0, 1));
+    EXPECT_FALSE(container.getItem(1, 1));
+    EXPECT_FALSE(container.getItem(3, 0));
+    EXPECT_FALSE(container.getItem(0, 20));
+}
+
+TEST(ContainterLd, setFactory)
+{
+    ContainerLd container;
+    Ld::Factory factory;
+    container.setFactory(&factory);
 
     EXPECT_TRUE(qobject_cast<Ld::Line*>(container.getItem(0, 0)));
     EXPECT_FALSE(container.getItem(1, 0));

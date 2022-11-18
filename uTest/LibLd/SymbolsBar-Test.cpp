@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 
 #include "contact.hpp"
 #include "factory.hpp"
@@ -11,18 +10,6 @@
 
 
 using namespace testing;
-
-TEST(LD_SymbolsBar, SetLdPainter)
-{
-    Ld::SymbolsBar symbolsBar;
-    Ld::Factory factory;
-
-    EXPECT_TRUE(symbolsBar.getFactory() == nullptr);
-
-    symbolsBar.setFactory(&factory);
-
-    EXPECT_TRUE(symbolsBar.getFactory() == &factory);
-}
 
 
 TEST(LD_SymbolsBar, SetNewParentItem_NoFactory)

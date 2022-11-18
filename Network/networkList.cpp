@@ -2,22 +2,10 @@
 #include "factory.hpp"
 
 NetworkList::NetworkList(QQuickItem *parent)
-    :QQuickItem{parent}, networks_{}, factory_{}
+    :QQuickItem{parent}, networks_{}
 {
 }
 
-
-void NetworkList::setFactory(Ld::Factory *factory)
-{
-    this->factory_ = factory;
-    update();
-    qDebug() << "setFactory";
-}
-
-Ld::Factory *NetworkList::getFactory()
-{
-    return factory_;
-}
 
 void NetworkList::joinToParent(QQuickItem *parent)
 {
@@ -27,4 +15,9 @@ void NetworkList::joinToParent(QQuickItem *parent)
     network->setFactory(factory_);
     networks_.append(network);
 
+}
+
+void NetworkList::changedFactory()
+{
+    update();
 }

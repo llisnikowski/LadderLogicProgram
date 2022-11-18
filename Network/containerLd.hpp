@@ -3,10 +3,10 @@
 
 #include <QQuickItem>
 #include <QVector>
+#include "factoryContainer.hpp"
 
 namespace Ld {
 class Base;
-class Factory;
 }
 
 // -I-+-I-+-I-+-O-
@@ -23,7 +23,7 @@ constexpr int NUMBERS_OBJECTS_PER_OUTPUT {3};
 
 
 
-class ContainerLd : public QQuickItem
+class ContainerLd : public QQuickItem, public Ld::FactoryContainer
 {
     Q_OBJECT
 public:
@@ -36,12 +36,11 @@ public:
     const Array & getArray() const {return container_;}
     Item getItem(uint line, uint x);
 
-    void setFactory(Ld::Factory *factory);
-    Ld::Factory *getFactory();
+protected:
+    void changedFactory() override;
 
 private:
     Array container_;
-    Ld::Factory * factory_;
 };
 
 #endif // CONTAINERLD_HPP

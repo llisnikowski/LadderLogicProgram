@@ -1,11 +1,10 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 #include <gmock/gmock.h>
 #include <memory>
 
 #include "drag.hpp"
 #include <QPainter>
-#include "painter.hpp"
+//#include "painter.hpp"
 
 using namespace testing;
 
