@@ -13,8 +13,8 @@
 namespace Ld{
 
 /*!
- * \brief Konstructor klasy Drag
- * \param parent: rodzic/element nadrzędny
+ * \brief Konstructor klasy Drag. Włącza obsługę lewego przycisku myszy.
+ * \param parent: rodzic/element nadrzędny.
  */
 Drag::Drag(QQuickItem *parent)
     :Base{parent}
@@ -23,11 +23,9 @@ Drag::Drag(QQuickItem *parent)
 }
 
 /*!
- * \brief Akceptuje wydażenie naciśnięcia przycisku myszką. Umożliwia wykrycie
- *  kolejnych zdarzeń jak przeciąganie lub zwolnienie klawisza.
- * \param event: Wydarzenie naciśnięcia przycisku myszy.
- * \see
- * <a href="https://doc.qt.io/qt-5/qmouseevent.html">QMouseEvent</a>.
+ * \brief Funkcja obsługująca wydarzenie MouseButtonPress.
+ * \param event: Wskaźnik do obiektu
+ * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
  */
 void Drag::mousePressEvent(QMouseEvent *event)
 {
@@ -35,18 +33,21 @@ void Drag::mousePressEvent(QMouseEvent *event)
 }
 
 /*!
- * \brief Ustawia przeciąganie obiektu po wystąpieniu wydażenia ruchu
- *  kursora.
- * \param event: Wydarzenie ruchu kursora myszy.
- * \see
- * <a href="https://doc.qt.io/qt-5/qmouseevent.html">QMouseEvent</a>.
+ * \brief Funkcja obsługująca wydarzenie MouseMove po zaakceptowaniu
+ * wydarzenia MouseButtonPress
+ *
+ * Inicjalizuje przeciąganie obiektu dla mechanizmu
+ * <a href="https://doc.qt.io/qt-6/dnd.html"> Drag and Drop</a>.
+ * \param event: Wskaźnik do obiektu
+ * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
  */
 void Drag::mouseMoveEvent(QMouseEvent *event)
 {
     event->accept();
 
     QDrag *drag = createQDrag(*event);
-    Qt::DropAction dragAction = drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::IgnoreAction);
+    Qt::DropAction dragAction =
+        drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::IgnoreAction);
     if (dragAction == Qt::CopyAction) {
     }
     else if (dragAction == Qt::MoveAction) {
@@ -54,11 +55,22 @@ void Drag::mouseMoveEvent(QMouseEvent *event)
 }
 
 /*!
+ * \brief Funkcja obsługująca wydarzenie MouseRelease
+ *
+ * \param event: Wskaźnik do obiektu
+ * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
+ */
+void Drag::mouseReleaseEvent(QMouseEvent *event)
+{
+    event->accept();
+}
+
+/*!
  * \brief Wirtualna metoda rysująca ikonę przeciągania.
  *
  * Nie przesłonięta uruchamia domyślną metode rysującą obiekt (paint()).
  * \param painter: Referencja do klasy rysującej
- * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
+ * <a href="https://doc.qt.io/qt-6/qpainter.html">QPainter</a>.
  */
 void Drag::paintDrag(QPainter &painter)
 {
@@ -67,12 +79,12 @@ void Drag::paintDrag(QPainter &painter)
 
 /*!
  * \brief Tworzy klasę
- * <a href="https://doc.qt.io/qt-5/qdrag.html">QDrag</a>
+ * <a href="https://doc.qt.io/qt-6/qdrag.html">QDrag</a>
  * zapewniającą obsługę dla metody przeciągnij i upuść.
  * \param event: Wydarzenie
- * <a href="https://doc.qt.io/qt-5/qmouseevent.html">QMouseEvent</a>.
+ * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
  * \return Wskaźnik do utworzonego obiektu
- * <a href="https://doc.qt.io/qt-5/qdrag.html">QDrag</a>.
+ * <a href="https://doc.qt.io/qt-6/qdrag.html">QDrag</a>.
  */
 QDrag *Drag::createQDrag(QMouseEvent &event)
 {
@@ -86,9 +98,9 @@ QDrag *Drag::createQDrag(QMouseEvent &event)
 /*!
  * \brief Tworzy kontener danych dla wydarzenia przeciągania.
  * \param event: Wydarzenie
- * <a href="https://doc.qt.io/qt-5/qmouseevent.html">QMouseEvent</a>.
+ * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
  * \return Wskaźnik do utworzonego obiektu
- * <a href="https://doc.qt.io/qt-5/qmimedata.html">QMimeData</a>.
+ * <a href="https://doc.qt.io/qt-6/qmimedata.html">QMimeData</a>.
  */
 QMimeData *Drag::createDragData(QMouseEvent &event)
 {
@@ -105,7 +117,7 @@ QMimeData *Drag::createDragData(QMouseEvent &event)
 /*!
  * \brief Tworzy ikonę przeciągania.
  * \return Obraz
- * <a href="https://doc.qt.io/qt-5/qpixmap.html">QPixmap</a>.
+ * <a href="https://doc.qt.io/qt-6/qpixmap.html">QPixmap</a>.
  */
 QPixmap Drag::createDragPixmap()
 {

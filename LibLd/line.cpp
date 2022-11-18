@@ -14,7 +14,7 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny
  */
 Line::Line(QQuickItem *parent)
-    :Base(parent)
+    :Drop(parent)
 {
 }
 

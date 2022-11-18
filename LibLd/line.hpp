@@ -8,14 +8,14 @@
 #ifndef LINE_HPP
 #define LINE_HPP
 
-#include "base.hpp"
+#include "drop.hpp"
 
 namespace Ld {
 
 /*!
  * \brief Klasa Coil udostępnia symbol linii z języka LD.
  */
-class Line : public Base
+class Line : public Drop
 {
     Q_OBJECT
 public:

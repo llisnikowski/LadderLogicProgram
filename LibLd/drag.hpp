@@ -16,8 +16,9 @@ class QDrag;
 namespace Ld{
 
 /*!
- * \brief Klasa Drag udostępnia interfejs przeciągania obiektu na ekranie za
- *  pomocą myszki.
+ * \brief Klasa Drag udostępnia interfejs przeciągania dla mechanizmu
+ * <a href="https://doc.qt.io/qt-6/dnd.html">
+ *  Drag and Drop</a>.
  */
 class Drag : public Base
 {
@@ -28,6 +29,7 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
     virtual void paintDrag(QPainter &painter);
 
@@ -35,7 +37,6 @@ private:
     QDrag *createQDrag(QMouseEvent &event);
     QMimeData *createDragData(QMouseEvent &event);
     QPixmap createDragPixmap();
-
 };
 
 
