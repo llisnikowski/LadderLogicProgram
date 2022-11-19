@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QQmlEngine>
+#include <QSizeF>
 
 /*!
  * \defgroup GlobalParameters Globalne parametry rysowania
@@ -34,22 +35,17 @@ class Painter : public QObject
 {
     QML_ELEMENT
 public:
-    Painter(float cellSize, float penSize);
+    Painter(float penSize);
 
-    /*!
-     * \brief Zwraca domyślną szerokość symbolów.
-     * \return Szerokość symbolów w pixelach.
-     */
-    float getCellSize() const {return cellSize_;}
     /*!
      * \brief Zwraca grubość pędzla.
      * \return Grubość pędzla w pixelach.
      */
     float getPenSize() const {return penSize_;}
 
-    void drawContact(QPainter &painter);
-    void drawCoil(QPainter &painter);
-    void drawLine(QPainter &painter);
+    void drawContact(QPainter &painter, QSizeF objectSize);
+    void drawCoil(QPainter &painter, QSizeF objectSize);
+    void drawLine(QPainter &painter, QSizeF objectSize);
 
 private:
     void drawContactContour(QPainter &painter);
@@ -64,7 +60,7 @@ private:
     /*!
      * \brief Ddomyślną szerokość symbolów w pixelach.
      */
-    float cellSize_;
+    QSizeF objectSize_;
     /*!
      * \brief Grubość pędzla w pixelach.
      */
@@ -78,11 +74,11 @@ private:
      * \see GlobalParameters
      * @{
      */
-    const float verticalLineX_;
-    const float verticalLineHeight_;
-    const float coilArcAngle_;
-    const float coilArcRadius_;
-    const float coilArcOffsetX_;
+    float verticalLineX_;
+    float verticalLineHeight_;
+    float coilArcAngle_;
+    float coilArcRadius_;
+    float coilArcOffsetX_;
     /*! @} */
 };
 

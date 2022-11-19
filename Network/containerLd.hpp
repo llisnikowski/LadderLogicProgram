@@ -13,13 +13,17 @@ class Base;
 // -I-+
 // -I-+
 
-constexpr int INPUTS_IN_LINE_1{3};
-constexpr int OUTPUTS_IN_LINE_1{1};
-constexpr int INPUTS_IN_LINE_2{1};
-constexpr int INPUTS_IN_LINE_3{1};
 
-constexpr int NUMBERS_OBJECTS_PER_INPUT {4};
-constexpr int NUMBERS_OBJECTS_PER_OUTPUT {3};
+
+constexpr const char * STRUCTURE_LINE_1 {"-I-+-I-I-O-"};
+constexpr const char * STRUCTURE_LINE_2 {"-I-+"};
+constexpr const char * STRUCTURE_LINE_3 {"-I-+"};
+
+constexpr int NUMBERS_OBJECTS_FOR_LINE_1 {std::char_traits<char>::length(STRUCTURE_LINE_1)};
+constexpr int NUMBERS_OBJECTS_FOR_LINE_2 {std::char_traits<char>::length(STRUCTURE_LINE_2)};
+constexpr int NUMBERS_OBJECTS_FOR_LINE_3 {std::char_traits<char>::length(STRUCTURE_LINE_3)};
+
+constexpr float MAX_LENGTH_LINE {64*4 + 64*4 + 16};
 
 
 

@@ -26,8 +26,6 @@ class Factory : public QObject
 public:
     explicit Factory(QObject *parent = nullptr);
 
-    void setObjectSize(float objectSize);
-    float getObjectSize() const;
     void setPainter(Painter *painter);
     Painter *getPainter();
 
@@ -36,20 +34,15 @@ public:
 //    Coil *createCoil(QQuickItem *parent = nullptr) const;
 
     template <typename T>
-    T *create(QQuickItem *parent = nullptr,
+    T *create(QQuickItem *parent = nullptr, QSizeF size = {0,0},
               std::function<void(T *obj)> initFunction = nullptr) const;
     template <typename T>
-    T *create(std::function<void(T *obj)> initFunction) const;
+    T *create(QSizeF size, std::function<void(T *obj)> initFunction= nullptr) const;
 
 private:
     template <typename T>
-    T *initObject(T * obj) const;
+    T *initObject(T * obj, QSizeF size) const;
 
-    /*!
-     * \brief Rozmiar tworzonych obiektów
-     * \see setObjectSize, getObjectSize
-     */
-    float objectSize_;
     /*!
      * \brief Przypisywana klasa Painter
      * \see setPainter, getPainter
@@ -69,9 +62,9 @@ private:
  * \return Wskaźnik do wcześniej przekazanego obiektu.
  */
 template <typename T>
-T *Ld::Factory::initObject(T *obj) const
+T *Ld::Factory::initObject(T *obj, QSizeF size) const
 {
-    obj->setSize({objectSize_, objectSize_});
+    obj->setSize({size.width(), size.height()});
     obj->setPainter(painter_);
     return obj;
 }
@@ -91,10 +84,10 @@ T *Ld::Factory::initObject(T *obj) const
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
 template <typename T>
-T *Ld::Factory::create(QQuickItem *parent,
+T *Ld::Factory::create(QQuickItem *parent, QSizeF size,
                        std::function<void(T *obj)> initFunction) const
 {
-    T * obj = initObject(new T{parent});
+    T * obj = initObject(new T{parent}, size);
     if(initFunction) initFunction(obj);
     return obj;
 }
@@ -113,9 +106,9 @@ T *Ld::Factory::create(QQuickItem *parent,
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
 template <typename T>
-T *Ld::Factory::create(std::function<void(T *obj)> initFunction) const
+T *Ld::Factory::create(QSizeF size,std::function<void(T *obj)> initFunction) const
 {
-    T * obj = new T;
+    T * obj = initObject(new T, size);
     if(initFunction) initFunction(obj);
     return obj;
 }

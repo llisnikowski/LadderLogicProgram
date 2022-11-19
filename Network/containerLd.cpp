@@ -2,14 +2,13 @@
 #include "line.hpp"
 #include "factory.hpp"
 
+
 ContainerLd::ContainerLd(QQuickItem *parent)
     : QQuickItem{parent},
-    container_{Line{INPUTS_IN_LINE_1 * NUMBERS_OBJECTS_PER_INPUT +
-                    OUTPUTS_IN_LINE_1 * NUMBERS_OBJECTS_PER_OUTPUT},
-               Line{INPUTS_IN_LINE_2 * NUMBERS_OBJECTS_PER_INPUT},
-               Line{INPUTS_IN_LINE_3 * NUMBERS_OBJECTS_PER_INPUT}}
+    container_{Line{NUMBERS_OBJECTS_FOR_LINE_1},
+               Line{NUMBERS_OBJECTS_FOR_LINE_2},
+               Line{NUMBERS_OBJECTS_FOR_LINE_3}}
 {
-//
 }
 
 ContainerLd::Item ContainerLd::getItem(uint line, uint x)
@@ -23,6 +22,7 @@ ContainerLd::Item ContainerLd::getItem(uint line, uint x)
 
 void ContainerLd::changedFactory()
 {
-    if(factory_)
-        container_[0][0] = factory_->create<Ld::Line>(this);
+    if(factory_){
+        container_[0][0] = factory_->create<Ld::Line>(this,{MAX_LENGTH_LINE,64});
+    }
 }

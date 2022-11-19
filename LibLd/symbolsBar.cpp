@@ -24,9 +24,9 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     setParentItem(parentItem);
 
     if(!factory_) return;
-    factory_->create<Ld::Contact>(this);
-    factory_->create<Ld::Coil>(this, [this](Ld::Coil *obj){
-        obj->setY(factory_->getObjectSize());
+    factory_->create<Ld::Contact>(this, {64, 64});
+    factory_->create<Ld::Coil>(this, {64, 64}, [this](Ld::Coil *obj){
+        obj->setY(64);
     });
 }
 

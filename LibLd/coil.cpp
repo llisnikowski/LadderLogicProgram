@@ -22,7 +22,7 @@ Coil::Coil(QQuickItem *parent)
 void Coil::paint(QPainter *painter)
 {
     if(!ldPainter_) return;
-    ldPainter_->drawCoil(*painter);
+    ldPainter_->drawCoil(*painter, size());
 }
 
 

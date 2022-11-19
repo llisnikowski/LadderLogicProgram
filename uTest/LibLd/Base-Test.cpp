@@ -19,7 +19,7 @@ protected:
 TEST(LD_Base, setPainter)
 {
     auto base = std::make_shared<MockBaseLd>();
-    Ld::Painter painter(1, 1);
+    Ld::Painter painter(1);
 
     EXPECT_TRUE(base->getPainter() == nullptr);
 

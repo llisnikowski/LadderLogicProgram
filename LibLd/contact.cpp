@@ -22,7 +22,7 @@ Contact::Contact(QQuickItem *parent)
 void Contact::paint(QPainter *painter)
 {
     if(!ldPainter_) return;
-    ldPainter_->drawContact(*painter);
+    ldPainter_->drawContact(*painter, size());
 }
 
 

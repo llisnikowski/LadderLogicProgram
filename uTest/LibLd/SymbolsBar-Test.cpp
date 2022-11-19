@@ -46,7 +46,7 @@ TEST(LD_SymbolsBar, SetNewParentItem_TestFactory)
 {
     Ld::SymbolsBar symbolsBar;
     QQuickItem parentItem;
-    Ld::Painter painter{12,1};
+    Ld::Painter painter{1};
     Ld::Factory factory;
     factory.setPainter(&painter);
     symbolsBar.setFactory(&factory);

@@ -13,12 +13,9 @@ TEST(ContainterLd, constructor)
     const ContainerLd::Array & array = container.getArray();
 
     EXPECT_EQ(array.count(), 3);
-    EXPECT_EQ(array[0].count(), INPUTS_IN_LINE_1 * NUMBERS_OBJECTS_PER_INPUT
-                            + OUTPUTS_IN_LINE_1 * NUMBERS_OBJECTS_PER_OUTPUT);
-    EXPECT_EQ(array[1].count(), INPUTS_IN_LINE_2 * NUMBERS_OBJECTS_PER_INPUT);
-    EXPECT_EQ(array[2].count(), INPUTS_IN_LINE_3 * NUMBERS_OBJECTS_PER_INPUT);
-
-
+    EXPECT_EQ(array[0].count(), QString("-I-+-I-I-O-").length());
+    EXPECT_EQ(array[1].count(), QString("-I-+").length());
+    EXPECT_EQ(array[2].count(), QString("-I-+").length());
 }
 
 TEST(ContainterLd, empty)

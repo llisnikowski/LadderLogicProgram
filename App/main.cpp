@@ -9,7 +9,7 @@
 #include "symbolsBar.hpp"
 
 Ld::Factory factory;
-Ld::Painter mainPainter{LD_OBJECT_SIZE, LD_PEN_WIDTH};
+Ld::Painter mainPainter{LD_PEN_WIDTH};
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 

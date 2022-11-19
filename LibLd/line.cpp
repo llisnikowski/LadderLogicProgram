@@ -21,7 +21,7 @@ Line::Line(QQuickItem *parent)
 void Line::paint(QPainter *painter)
 {
     if(!ldPainter_) return;
-    ldPainter_->drawLine(*painter);
+    ldPainter_->drawLine(*painter, size());
 }
 
 

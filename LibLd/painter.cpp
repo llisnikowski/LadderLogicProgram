@@ -14,14 +14,14 @@ namespace Ld {
  * \param cellSize: Domyślna szerokość symbolu w pixelach.
  * \param penSize: Domyślna grubość pędzla.
  */
-Painter::Painter(float cellSize, float penSize)
-    :cellSize_{cellSize},
+Painter::Painter(float penSize)
+    :objectSize_{},
     penSize_{penSize},
-    verticalLineX_{CONTACT_V_LINE_X_FACTORY * cellSize},
-    verticalLineHeight_{CONTACT_V_LINE_HEIGHT_FACTORY * cellSize},
+    verticalLineX_{},
+    verticalLineHeight_{},
     coilArcAngle_{COIL_ARC_ANGLE},
-    coilArcRadius_{COIL_ARC_RADIOUS_FACTORY * cellSize},
-    coilArcOffsetX_{COIL_ARC_OFFSET_FACTORY * cellSize}
+    coilArcRadius_{},
+    coilArcOffsetX_{}
 {
 }
 
@@ -30,8 +30,11 @@ Painter::Painter(float cellSize, float penSize)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void Painter::drawContact(QPainter &painter)
+void Painter::drawContact(QPainter &painter, QSizeF objectSize)
 {
+    objectSize_= objectSize;
+    verticalLineX_ = CONTACT_V_LINE_X_FACTORY * objectSize_.width();
+    verticalLineHeight_ = CONTACT_V_LINE_HEIGHT_FACTORY * objectSize_.width();
     painter.setPen(QPen(Qt::white, penSize_));
     drawContactContour(painter);
 }
@@ -41,8 +44,11 @@ void Painter::drawContact(QPainter &painter)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void Painter::drawCoil(QPainter &painter)
+void Painter::drawCoil(QPainter &painter, QSizeF objectSize)
 {
+    objectSize_= objectSize;
+    coilArcRadius_ = COIL_ARC_RADIOUS_FACTORY * objectSize_.width();
+    coilArcOffsetX_ = COIL_ARC_OFFSET_FACTORY * objectSize_.width();
     painter.setPen(QPen(Qt::white, penSize_));
     drawCoilContour(painter);
 }
@@ -52,8 +58,9 @@ void Painter::drawCoil(QPainter &painter)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void Painter::drawLine(QPainter &painter)
+void Painter::drawLine(QPainter &painter, QSizeF objectSize)
 {
+    objectSize_= objectSize;
     painter.setPen(QPen(Qt::white, penSize_));
     drawHoryzontalLine(painter);
 }
@@ -78,7 +85,7 @@ void Painter::drawCoilContour(QPainter &painter)
 {
     drawPairArc(painter, coilArcAngle_, coilArcRadius_, coilArcOffsetX_);
     drawHorizontalPairLine(painter,
-                cellSize_ / 2 - coilArcRadius_ + coilArcOffsetX_);
+                objectSize_.width() / 2 - coilArcRadius_ + coilArcOffsetX_);
 }
 
 /*!
@@ -95,7 +102,7 @@ void Painter::drawCoilContour(QPainter &painter)
 void Painter::drawVerticalPairLine(QPainter &painter, float x, float height)
 {
     drawVerticalLine(painter, x, height);
-    drawVerticalLine(painter, cellSize_ - x, height);
+    drawVerticalLine(painter, objectSize_.width() - x, height);
 }
 
 /*!
@@ -110,8 +117,8 @@ void Painter::drawVerticalPairLine(QPainter &painter, float x, float height)
  */
 void Painter::drawVerticalLine(QPainter &painter, float x, float height)
 {
-    painter.drawLine(x, cellSize_ / 2 - height / 2,
-                     x, cellSize_ / 2 + height / 2);
+    painter.drawLine(x, objectSize_.height() / 2 - height / 2,
+                     x, objectSize_.height() / 2 + height / 2);
 }
 
 /*!
@@ -126,9 +133,9 @@ void Painter::drawVerticalLine(QPainter &painter, float x, float height)
  */
 void Painter::drawHorizontalPairLine(QPainter &painter, float x)
 {
-    painter.drawLine(0, cellSize_ / 2, x, cellSize_ / 2);
-    painter.drawLine(cellSize_ - x, cellSize_ / 2,
-                     cellSize_,     cellSize_ / 2);
+    painter.drawLine(0, objectSize_.height() / 2, x, objectSize_.height() / 2);
+    painter.drawLine(objectSize_.width() - x, objectSize_.height() / 2,
+                     objectSize_.width(),     objectSize_.height() / 2);
 }
 
 /*!
@@ -157,8 +164,8 @@ void Painter::drawPairArc(QPainter &painter, float angle, float radius, float of
  */
 QRectF Painter::getCenteredRect(float width, float height, float offsetX, float offsetY)
 {
-    float halfDifferenceWidth = (cellSize_ - width) / 2;
-    float halfDifferenceHeight = (cellSize_ - height) / 2;
+    float halfDifferenceWidth = (objectSize_.width() - width) / 2;
+    float halfDifferenceHeight = (objectSize_.height() - height) / 2;
     return QRectF{halfDifferenceWidth + offsetX, halfDifferenceHeight + offsetY, width, height};
 }
 
@@ -169,7 +176,7 @@ QRectF Painter::getCenteredRect(float width, float height, float offsetX, float 
  */
 void Painter::drawHoryzontalLine(QPainter &painter)
 {
-    painter.drawLine(0, cellSize_ / 2, cellSize_, cellSize_ / 2);
+    painter.drawLine(0, objectSize_.height() / 2, objectSize_.width(), objectSize_.height() / 2);
 }
 
 
