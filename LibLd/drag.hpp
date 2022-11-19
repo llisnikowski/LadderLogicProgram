@@ -27,9 +27,7 @@ public:
     explicit Drag(QQuickItem *parent = nullptr);
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
 
     virtual void paintDrag(QPainter &painter);
 
@@ -37,6 +35,8 @@ private:
     QDrag *createQDrag(QMouseEvent &event);
     QMimeData *createDragData(QMouseEvent &event);
     QPixmap createDragPixmap();
+
+
 };
 
 

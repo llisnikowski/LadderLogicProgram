@@ -33,7 +33,14 @@ public:
     Painter *getPainter();
 
 protected:
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+    virtual void clickEvent(QMouseEvent *event);
+
     Painter *ldPainter_;
+    bool isDrag_;
 };
 
 } // namespace Ld

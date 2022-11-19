@@ -28,6 +28,7 @@ Drop::Drop(QQuickItem *parent)
  */
 void Drop::dragEnterEvent(QDragEnterEvent *event)
 {
+    qDebug() << "dragEnterEvent";
     event->accept();
 }
 

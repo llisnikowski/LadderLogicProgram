@@ -13,24 +13,15 @@
 namespace Ld{
 
 /*!
- * \brief Konstructor klasy Drag. Włącza obsługę lewego przycisku myszy.
+ * \brief Konstructor klasy Drag.
  * \param parent: rodzic/element nadrzędny.
  */
 Drag::Drag(QQuickItem *parent)
     :Base{parent}
 {
-    setAcceptedMouseButtons(Qt::LeftButton);
+
 }
 
-/*!
- * \brief Funkcja obsługująca wydarzenie MouseButtonPress.
- * \param event: Wskaźnik do obiektu
- * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
- */
-void Drag::mousePressEvent(QMouseEvent *event)
-{
-    event->accept();
-}
 
 /*!
  * \brief Funkcja obsługująca wydarzenie MouseMove po zaakceptowaniu
@@ -44,26 +35,19 @@ void Drag::mousePressEvent(QMouseEvent *event)
 void Drag::mouseMoveEvent(QMouseEvent *event)
 {
     event->accept();
-
-    QDrag *drag = createQDrag(*event);
-    Qt::DropAction dragAction =
-        drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::IgnoreAction);
-    if (dragAction == Qt::CopyAction) {
-    }
-    else if (dragAction == Qt::MoveAction) {
+    if(!isDrag_){
+        isDrag_ = true;
+        QDrag *drag = createQDrag(*event);
+        Qt::DropAction dragAction =
+            drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::IgnoreAction);
+        if (dragAction == Qt::CopyAction) {
+        }
+        else if (dragAction == Qt::MoveAction) {
+        }
     }
 }
 
-/*!
- * \brief Funkcja obsługująca wydarzenie MouseRelease
- *
- * \param event: Wskaźnik do obiektu
- * <a href="https://doc.qt.io/qt-6/qmouseevent.html">QMouseEvent</a>.
- */
-void Drag::mouseReleaseEvent(QMouseEvent *event)
-{
-    event->accept();
-}
+
 
 /*!
  * \brief Wirtualna metoda rysująca ikonę przeciągania.
