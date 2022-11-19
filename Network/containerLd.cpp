@@ -24,5 +24,5 @@ ContainerLd::Item ContainerLd::getItem(uint line, uint x)
 void ContainerLd::changedFactory()
 {
     if(factory_)
-        container_[0][0] = factory_->createLine(this);
+        container_[0][0] = factory_->create<Ld::Line>(this);
 }

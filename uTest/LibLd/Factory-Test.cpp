@@ -2,7 +2,6 @@
 #include <gtest/gtest.h>
 #include "line.hpp"
 #include "contact.hpp"
-#include "coil.hpp"
 #include "painter.hpp"
 #include <QSizeF>
 
@@ -34,46 +33,39 @@ TEST(LD_Factory, setPainter)
 
 
 
-TEST(LD_Factory, createLine)
+TEST(LD_Factory, create)
 {
     Ld::Painter painter{33.6, 1.8};
     Ld::Factory factory;
     factory.setPainter(&painter);
     QQuickItem parent;
-    auto line = factory.createLine(&parent);
+    auto line = factory.create<Ld::Line>(&parent);
 
     EXPECT_TRUE(line->parent() == &parent);
     EXPECT_TRUE(line->parentItem() == &parent);
     EXPECT_FLOAT_EQ(line->width(), 33.6);
     EXPECT_FLOAT_EQ(line->height(), 33.6);
+    EXPECT_FLOAT_EQ(line->x(), 0);
+    EXPECT_FLOAT_EQ(line->y(), 0);
 }
 
-TEST(LD_Factory, createContact)
+TEST(LD_Factory, createWithLambda)
 {
     Ld::Painter painter{33.8, 1.8};
     Ld::Factory factory;
     factory.setPainter(&painter);
     QQuickItem parent;
-    auto line = factory.createContact(&parent);
+    auto contact = factory.create<Ld::Contact>(&parent,[](Ld::Contact *obj){
+        obj->setX(10.2);
+        obj->setY(15.5);
+    });
 
-    EXPECT_TRUE(line->parent() == &parent);
-    EXPECT_TRUE(line->parentItem() == &parent);
-    EXPECT_FLOAT_EQ(line->width(), 33.8);
-    EXPECT_FLOAT_EQ(line->height(), 33.8);
-}
-
-TEST(LD_Factory, createCoil)
-{
-    Ld::Painter painter{32.6, 1.8};
-    Ld::Factory factory;
-    factory.setPainter(&painter);
-    QQuickItem parent;
-    auto line = factory.createCoil(&parent);
-
-    EXPECT_TRUE(line->parent() == &parent);
-    EXPECT_TRUE(line->parentItem() == &parent);
-    EXPECT_FLOAT_EQ(line->width(), 32.6);
-    EXPECT_FLOAT_EQ(line->height(), 32.6);
+    EXPECT_TRUE(contact->parent() == &parent);
+    EXPECT_TRUE(contact->parentItem() == &parent);
+    EXPECT_FLOAT_EQ(contact->width(), 33.8);
+    EXPECT_FLOAT_EQ(contact->height(), 33.8);
+    EXPECT_FLOAT_EQ(contact->x(), 10.2);
+    EXPECT_FLOAT_EQ(contact->y(), 15.5);
 }
 
 

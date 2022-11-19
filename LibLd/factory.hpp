@@ -7,6 +7,7 @@
 
 #include <QObject>
 #include <QQuickItem>
+#include <functional>
 
 namespace Ld {
 class Base;
@@ -30,9 +31,15 @@ public:
     void setPainter(Painter *painter);
     Painter *getPainter();
 
-    Line *createLine(QQuickItem *parent = nullptr) const;
-    Contact *createContact(QQuickItem *parent = nullptr) const;
-    Coil *createCoil(QQuickItem *parent = nullptr) const;
+//    Line *createLine(QQuickItem *parent = nullptr) const;
+//    Contact *createContact(QQuickItem *parent = nullptr) const;
+//    Coil *createCoil(QQuickItem *parent = nullptr) const;
+
+    template <typename T>
+    T *create(QQuickItem *parent = nullptr,
+              std::function<void(T *obj)> initFunction = nullptr) const;
+    template <typename T>
+    T *create(std::function<void(T *obj)> initFunction) const;
 
 private:
     template <typename T>
@@ -49,6 +56,82 @@ private:
      */
     Painter *painter_;
 };
+
+
+
+//---------------------------------------
+
+
+/*!
+ * \brief Ustawia obiektowi właściwości wspólne dla wszystkich typów.
+ * \tparam T: Typ obiektu.
+ * \param obj: Obiekt.
+ * \return Wskaźnik do wcześniej przekazanego obiektu.
+ */
+template <typename T>
+T *Ld::Factory::initObject(T *obj) const
+{
+    obj->setSize({objectSize_, objectSize_});
+    obj->setPainter(painter_);
+    return obj;
+}
+
+
+/*!
+ * \brief Alokuje i inicjalizuje obiekt wybranej klasy i zwraca wskaźnik
+ *  na niego.
+ *
+ *  Pozwala wysłać zbiór dodatkowych instrukcji inicjalizujących za pomocą
+ *  funkcji, obiektu funkcyjnego lub wyrażenia lambda.
+ * \tparam T: Typ tworzonego obiektu
+ * \param parent: Rodzic/Element nadrzędny dla tworzonego obiektu.
+ * \param initFunction: Dodatkowy instrukcje inicjalizujące.
+ * \return Wskaźnik do utworzonego obiektu.
+ * \warning Jeśli nie podaliśmy rodzica jako agument funkcji
+ * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
+ */
+template <typename T>
+T *Ld::Factory::create(QQuickItem *parent,
+                       std::function<void(T *obj)> initFunction) const
+{
+    T * obj = initObject(new T{parent});
+    if(initFunction) initFunction(obj);
+    return obj;
+}
+
+
+/*!
+ * \brief Alokuje i inicjalizuje obiekt wybranej klasy i zwraca wskaźnik
+ *  na niego.
+ *
+ *  Pozwala wysłać zbiór dodatkowych instrukcji inicjalizujących za pomocą
+ *  funkcji, obiektu funkcyjnego lub wyrażenia lambda.
+ * \tparam T: Typ tworzonego obiektu
+ * \param initFunction: Dodatkowe instrukcje inicjalizujące.
+ * \return Wskaźnik do utworzonego obiektu.
+ * \warning Jeśli nie podaliśmy rodzica jako agument funkcji
+ * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
+ */
+template <typename T>
+T *Ld::Factory::create(std::function<void(T *obj)> initFunction) const
+{
+    T * obj = new T;
+    if(initFunction) initFunction(obj);
+    return obj;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 } // namespace Ld
 

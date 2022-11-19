@@ -3,9 +3,6 @@
  * \author Łukasz Liśnikowski
 */
 #include "factory.hpp"
-#include "line.hpp"
-#include "contact.hpp"
-#include "coil.hpp"
 #include "painter.hpp"
 
 /*!
@@ -63,10 +60,10 @@ Ld::Painter *Ld::Factory::getPainter() {
  * \warning Jeśli nie podaliśmy rodzica jako agument funkcji
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
-Ld::Line *Ld::Factory::createLine(QQuickItem *parent) const
-{
-    return initObject(new Ld::Line{parent});
-}
+//Ld::Line *Ld::Factory::createLine(QQuickItem *parent) const
+//{
+//    return initObject(new Ld::Line{parent});
+//}
 
 /*!
  * \brief Alokuje klase Ld::Contact i zwraca wskaźnik.
@@ -75,10 +72,10 @@ Ld::Line *Ld::Factory::createLine(QQuickItem *parent) const
  * \warning Jeśli nie podaliśmy rodzica jako agument funkcji
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
-Ld::Contact *Ld::Factory::createContact(QQuickItem *parent) const
-{
-    return initObject(new Ld::Contact{parent});
-}
+//Ld::Contact *Ld::Factory::createContact(QQuickItem *parent) const
+//{
+//    return initObject(new Ld::Contact{parent});
+//}
 
 /*!
  * \brief Alokuje klase Ld::Coil i zwraca wskaźnik.
@@ -87,22 +84,23 @@ Ld::Contact *Ld::Factory::createContact(QQuickItem *parent) const
  * \warning Jeśli nie podaliśmy rodzica jako agument funkcji
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
-Ld::Coil *Ld::Factory::createCoil(QQuickItem *parent) const
-{
-    return initObject(new Ld::Coil{parent});
-}
+//Ld::Coil *Ld::Factory::createCoil(QQuickItem *parent) const
+//{
+//    return initObject(new Ld::Coil{parent});
+//}
 
-/*!
- * \brief Ustawia obiektowi właściwości wspólne dla wszystkich typów.
- * \tparam T: Typ obiektu.
- * \param obj: Obiekt.
- * \return Wskaźnik do wcześniej przekazanego obiektu.
- */
-template <typename T>
-T *Ld::Factory::initObject(T *obj) const
-{
-    obj->setSize({objectSize_, objectSize_});
-    obj->setPainter(painter_);
-    return obj;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
