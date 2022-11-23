@@ -13,6 +13,7 @@ class MockBaseLd : public Ld::Base
 public:
 protected:
     MOCK_METHOD1(paint, void(QPainter *painter));
+    MOCK_CONST_METHOD0(getData, QByteArray());
 };
 
 

@@ -5,6 +5,9 @@
 */
 
 #include "drop.hpp"
+#include "dropValidator.hpp"
+#include "dragData.hpp"
+#include <QMimeData>
 
 namespace Ld {
 
@@ -14,9 +17,32 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny.
  */
 Drop::Drop(QQuickItem *parent)
-    :Base{parent}
+    :Base{parent}, dropData_{}, dropValidator_{}
 {
     setFlag(ItemAcceptsDrops , true);
+}
+
+Drop::~Drop()
+{
+    if(dropData_) delete dropData_;
+    if(dropValidator_) delete dropValidator_;
+}
+
+Type Drop::getType() const
+{
+    return Type::Drop;
+}
+
+void Drop::setDropData(DragData *dropData)
+{
+    if(dropData_) delete dropData_;
+    dropData_ = dropData;
+}
+
+void Drop::setDropValidator(DropValidator *validator)
+{
+    if(dropValidator_) delete dropValidator_;
+    dropValidator_ = validator;
 }
 
 /*!
@@ -28,8 +54,20 @@ Drop::Drop(QQuickItem *parent)
  */
 void Drop::dragEnterEvent(QDragEnterEvent *event)
 {
-    qDebug() << "dragEnterEvent";
+    if(!dropValidator_ || !dropData_){
+        event->ignore();
+        return;
+    }
+//    Qt::DropAction dropAction = dropValidator_->valid(
+//        dropData_->getData(), event->mimeData()->
+//                              data("application/x-dnditemdata"));
+//    event->setDropAction(dropAction);
+//    if(!dropAction){
+//        event->ignore();
+//        return;
+//    }
     event->accept();
+
 }
 
 /*!
@@ -66,7 +104,6 @@ void Drop::dragMoveEvent(QDragMoveEvent *event)
 void Drop::dropEvent(QDropEvent *event)
 {
     qDebug() << "dropEvent";
-    event->setDropAction(Qt::CopyAction);
     event->accept();
 }
 

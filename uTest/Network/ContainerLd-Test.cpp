@@ -1,10 +1,18 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include "line.hpp"
 #include "containerLd.hpp"
 #include "factory.hpp"
 
 using namespace testing;
+
+
+
+class MockIteratorTester{
+public:
+    MOCK_METHOD3(fun, void(int line, int x, Ld::Base* obj));
+};
 
 TEST(ContainterLd, constructor)
 {
@@ -56,3 +64,19 @@ TEST(ContainterLd, setFactory)
     EXPECT_FALSE(container.getItem(3, 0));
     EXPECT_FALSE(container.getItem(0, 20));
 }
+
+TEST(ContainterLd, iterator)
+{
+//    ContainerLd container;
+
+//    MockIteratorTester iteratorTester;
+
+}
+
+
+
+
+
+
+
+

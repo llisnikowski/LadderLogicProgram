@@ -19,6 +19,11 @@ Base::Base(QQuickItem *parent)
     setAcceptedMouseButtons(Qt::LeftButton);
 }
 
+Type Base::getType() const
+{
+    return Type::Base;
+}
+
 /*!
  * \brief Ustawia klase Painter odpowiedzialną za wyświetlanie na ekranie.
  *

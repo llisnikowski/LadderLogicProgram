@@ -21,7 +21,10 @@ class Line : public Drop
 public:
     explicit Line(QQuickItem *parent = nullptr);
 
+    Type getType() const override;
+
     void paint(QPainter *painter) override;
+    QByteArray getData() const override;
 };
 
 

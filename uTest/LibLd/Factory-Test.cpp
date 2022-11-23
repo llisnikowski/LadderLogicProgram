@@ -48,7 +48,8 @@ TEST(LD_Factory, createWithLambda)
     Ld::Factory factory;
     factory.setPainter(&painter);
     QQuickItem parent;
-    auto contact = factory.create<Ld::Contact>(&parent,{},[](Ld::Contact *obj){
+    auto contact = factory.create<Ld::Contact>(&parent,{33.8, 25.6}
+                                               ,[](Ld::Contact *obj){
         obj->setX(10.2);
         obj->setY(15.5);
     });
@@ -56,7 +57,7 @@ TEST(LD_Factory, createWithLambda)
     EXPECT_TRUE(contact->parent() == &parent);
     EXPECT_TRUE(contact->parentItem() == &parent);
     EXPECT_FLOAT_EQ(contact->width(), 33.8);
-    EXPECT_FLOAT_EQ(contact->height(), 33.8);
+    EXPECT_FLOAT_EQ(contact->height(), 25.6);
     EXPECT_FLOAT_EQ(contact->x(), 10.2);
     EXPECT_FLOAT_EQ(contact->y(), 15.5);
 }

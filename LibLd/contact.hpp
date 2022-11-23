@@ -19,7 +19,10 @@ class Contact : public Input
 public:
     explicit Contact(QQuickItem *parent = nullptr);
 
+    Type getType() const override;
+
     void paint(QPainter *painter) override;
+    QByteArray getData() const override;
 };
 
 

@@ -15,6 +15,8 @@ class QDrag;
 
 namespace Ld{
 
+class DragData;
+
 /*!
  * \brief Klasa Drag udostępnia interfejs przeciągania dla mechanizmu
  * <a href="https://doc.qt.io/qt-6/dnd.html">
@@ -25,6 +27,11 @@ class Drag : public Base
     Q_OBJECT
 public:
     explicit Drag(QQuickItem *parent = nullptr);
+    virtual ~Drag();
+
+    Type getType() const override;
+
+    void setDragData(DragData *data);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -36,7 +43,7 @@ private:
     QMimeData *createDragData(QMouseEvent &event);
     QPixmap createDragPixmap();
 
-
+    DragData *dragData_;
 };
 
 

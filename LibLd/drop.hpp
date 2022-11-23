@@ -8,8 +8,10 @@
 
 #include "base.hpp"
 
-namespace Ld {
 
+namespace Ld {
+class DropValidator;
+class DragData;
 
 /*!
  * \brief Klasa Drop udostępnia interfejs upuszczania dla mechanizmu
@@ -21,12 +23,22 @@ class Drop : public Base
     Q_OBJECT
 public:
     explicit Drop(QQuickItem *parent = nullptr);
+    virtual ~Drop();
+
+    Type getType() const override;
+
+    void setDropData(DragData *dropData);
+    void setDropValidator(DropValidator *validator);
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+
+private:
+    DragData *dropData_;
+    DropValidator *dropValidator_;
 };
 
 } // namespace Ld

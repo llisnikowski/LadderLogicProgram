@@ -19,7 +19,10 @@ class Coil : public Output
 public:
     explicit Coil(QQuickItem *parent = nullptr);
 
+    Type getType() const override;
+
     void paint(QPainter *painter) override;
+    QByteArray getData() const override;
 };
 
 } //namespace Ld

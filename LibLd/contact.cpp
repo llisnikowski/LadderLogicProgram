@@ -18,12 +18,26 @@ Contact::Contact(QQuickItem *parent)
 {
 }
 
+Type Contact::getType() const
+{
+    return Type::Contact;
+}
+
 
 void Contact::paint(QPainter *painter)
 {
     if(!ldPainter_) return;
     ldPainter_->drawContact(*painter, size());
 }
+
+QByteArray Contact::getData() const
+{
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+    dataStream << QString("Ld") << static_cast<int>(getType());
+    return itemData;
+}
+
 
 
 } //namespace Ld

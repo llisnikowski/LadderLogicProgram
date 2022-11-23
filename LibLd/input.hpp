@@ -23,6 +23,8 @@ class Input : public Drag
     Q_OBJECT
 public:
     explicit Input(QQuickItem *parent = nullptr);
+
+    Type getType() const override;
 };
 
 

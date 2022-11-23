@@ -17,6 +17,11 @@ Input::Input(QQuickItem *parent)
 {
 }
 
+Type Input::getType() const
+{
+    return Type::Input;
+}
+
 
 
 } // namespace Ld

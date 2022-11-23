@@ -17,6 +17,24 @@ Node::Node(QQuickItem *parent)
 {
 }
 
+void Node::paint(QPainter *painter)
+{
+
+}
+
+Type Node::getType() const
+{
+    return Type::Node;
+}
+
+QByteArray Node::getData() const
+{
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+    dataStream << QString("Ld") << static_cast<int>(getType());
+    return itemData;
+}
+
 
 
 

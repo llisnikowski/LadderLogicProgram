@@ -8,6 +8,7 @@
 #define COMPONENTLD_HPP
 
 #include <QQuickPaintedItem>
+#include "type.hpp"
 
 namespace Ld{
 
@@ -29,8 +30,12 @@ class Base : public QQuickPaintedItem
 public:
     explicit Base(QQuickItem *parent = nullptr);
 
+    virtual Type getType() const;
+
     void setPainter(Painter *ldPainter);
     Painter *getPainter();
+
+    virtual QByteArray getData() const = 0;
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -42,6 +47,7 @@ protected:
     Painter *ldPainter_;
     bool isDrag_;
 };
+
 
 } // namespace Ld
 

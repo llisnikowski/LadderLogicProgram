@@ -5,6 +5,7 @@
 */
 
 #include "drag.hpp"
+#include "dragData.hpp"
 #include <QMimeData>
 #include <QPixmap>
 #include <QPainter>
@@ -17,9 +18,25 @@ namespace Ld{
  * \param parent: rodzic/element nadrzędny.
  */
 Drag::Drag(QQuickItem *parent)
-    :Base{parent}
+    :Base{parent}, dragData_{}
 {
 
+}
+
+Drag::~Drag()
+{
+    if(dragData_) delete dragData_;
+}
+
+Type Drag::getType() const
+{
+    return Type::Drag;
+}
+
+void Drag::setDragData(DragData *data)
+{
+    if(dragData_) delete dragData_;
+    dragData_ = data;
 }
 
 
@@ -90,7 +107,9 @@ QMimeData *Drag::createDragData(QMouseEvent &event)
 {
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QPoint(event.pos() - QPoint(0,0));
+    if(dragData_){
+        dataStream << dragData_->getData();
+    }
 
     QMimeData *mimeData = new QMimeData;
     mimeData->setData("application/x-dnditemdata", itemData);

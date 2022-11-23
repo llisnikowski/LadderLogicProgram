@@ -20,6 +20,10 @@ class Node : public Base
     Q_OBJECT
 public:
     Node(QQuickItem *parent = nullptr);
+
+    void paint(QPainter *painter) override;
+    Type getType() const override;
+    QByteArray getData() const override;
 };
 
 

@@ -17,6 +17,11 @@ Output::Output(QQuickItem *parent)
 {
 }
 
+Type Output::getType() const
+{
+    return Type::Output;
+}
+
 
 
 
