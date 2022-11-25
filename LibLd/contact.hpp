@@ -19,6 +19,8 @@ class Contact : public Input
 public:
     explicit Contact(QQuickItem *parent = nullptr);
 
+    Base *clone(QQuickItem *parent = nullptr) override;
+
     Type getType() const override;
 
     void paint(QPainter *painter) override;

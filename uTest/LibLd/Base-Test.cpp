@@ -3,17 +3,19 @@
 #include <memory>
 
 #include "base.hpp"
-#include <QPainter>
 #include "painter.hpp"
+#include <QPainter>
+#include <QQuickItem>
 
 using namespace testing;
 
 class MockBaseLd : public Ld::Base
 {
 public:
-protected:
-    MOCK_METHOD1(paint, void(QPainter *painter));
+    MOCK_METHOD1(clone, Ld::Base *(QQuickItem*));
     MOCK_CONST_METHOD0(getData, QByteArray());
+    MOCK_METHOD1(paint, void(QPainter *painter));
+protected:
 };
 
 

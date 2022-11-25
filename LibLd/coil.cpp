@@ -19,6 +19,12 @@ Coil::Coil(QQuickItem *parent)
 {
 }
 
+Base *Coil::clone(QQuickItem *parent)
+{
+    Base *copyObject = new Coil{parent};
+    return copyObject;
+}
+
 Type Coil::getType() const
 {
     return Type::Coil;

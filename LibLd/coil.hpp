@@ -19,6 +19,8 @@ class Coil : public Output
 public:
     explicit Coil(QQuickItem *parent = nullptr);
 
+    Base *clone(QQuickItem *parent = nullptr) override;
+
     Type getType() const override;
 
     void paint(QPainter *painter) override;

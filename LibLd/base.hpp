@@ -30,6 +30,8 @@ class Base : public QQuickPaintedItem
 public:
     explicit Base(QQuickItem *parent = nullptr);
 
+    virtual Base *clone(QQuickItem *parent = nullptr) = 0;
+
     virtual Type getType() const;
 
     void setPainter(Painter *ldPainter);

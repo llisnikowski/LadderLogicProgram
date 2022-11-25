@@ -21,6 +21,8 @@ class Line : public Drop
 public:
     explicit Line(QQuickItem *parent = nullptr);
 
+    Base *clone(QQuickItem *parent = nullptr) override;
+
     Type getType() const override;
 
     void paint(QPainter *painter) override;

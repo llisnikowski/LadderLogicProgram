@@ -17,6 +17,12 @@ Node::Node(QQuickItem *parent)
 {
 }
 
+Base *Node::clone(QQuickItem *parent)
+{
+    Base *copyObject = new Node{parent};
+    return copyObject;
+}
+
 void Node::paint(QPainter *painter)
 {
 

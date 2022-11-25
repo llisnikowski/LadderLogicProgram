@@ -21,6 +21,8 @@ class Node : public Base
 public:
     Node(QQuickItem *parent = nullptr);
 
+    Base *clone(QQuickItem *parent = nullptr) override;
+
     void paint(QPainter *painter) override;
     Type getType() const override;
     QByteArray getData() const override;

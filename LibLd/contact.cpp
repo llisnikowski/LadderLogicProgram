@@ -18,6 +18,12 @@ Contact::Contact(QQuickItem *parent)
 {
 }
 
+Base *Contact::clone(QQuickItem *parent)
+{
+    Base *copyObject = new Contact{parent};
+    return copyObject;
+}
+
 Type Contact::getType() const
 {
     return Type::Contact;

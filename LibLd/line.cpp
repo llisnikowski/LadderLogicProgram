@@ -18,6 +18,12 @@ Line::Line(QQuickItem *parent)
 {
 }
 
+Base *Line::clone(QQuickItem *parent)
+{
+    Base *copyObject = new Line{parent};
+    return copyObject;
+}
+
 Type Line::getType() const
 {
     return Type::Line;
