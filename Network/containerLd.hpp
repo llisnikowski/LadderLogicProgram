@@ -81,15 +81,19 @@ public:
     bool add(Ld::Drag *obj, uint line, uint x);
     bool addInput(Ld::Input *obj, uint line, uint x);
     bool addOuput(Ld::Output *obj, uint line, uint x);
-
+    bool remove(uint line, int x);
 
 private:
     int findFreePlace(uint line, uint fromX, bool toNode = false);
+    int findNode(uint line);
     int getNumberObjectInLine(uint line, Ld::Type type);
     bool shiftRightObject(uint line, uint from, uint distance);
+    bool shiftLeftObject(uint line, uint from, uint distance);
     void addLineIfLineIsEmpty(uint line);
     void insertNode(uint line);
-
+    void removeUnnecesseryNode();
+    void removeEmptyLine();
+    void shiftUp();
 
     Array container_;
 };

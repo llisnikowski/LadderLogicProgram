@@ -1,4 +1,5 @@
 #include "containerLd.hpp"
+#include "base.hpp"
 #include "input.hpp"
 #include "line.hpp"
 #include "node.hpp"
@@ -153,6 +154,27 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     return true;
 }
 
+bool ContainerLd::remove(uint line, int x)
+{
+    if(line >= container_.count()) return false;
+    if(x >= container_[line].count()) return false;
+    Ld::Base *obj = container_[line][x];
+    if(!obj) return false;
+    if(obj->getType() < Ld::Type::Drag) return false;
+    Ld::Base *nextObj = container_[line][x+1];
+    if(!nextObj) return false;
+    delete obj;
+    delete nextObj;
+    container_[line][x+1] = nullptr;
+    container_[line][x] = nullptr;
+
+    shiftUp();
+    if(!container_[line][x]) shiftLeftObject(line, x+2, 2);
+    removeUnnecesseryNode();
+    removeEmptyLine();
+    return true;
+}
+
 
 
 int ContainerLd::findFreePlace(uint line, uint fromX, bool toNode)
@@ -167,6 +189,19 @@ int ContainerLd::findFreePlace(uint line, uint fromX, bool toNode)
         }
         else if(toNode && obj->getType() >= Ld::Type::Node){
             return -1;
+        }
+    }
+    return -1;
+}
+
+int ContainerLd::findNode(uint line)
+{
+    if(line >= 3) return -1;
+    for(int x = 0; x < container_[line].count(); x++){
+        Ld::Base *obj = container_[line][x];
+        if(!obj) continue;
+        if(obj->getType() >= Ld::Type::Node){
+            return x;
         }
     }
     return -1;
@@ -189,7 +224,6 @@ int ContainerLd::getNumberObjectInLine(uint line, Ld::Type type)
 bool ContainerLd::shiftRightObject(uint line, uint from, uint distance)
 {
     if(line >= 3) return false;
-    if(distance < 0) return false;
 
     auto copyFrom = container_[line].end() - 1;
     auto copyTo = copyFrom;
@@ -202,6 +236,25 @@ bool ContainerLd::shiftRightObject(uint line, uint from, uint distance)
         *copyTo-- = *copyFrom;
         *copyFrom = nullptr;
         copyFrom--;
+    }
+    return true;
+}
+
+bool ContainerLd::shiftLeftObject(uint line, uint from, uint distance)
+{
+    if(line >= 3) return false;
+    auto copyTo = container_[line].begin() + from - distance;
+    auto copyFrom = copyTo + distance;
+
+    auto checkNull = copyTo;
+    for(int i = 0; i < distance; i++){
+        if(*checkNull++) return false;
+    }
+
+    while(copyFrom < container_[line].end()){
+        *copyTo++ = *copyFrom;
+        *copyFrom = nullptr;
+        copyFrom++;
     }
     return true;
 }
@@ -233,3 +286,69 @@ void ContainerLd::insertNode(uint line)
         container_[line][NODE_POSITION] = factory_->create<Ld::Node>(this,{64,64});
     }
 }
+
+void ContainerLd::removeUnnecesseryNode()
+{
+    for(int line = container_.count() - 1; line >= 0 ; line--){
+        int nodePosition = findNode(line);
+        if(nodePosition < 0) continue;
+        bool remove = false;
+        if(getNumberObjectInLine(line, Ld::Type::Input) <= 0) remove = true;
+        if(getNumberObjectInLine(line-1, Ld::Type::Input) <= 0 &&
+            getNumberObjectInLine(line+1, Ld::Type::Input) <= 0) remove = true;
+
+        if(remove){
+            delete container_[line][nodePosition];
+            container_[line][nodePosition] = nullptr;
+            if(line == 0){
+                delete container_[line][nodePosition+1];
+                container_[line][nodePosition+1] = nullptr;
+                shiftLeftObject(line, nodePosition + 2, 2);
+            }
+        }
+    }
+}
+
+void ContainerLd::removeEmptyLine()
+{
+    for(int line = container_.count() - 1; line >= 1 ; line--){
+        if(getNumberObjectInLine(line, Ld::Type::Base) == 1 &&
+            getNumberObjectInLine(line-1, Ld::Type::Base) == 1){
+            Ld::Base *obj = container_[line][0];
+            if(!obj) return;
+            delete obj;
+            container_[line][0] = nullptr;
+        }
+    }
+}
+
+void ContainerLd::shiftUp()
+{
+    for(int line = 0; line < container_.count() - 1; line++){
+        if(!container_[line][1] && !container_[line][2] &&
+            getNumberObjectInLine(line + 1, Ld::Type::Base) > 1){
+            container_[line][1] = container_[line + 1][1];
+            container_[line][2] = container_[line + 1][2];
+            container_[line + 1][1] = nullptr;
+            container_[line + 1][2] = nullptr;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

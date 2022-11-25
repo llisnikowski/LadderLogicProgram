@@ -7,7 +7,7 @@
 #include "factory.hpp"
 
 
-class ContainterLdBuild : public ::testing::Test
+class ContainterLd_Add : public ::testing::Test
 {
 protected:
 
@@ -15,23 +15,23 @@ protected:
     static Ld::Factory factory_;
 };
 
-ContainerLd ContainterLdBuild::container_;
-Ld::Factory ContainterLdBuild::factory_;
+ContainerLd ContainterLd_Add::container_;
+Ld::Factory ContainterLd_Add::factory_;
 
 
-TEST_F(ContainterLdBuild, empty)
+TEST_F(ContainterLd_Add, empty)
 {
     container_.setFactory(&factory_);
-    EXPECT_TRUE(container_.getSchemat() == "-;;;");
+    EXPECT_TRUE(container_.getSchemat(true) == "-..........;....;....;");
 }
 
-TEST_F(ContainterLdBuild, AddNull)
+TEST_F(ContainterLd_Add, AddNull)
 {
     container_.add(nullptr, 0, 0);
     EXPECT_TRUE(container_.getSchemat() == "-;;;");
 }
 
-TEST_F(ContainterLdBuild, AddOutOfScope)
+TEST_F(ContainterLd_Add, AddOutOfScope)
 {
     Ld::Contact contact;
     container_.add(&contact, 0, 15);
@@ -41,7 +41,7 @@ TEST_F(ContainterLdBuild, AddOutOfScope)
     EXPECT_TRUE(container_.getSchemat() == "-;;;");
 }
 
-TEST_F(ContainterLdBuild, AddNotInOrder)
+TEST_F(ContainterLd_Add, AddNotInOrder)
 {
     Ld::Contact contact;
     container_.add(&contact, 0, 4);
@@ -54,36 +54,36 @@ TEST_F(ContainterLdBuild, AddNotInOrder)
     EXPECT_TRUE(container_.getSchemat() == "-;;;");
 }
 
-TEST_F(ContainterLdBuild, AddOnLine)
+TEST_F(ContainterLd_Add, AddOnLine)
 {
     Ld::Contact contact;
     container_.add(&contact, 0, 0);
     ASSERT_TRUE(container_.getSchemat() == "-I-;-;;");
 }
 
-TEST_F(ContainterLdBuild, AddNextToTheLine)
+TEST_F(ContainterLd_Add, AddNextToTheLine)
 {
     Ld::Coil coil;
     container_.add(&coil, 0, 3);
-    EXPECT_TRUE(container_.getSchemat() == "-I-O-;-;;");
+    EXPECT_TRUE(container_.getSchemat(true) == "-I-O-......;-...;....;");
 }
 
-TEST_F(ContainterLdBuild, AddWithShift)
+TEST_F(ContainterLd_Add, AddWithShift)
 {
     Ld::Contact contact;
     container_.add(&contact, 0, 1);
     EXPECT_TRUE(container_.getSchemat() == "-I-I-O-;-;;");
 }
 
-TEST_F(ContainterLdBuild, AddToSecondLine)
+TEST_F(ContainterLd_Add, AddToSecondLine)
 {
     Ld::Contact contact;
     container_.add(&contact, 1, 1);
-    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-O-;-I-+;-;");
+    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-O-..;-I-+;-...;");
 }
 
 
-TEST_F(ContainterLdBuild, InsertFail)
+TEST_F(ContainterLd_Add, InsertFail)
 {
     Ld::Contact contact;
     Ld::Coil coil;
@@ -111,14 +111,14 @@ TEST_F(ContainterLdBuild, InsertFail)
     EXPECT_TRUE(container_.getSchemat() == "-I-+-I-O-;-I-+;-;");
 }
 
-TEST_F(ContainterLdBuild, AddToThridLine)
+TEST_F(ContainterLd_Add, AddToThridLine)
 {
     Ld::Contact contact;
     container_.add(&contact, 2, 1);
-    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-O-;-I-+;-I-+;");
+    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-O-..;-I-+;-I-+;");
 }
 
-TEST_F(ContainterLdBuild, AddLastObject)
+TEST_F(ContainterLd_Add, AddLastObject)
 {
     Ld::Contact contact;
     container_.add(&contact, 0, 6);
