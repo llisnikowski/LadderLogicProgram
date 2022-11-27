@@ -52,25 +52,25 @@ TEST_F(ContainterLd_Remove, removeLineAndNode)
 TEST_F(ContainterLd_Remove, removeContact)
 {
     EXPECT_TRUE(container_.remove(0, 5));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-O-;-I-+;-I-+;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-O-;-I-+;-I-+;");
 }
 
 TEST_F(ContainterLd_Remove, removeCoil)
 {
     EXPECT_TRUE(container_.remove(0, 7));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-;-I-+;-I-+;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-;-I-+;-I-+;");
 }
 
 TEST_F(ContainterLd_Remove, removeThridLine)
 {
     EXPECT_TRUE(container_.remove(2, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-;-I-+;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-;-I-+;-;");
 }
 
 TEST_F(ContainterLd_Remove, removeSecondLine)
 {
     EXPECT_TRUE(container_.remove(1, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-I-;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-I-;-;");
 }
 
 TEST_F(ContainterLd_Remove, shiftUp)
@@ -78,13 +78,13 @@ TEST_F(ContainterLd_Remove, shiftUp)
     Ld::Contact contact;
     container_.add(&contact, 1, 1);
     container_.add(&contact, 2, 1);
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-;-I-+;-I-+;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-;-I-+;-I-+;");
 
     EXPECT_TRUE(container_.remove(1, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-;-I-+;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-;-I-+;-;");
 
     EXPECT_TRUE(container_.remove(0, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-I-;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-I-;-;");
 }
 
 TEST_F(ContainterLd_Remove, doubleShiftUp)
@@ -92,23 +92,23 @@ TEST_F(ContainterLd_Remove, doubleShiftUp)
     Ld::Contact contact;
     container_.add(&contact, 1, 1);
     container_.add(&contact, 2, 1);
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-;-I-+;-I-+;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-;-I-+;-I-+;");
 
 
     EXPECT_TRUE(container_.remove(0, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-I-;-I-+;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-;-I-+;-;");
 }
 
 TEST_F(ContainterLd_Remove, onlyOr)
 {
     EXPECT_TRUE(container_.remove(0, 5));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-+-;-I-+;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-;-I-+;-;");
 }
 
 TEST_F(ContainterLd_Remove, singleContact)
 {
     EXPECT_TRUE(container_.remove(0, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-;-;");
 }
 
 TEST_F(ContainterLd_Remove, singleCoil)
@@ -116,16 +116,16 @@ TEST_F(ContainterLd_Remove, singleCoil)
     Ld::Coil coil;
     container_.add(&coil, 0, 2);
 
-    EXPECT_TRUE(container_.getSchemat(true) == "-I-O-;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-I-O-;-;");
 
     EXPECT_TRUE(container_.remove(0, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-O-;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-O-;-;");
 }
 
 TEST_F(ContainterLd_Remove, removeLastObject)
 {
     EXPECT_TRUE(container_.remove(0, 1));
-    EXPECT_TRUE(container_.getSchemat(true) == "-;");
+    EXPECT_TRUE(container_.getSchemat() == "-;");
 }
 
 

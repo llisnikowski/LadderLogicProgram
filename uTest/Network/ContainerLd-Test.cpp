@@ -21,7 +21,6 @@ TEST(ContainterLd, constructor)
     const ContainerLd::Array & array = container.getArray();
 
     EXPECT_EQ(array.count(), 0);
-//    EXPECT_EQ(array[0].count(), 1);
 }
 
 TEST(ContainterLd, empty)

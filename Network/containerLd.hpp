@@ -58,47 +58,41 @@ public:
     explicit ContainerLd(QQuickItem *parent = nullptr);
     ~ContainerLd();
 
-
-
     const Array & getArray() const {return container_;}
     const Item getItem(uint line, uint x);
-    Item getItemNoConst(uint line, uint x);
     const Ld::Drag *getDragItem(uint line, uint x);
-    Ld::Drag *getDragItemNoConst(uint line, uint x);
 
     void iteratorLineX(ItType itType, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun = nullptr);
 
     void iteratorLine(uint line, ItType itType, std::function<ItArg> fun);
 
-    QString getSchemat(bool drawNull = false);
+    QString getSchemat();
 
 protected:
     void changedFactory() override;
 
-private:
-    bool isFreePlaceOnOutput();
-    bool isFreePlaceOnInput(uint line);
 
 public:
     bool add(Ld::Drag *obj, uint line, uint x);
     bool addInput(Ld::Input *obj, uint line, uint x);
     bool addOuput(Ld::Output *obj, uint line, uint x);
-    bool remove(uint line, int x);
-    bool move(uint fromLine, int fromX, uint toLine, int toX);
+    bool remove(uint line, uint x);
+    bool move(uint fromLine, uint fromX, uint toLine, uint toX);
 
-private:
     bool checkAddCondition(const Ld::Drag *obj, uint line, uint x);
     bool checkAddInputCondition(const Ld::Input *obj, uint line, uint x);
     bool checkAddOutputCondition(const Ld::Output *obj, uint line, uint x);
-    bool checkRemoveCondition(uint line, int x);
-    int findFreePlace(uint line, uint fromX, bool toNode = false);
-    int findNode(uint line);
+    bool checkRemoveCondition(uint line, uint x);
+    bool checkMoveCondition(uint fromLine, uint fromX, uint toLine, uint toX);
+
+private:
+    Item getItemNoConst(uint line, uint x);
+    Ld::Drag *getDragItemNoConst(uint line, uint x);
+    int find(uint line, Ld::Type type);
     int getNumberObjectInLine(uint line, Ld::Type type);
-    bool shiftRightObject(uint line, uint from, uint distance, uint to = 100);
-    bool shiftLeftObject(uint line, uint from, uint distance, uint to = 100);
     void addLineIfLineIsEmpty(uint line);
-    void insertNode(uint line);
+    void insertNode();
     void removeUnnecesseryNode();
     void removeEmptyLine();
     void shiftUp();
