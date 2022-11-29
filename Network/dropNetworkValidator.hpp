@@ -11,16 +11,19 @@ class DropNetworkValidator : public Ld::DropValidator
 {
 public:
     explicit DropNetworkValidator(QObject *parent = nullptr);
+    DropNetworkValidator(QObject *parent, ContainerLd *container,
+                                  QPoint position);
 
-    Qt::DropAction valid(const QByteArray & dragArrayData) override;
+    Qt::DropAction valid(const QByteArray &dragArrayData) override;
+    void doAction(const QByteArray &dragArrayData) override;
 
     const ContainerLd *getContainer() const;
-    void setContainer(const ContainerLd *containerLd);
+    void setContainer(ContainerLd *containerLd);
     QPoint getPosition() const;
     void setPosition(QPoint position);
 
 private:
-    const ContainerLd *containerLd_;
+    ContainerLd *containerLd_;
     QPoint position_;
 
 };

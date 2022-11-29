@@ -5,6 +5,7 @@
 */
 
 #include "node.hpp"
+#include "painter.hpp"
 
 namespace Ld {
 
@@ -25,7 +26,8 @@ Base *Node::clone(QQuickItem *parent)
 
 void Node::paint(QPainter *painter)
 {
-
+    if(ldPainter_)
+        ldPainter_->drawNode(*painter, size());
 }
 
 Type Node::getType() const

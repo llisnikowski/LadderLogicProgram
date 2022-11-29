@@ -4,7 +4,6 @@
 #include "dragNetworkData.hpp"
 #include <QPoint>
 #include <QIODevice>
-#include "ldFunction.hpp"
 #include "node.hpp"
 #include <QDebug>
 
@@ -25,7 +24,7 @@ TEST(DragNetworkData, setData)
 
     Ld::Contact contact;
     dragData.setLd(contact);
-    dragData.setNetworkId(12);
+    dragData.setContainerId(12);
     dragData.setPosition({7,5});
 
     QByteArray outputData = dragData.getData();
@@ -41,7 +40,7 @@ TEST(DragNetworkData, setData)
     EXPECT_EQ(point.y(), 5);
 
     DragNetworkData dragData2;
-    dragData2.setData(outputData);
+    EXPECT_TRUE(dragData2.setData(outputData));
     EXPECT_TRUE(dragData2.getData() == dragData.getData());
 }
 
@@ -56,8 +55,8 @@ TEST(DragNetworkData, setGetLd)
 TEST(DragNetworkData, setGetNetworkId)
 {
     DragNetworkData dragData;
-    dragData.setNetworkId(25);
-    EXPECT_EQ(dragData.getNetworkId(), 25);
+    dragData.setContainerId(25);
+    EXPECT_EQ(dragData.getContainerId(), 25);
 }
 
 TEST(DragNetworkData, setGetPosition)

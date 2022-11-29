@@ -27,7 +27,6 @@ public:
 
     Type getType() const override;
 
-    void setDropData(DragData *dropData);
     void setDropValidator(DropValidator *validator);
 
 protected:
@@ -36,9 +35,12 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
+    bool dragOverThem_;
+
 private:
-    DragData *dropData_;
     DropValidator *dropValidator_;
+    Qt::DropAction dragAction_;
+
 };
 
 } // namespace Ld

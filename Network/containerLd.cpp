@@ -1,15 +1,18 @@
 #include "containerLd.hpp"
 #include "base.hpp"
+#include "dropNetworkValidator.hpp"
+#include "dragNetworkData.hpp"
 #include "input.hpp"
 #include "line.hpp"
 #include "node.hpp"
 #include "factory.hpp"
 #include "type.hpp"
 
+int ContainerLd::currentId = 0;
 
 ContainerLd::ContainerLd(QQuickItem *parent)
     : QQuickItem{parent},
-    container_{}
+    container_{}, id_{currentId++}
 {
 }
 
@@ -17,7 +20,7 @@ ContainerLd::~ContainerLd()
 {
 }
 
-const ContainerLd::Item ContainerLd::getItem(uint line, uint x)
+const ContainerLd::Item ContainerLd::getItem(uint line, uint x) const
 {
     if(line >= container_.count()) return nullptr;
     if(x >= container_[line].count()) return nullptr;
@@ -31,7 +34,7 @@ ContainerLd::Item ContainerLd::getItemNoConst(uint line, uint x)
     return container_.at(line).at(x);
 }
 
-const Ld::Drag *ContainerLd::getDragItem(uint line, uint x)
+const Ld::Drag *ContainerLd::getDragItem(uint line, uint x) const
 {
     auto obj = getItem(line, x);
     if(!obj) return nullptr;
@@ -61,7 +64,32 @@ void ContainerLd::iteratorLineX(ItType itType, std::function<ItArg> fun,
     }
 }
 
-void ContainerLd::iteratorLine(uint line, ItType itType, std::function<ItArg> fun)
+void ContainerLd::iteratorLine(uint line, ItType itType,
+                               std::function<ItArg> fun)
+{
+    if(line >= container_.count()) return;
+    for(int x = 0; x < container_[line].count(); x++){
+        Ld::Base *obj = container_[line][x];
+        if(!obj){
+            if(itType & ItNull) fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Input){
+            if(itType & ItIn)  fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Output){
+            if(itType & ItOut)  fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Line){
+            if(itType & ItLine)  fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Node){
+            if(itType & ItNode)  fun(line, x, obj);
+        }
+    }
+}
+
+void ContainerLd::iteratorLine(uint line, ItType itType,
+                               std::function<ItArgConst> fun) const
 {
     if(line >= container_.count()) return;
     for(int x = 0; x < container_[line].count(); x++){
@@ -113,10 +141,17 @@ QString ContainerLd::getSchemat()
     return schemat;
 }
 
+int ContainerLd::getId() const
+{
+    return id_;
+}
+
 void ContainerLd::changedFactory()
 {
     if(factory_){
         addLineIfLineIsEmpty(0);
+        updataSize();
+        updataLdObjectData();
     }
 }
 
@@ -142,11 +177,13 @@ bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
     if(!checkAddInputCondition(obj, line, x)) return false;
 
     container_[line].insert(x, obj->clone(this));
+    container_[line][x]->setPainter(factory_->getPainter());
     container_[line].insert(x + 1, factory_->create<Ld::Line>(this,{64,64}));
 
     insertNode();
     addLineIfLineIsEmpty(line + 1);
-
+    updataSize();
+    updataLdObjectData();
     return true;
 }
 
@@ -156,8 +193,11 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     if(!checkAddOutputCondition(obj, line, x)) return false;
 
     container_[line].insert(x, obj->clone(this));
+    container_[line][x]->setPainter(factory_->getPainter());
     container_[line].insert(x+1, factory_->create<Ld::Line>(this,{64,64}));
 
+    updataSize();
+    updataLdObjectData();
     return true;
 }
 
@@ -172,6 +212,8 @@ bool ContainerLd::remove(uint line, uint x)
     shiftUp();
     removeUnnecesseryNode();
     removeEmptyLine();
+    updataSize();
+    updataLdObjectData();
     return true;
 }
 
@@ -187,6 +229,8 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
 
     Ld::Drag *moveObj = getDragItemNoConst(fromLine, fromX);
     Ld::Base *moveNextObj = getItemNoConst(fromLine, fromX + 1);
+    container_[fromLine][fromX] = nullptr;
+    container_[fromLine][fromX+1] = nullptr;
     container_[fromLine].remove(fromX, 2);
     container_[toLine].insert(toX, moveObj);
     container_[toLine].insert(toX+1, moveNextObj);
@@ -196,12 +240,14 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
     shiftUp();
     removeUnnecesseryNode();
     removeEmptyLine();
-
+    updataSize();
+    updataLdObjectData();
     return true;
 }
 
-bool ContainerLd::checkAddCondition(const Ld::Drag *obj, uint line, uint x)
+bool ContainerLd::checkAddCondition(const Ld::Drag *obj, uint line, uint x) const
 {
+    x = x % 2 ? x : x+1;
     if(!obj) return false;
     if(obj->getType() >= Ld::Type::Input){
         return checkAddInputCondition(static_cast<const Ld::Input*>(obj), line, x);
@@ -212,8 +258,9 @@ bool ContainerLd::checkAddCondition(const Ld::Drag *obj, uint line, uint x)
     return false;
 }
 
-bool ContainerLd::checkAddInputCondition(const Ld::Input *obj, uint line, uint x)
+bool ContainerLd::checkAddInputCondition(const Ld::Input *obj, uint line, uint x) const
 {
+    x = x % 2 ? x : x+1;
     if(!obj) return false;
     if(line >= container_.count()) return false;
     if(getNumberObjectInLine(line, Ld::Type::Input)
@@ -224,7 +271,7 @@ bool ContainerLd::checkAddInputCondition(const Ld::Input *obj, uint line, uint x
     return true;
 }
 
-bool ContainerLd::checkAddOutputCondition(const Ld::Output *obj, uint line, uint x)
+bool ContainerLd::checkAddOutputCondition(const Ld::Output *obj, uint line, uint x) const
 {
     if(!obj) return false;
     if(line >= container_.count()) return false;
@@ -235,7 +282,7 @@ bool ContainerLd::checkAddOutputCondition(const Ld::Output *obj, uint line, uint
     return true;
 }
 
-bool ContainerLd::checkRemoveCondition(uint line, uint x)
+bool ContainerLd::checkRemoveCondition(uint line, uint x) const
 {
     if(line >= container_.count()) return false;
     if(x >= container_[line].count()) return false;
@@ -248,8 +295,10 @@ bool ContainerLd::checkRemoveCondition(uint line, uint x)
     return true;
 }
 
-bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uint toX)
+bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uint toX) const
 {
+    toX = (toX / 2) * 2 + 1;
+    fromX = (fromX / 2) * 2 + 1;
     if(fromLine >= container_.count()) return false;
     if(fromX > container_[fromLine].count()) return false;
     if(toLine >= container_.count()) return false;
@@ -261,7 +310,7 @@ bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uin
     Ld::Base *nextObj = container_[fromLine][fromX];
     if(!nextObj) return false;
 
-    Ld::Drag *moveObj = getDragItemNoConst(fromLine, fromX);
+    const Ld::Drag *moveObj = getDragItem(fromLine, fromX);
     if(!moveObj) return false;
     if(moveObj->getType() >= Ld::Type::Input){
         if(toLine >= container_.count()) return false;
@@ -294,7 +343,7 @@ bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uin
 }
 
 
-int ContainerLd::find(uint line, Ld::Type type)
+int ContainerLd::find(uint line, Ld::Type type) const
 {
     if(line >= container_.count()) return -1;
     for(int x = 0; x < container_[line].count(); x++){
@@ -307,7 +356,7 @@ int ContainerLd::find(uint line, Ld::Type type)
     return -1;
 }
 
-int ContainerLd::getNumberObjectInLine(uint line, Ld::Type type)
+int ContainerLd::getNumberObjectInLine(uint line, Ld::Type type) const
 {
     int numberObject = 0;
     iteratorLine(line, ItAll, [type, &numberObject](uint line, uint x, Ld::Base* obj){
@@ -365,8 +414,8 @@ void ContainerLd::removeUnnecesseryNode()
             delete container_[line][nodePosition];
             container_[line].remove(nodePosition);
             if(line == 0){
-                delete container_[line][nodePosition];
-                container_[line].remove(nodePosition);
+                delete container_[line][nodePosition-1];
+                container_[line].remove(nodePosition-1);
             }
         }
     }
@@ -395,6 +444,64 @@ void ContainerLd::shiftUp()
         container_[line].insert(2, container_[line + 1][2]);
         container_[line + 1].remove(1, 2);
     }
+}
+
+void ContainerLd::updataSize()
+{
+    int curX = 0;
+    iteratorLineX(ItAll, [this, &curX](uint line, uint x, Ld::Base* obj){
+        int width = 0;
+        if(!obj) return;
+        if(obj->getType() >= Ld::Type::Drag) width = LD_W;
+        else if(obj->getType() >= Ld::Type::Node) width = NODE_W;
+        else if(x == container_[line].count() - 1) {
+            if(line <= 1){
+                width = MAX_LENGTH_LINE - curX;
+            }
+            else{
+                width = 2 * LD_W + LINE_BESIDE_NODE + NODE_W;
+            }
+        }
+        else if(obj->getType() >= Ld::Type::Line){
+            if(container_[line][x+1]->getType() >= Ld::Type::Output){
+                width = MAX_LENGTH_LINE - curX - LD_W * 2;
+            }
+            else if(x == 0) {
+                width = LD_W;
+            }
+            else if(container_[line][x-1]->getType() >= Ld::Type::Node ||
+                     container_[line][x+1]->getType() >= Ld::Type::Node){
+                width = LINE_BESIDE_NODE;
+            }
+            else{
+                width = LD_W;
+            }
+        }
+        else width = LD_W;
+
+        obj->setSize({static_cast<qreal>(width), LD_H});
+        obj->setX(curX);
+        obj->setY(line * LD_H);
+        curX += width;
+    },
+    [&curX](uint line){
+        curX = 0;
+        });
+}
+
+void ContainerLd::updataLdObjectData()
+{
+    iteratorLineX(ItDropDrag, [this](uint line, uint x, Ld::Base* obj){
+        if(obj->getType() >= Ld::Type::Drag){
+            static_cast<Ld::Drag*>(obj)->setDragData(new DragNetworkData(obj,
+                        obj->getData(), this->id_, QPoint{(int)line, (int)x}));
+        }
+        else if(obj->getType() >= Ld::Type::Drop){
+            static_cast<Ld::Drop*>(obj)->setDropValidator(
+                new DropNetworkValidator(obj, this,
+                                         QPoint{(int)line, (int)x}));
+        }
+    });
 }
 
 

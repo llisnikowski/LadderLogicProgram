@@ -46,12 +46,14 @@ public:
     void drawContact(QPainter &painter, QSizeF objectSize);
     void drawCoil(QPainter &painter, QSizeF objectSize);
     void drawLine(QPainter &painter, QSizeF objectSize);
+    void drawNode(QPainter &painter, QSizeF objectSize);
 
 private:
     void drawContactContour(QPainter &painter);
     void drawCoilContour(QPainter &painter);
     void drawVerticalPairLine(QPainter &painter, float x, float height);
     void drawVerticalLine(QPainter &painter, float x, float height);
+    void drawVerticalLine(QPainter &painter);
     void drawHorizontalPairLine(QPainter &painter, float x);
     void drawPairArc(QPainter &painter, float angle, float radiusX, float offsetX = 0);
     QRectF getCenteredRect(float width, float height, float offsetX = 0, float offsetY = 0);

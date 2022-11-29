@@ -10,7 +10,8 @@ class DropValidator : public QObject
 public:
     explicit DropValidator(QObject *parent = nullptr);
 
-    virtual Qt::DropAction valid(const QByteArray & dragArrayData) = 0;
+    virtual Qt::DropAction valid(const QByteArray &dragArrayData) = 0;
+    virtual void doAction(const QByteArray &dragArrayData) = 0;
 };
 
 

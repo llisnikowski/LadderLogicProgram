@@ -119,6 +119,23 @@ TEST_F(ContainterLd_Move, slideDown)
     EXPECT_EQ(container_.getItem(1, 1), item1);
 }
 
+TEST_F(ContainterLd_Move, moveAfterNode)
+{
+    auto item1 = container_.getItem(0, 1);
+    auto item2 = container_.getItem(0, 5);
+    auto item3 = container_.getItem(1, 1);
+
+    container_.move(1, 1, 0, 4);
+
+    EXPECT_TRUE(container_.getSchemat() == "-I-I-I-O-;-;");
+    EXPECT_EQ(container_.getItem(0, 1), item1);
+    EXPECT_EQ(container_.getItem(0, 3), item3);
+    EXPECT_EQ(container_.getItem(0, 5), item2);
+
+    container_.move(0, 5, 1, 0);
+    EXPECT_TRUE(container_.getSchemat() == "-I-+-I-O-;-I-+;-;");
+}
+
 TEST_F(ContainterLd_Move, moveNextTo)
 {
     auto item1 = container_.getItem(0, 1);

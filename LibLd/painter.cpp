@@ -65,6 +65,14 @@ void Painter::drawLine(QPainter &painter, QSizeF objectSize)
     drawHoryzontalLine(painter);
 }
 
+void Painter::drawNode(QPainter &painter, QSizeF objectSize)
+{
+    objectSize_= objectSize;
+    painter.setPen(QPen(Qt::white, penSize_));
+    drawHoryzontalLine(painter);
+    drawVerticalLine(painter);
+}
+
 /*!
  * \brief Funkcja rysująca sam styk.
  * \param painter: Referencja do klasy
@@ -105,6 +113,12 @@ void Painter::drawVerticalPairLine(QPainter &painter, float x, float height)
     drawVerticalLine(painter, objectSize_.width() - x, height);
 }
 
+void Painter::drawVerticalLine(QPainter &painter, float x, float height)
+{
+    painter.drawLine(x, objectSize_.height() / 2 - height / 2,
+                     x, objectSize_.height() / 2 + height / 2);
+}
+
 /*!
  * \brief Funkcja rysująca pionową linię.
  *
@@ -115,10 +129,10 @@ void Painter::drawVerticalPairLine(QPainter &painter, float x, float height)
  * \param height: Długość linii.
  * \see drawVerticalPairLine().
  */
-void Painter::drawVerticalLine(QPainter &painter, float x, float height)
+void Painter::drawVerticalLine(QPainter &painter)
 {
-    painter.drawLine(x, objectSize_.height() / 2 - height / 2,
-                     x, objectSize_.height() / 2 + height / 2);
+    painter.drawLine(objectSize_.width() / 2, 0,
+                     objectSize_.width() / 2, objectSize_.height());
 }
 
 /*!

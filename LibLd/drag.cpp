@@ -25,6 +25,7 @@ Drag::Drag(QQuickItem *parent)
 
 Drag::~Drag()
 {
+    qDebug() << "~Drag()";
     if(dragData_) delete dragData_;
 }
 
@@ -61,6 +62,7 @@ void Drag::mouseMoveEvent(QMouseEvent *event)
         }
         else if (dragAction == Qt::MoveAction) {
         }
+        qDebug() << "Drag " << dragAction;
     }
 }
 
@@ -105,14 +107,10 @@ QDrag *Drag::createQDrag(QMouseEvent &event)
  */
 QMimeData *Drag::createDragData(QMouseEvent &event)
 {
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    if(dragData_){
-        dataStream << dragData_->getData();
-    }
-
     QMimeData *mimeData = new QMimeData;
-    mimeData->setData("application/x-dnditemdata", itemData);
+    if(dragData_){
+        mimeData->setData("application/x-dnditemdata", dragData_->getData());
+    }
 
     return mimeData;
 }

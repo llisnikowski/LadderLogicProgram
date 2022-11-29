@@ -5,6 +5,7 @@
 #include "symbolsBar.hpp"
 #include "contact.hpp"
 #include "coil.hpp"
+#include "dragNetworkData.hpp"
 #include "factory.hpp"
 #include <QDebug>
 
@@ -24,9 +25,12 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     setParentItem(parentItem);
 
     if(!factory_) return;
-    factory_->create<Ld::Contact>(this, {64, 64});
+    factory_->create<Ld::Contact>(this, {64, 64}, [this](Ld::Contact *obj){
+        obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
+    });
     factory_->create<Ld::Coil>(this, {64, 64}, [this](Ld::Coil *obj){
         obj->setY(64);
+        obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
 }
 

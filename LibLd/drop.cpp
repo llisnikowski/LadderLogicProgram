@@ -6,7 +6,6 @@
 
 #include "drop.hpp"
 #include "dropValidator.hpp"
-#include "dragData.hpp"
 #include <QMimeData>
 
 namespace Ld {
@@ -17,26 +16,19 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny.
  */
 Drop::Drop(QQuickItem *parent)
-    :Base{parent}, dropData_{}, dropValidator_{}
+    :Base{parent}, dropValidator_{}, dragOverThem_{}, dragAction_{}
 {
     setFlag(ItemAcceptsDrops , true);
 }
 
 Drop::~Drop()
 {
-    if(dropData_) delete dropData_;
     if(dropValidator_) delete dropValidator_;
 }
 
 Type Drop::getType() const
 {
     return Type::Drop;
-}
-
-void Drop::setDropData(DragData *dropData)
-{
-    if(dropData_) delete dropData_;
-    dropData_ = dropData;
 }
 
 void Drop::setDropValidator(DropValidator *validator)
@@ -54,20 +46,18 @@ void Drop::setDropValidator(DropValidator *validator)
  */
 void Drop::dragEnterEvent(QDragEnterEvent *event)
 {
-    if(!dropValidator_ || !dropData_){
-        event->ignore();
-        return;
-    }
-//    Qt::DropAction dropAction = dropValidator_->valid(
-//        dropData_->getData(), event->mimeData()->
-//                              data("application/x-dnditemdata"));
-//    event->setDropAction(dropAction);
-//    if(!dropAction){
-//        event->ignore();
-//        return;
-//    }
     event->accept();
-
+    if(!dragOverThem_){
+        dragOverThem_ = true;
+        if(!dropValidator_){
+            dragAction_ = Qt::IgnoreAction;
+        }
+        else{
+            dragAction_ = dropValidator_->valid(
+                event->mimeData()->data("application/x-dnditemdata"));
+        }
+    }
+    event->setDropAction(dragAction_);
 }
 
 /*!
@@ -92,6 +82,7 @@ void Drop::dragLeaveEvent(QDragLeaveEvent *event)
 void Drop::dragMoveEvent(QDragMoveEvent *event)
 {
     event->accept();
+    dragOverThem_ = false;
 }
 
 /*!
@@ -103,8 +94,13 @@ void Drop::dragMoveEvent(QDragMoveEvent *event)
  */
 void Drop::dropEvent(QDropEvent *event)
 {
-    qDebug() << "dropEvent";
+    dragOverThem_= false;
     event->accept();
+    event->setDropAction(dragAction_);
+    if(dragAction_ != Qt::IgnoreAction){
+        dropValidator_->doAction(
+            event->mimeData()->data("application/x-dnditemdata"));
+    }
 }
 
 

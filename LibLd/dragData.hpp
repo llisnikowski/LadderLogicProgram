@@ -13,7 +13,7 @@ public:
     explicit DragData(QObject *parent = nullptr);
 
     virtual QByteArray getData() const = 0;
-    virtual void setData(const QByteArray & data) = 0;
+    virtual bool setData(const QByteArray & data) = 0;
 
 };
 
