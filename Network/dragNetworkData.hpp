@@ -1,10 +1,10 @@
 #ifndef DRAGNETWORKDATA_HPP
 #define DRAGNETWORKDATA_HPP
 
-
 #include "dragData.hpp"
 #include <QPoint>
 
+class ContainerLd;
 namespace Ld {
 class Base;
 } // namespace Ld
@@ -14,8 +14,13 @@ class DragNetworkData : public Ld::DragData
 {
 public:
     explicit DragNetworkData(QObject *parent = nullptr);
-    explicit DragNetworkData(QObject *parent, QByteArray comp, int containerId,
+    explicit DragNetworkData(QObject *parent, QByteArray comp,
+                             int id, QPoint position);
+    explicit DragNetworkData(QObject *parent, QByteArray comp,
+                             ContainerLd *containerLd,
                              QPoint position);
+
+    void doAction(Qt::DropAction action) override;
 
     QByteArray getData() const override;
     bool setData(const QByteArray & data) override;
@@ -23,14 +28,16 @@ public:
     Ld::Base *getLdObj() const;
     QByteArray getLd() const;
     void setLd(const Ld::Base &comp);
-    int getContainerId() const;
-    void setContainerId(int id);
+    int getId() const;
+    void setId(int id);
     QPoint getPosition() const;
     void setPosition(QPoint position);
+    void setContainer(ContainerLd *containerLd);
 
 private:
     QByteArray comp_;
-    int containerId_;
+    ContainerLd *containerLd_;
+    int id_;
     QPoint position_;
 };
 

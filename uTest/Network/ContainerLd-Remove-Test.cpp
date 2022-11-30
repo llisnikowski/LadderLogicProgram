@@ -119,7 +119,7 @@ TEST_F(ContainterLd_Remove, singleCoil)
     EXPECT_TRUE(container_.getSchemat() == "-I-O-;-;");
 
     EXPECT_TRUE(container_.remove(0, 1));
-    EXPECT_TRUE(container_.getSchemat() == "-O-;-;");
+    EXPECT_TRUE(container_.getSchemat() == "-O-;");
 }
 
 TEST_F(ContainterLd_Remove, removeLastObject)

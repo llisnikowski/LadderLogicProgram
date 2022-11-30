@@ -1,16 +1,25 @@
 #include "network.hpp"
-#include "factoryContainer.hpp"
+#include "containerLd.hpp"
 
 Network::Network(QQuickItem *parent, int nr)
     : QQuickItem{parent}, nr_{nr}, containerLd_{this}
 {
+    connect(&containerLd_, &QQuickItem::heightChanged,
+            this, &Network::updateHeight);
 }
 
 Network::Network(int nr)
     : QQuickItem{}, nr_{nr}, containerLd_{this}
 {
+    connect(&containerLd_, &QQuickItem::heightChanged,
+            this, &Network::updateHeight);
 }
 
+void Network::updateHeight()
+{
+    setHeight(containerLd_.height() + 32);
+    emit changedHeight(nr_, this->height());
+}
 
 
 void Network::changedFactory()

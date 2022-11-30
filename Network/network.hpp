@@ -15,10 +15,18 @@ public:
     Network(QQuickItem *parent = nullptr, int nr = 0);
     ~Network() = default;
 
+    void setNr(int nr) {nr_ = nr;}
     int getNr() const {return nr_;}
+    ContainerLd &getContainerLd(){return containerLd_;}
+
+public slots:
+    void updateHeight();
 
 protected:
     void changedFactory() override;
+
+signals:
+    void changedHeight(int nr, int height);
 
 private:
     int nr_;

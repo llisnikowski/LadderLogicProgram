@@ -18,16 +18,33 @@ protected:
 ContainerLd ContainterLd_Move::container_;
 Ld::Factory ContainterLd_Move::factory_;
 
+
+TEST_F(ContainterLd_Move, moveOneObject)
+{
+    container_.setFactory(&factory_);
+    Ld::Contact contact;
+    container_.add(&contact, 0, 0);
+
+    EXPECT_TRUE(container_.getSchemat() == "-I-;-;");
+
+    EXPECT_TRUE(container_.move(0, 1, 1, 0));
+
+    EXPECT_TRUE(container_.getSchemat() == "-I-;-;");
+
+    Ld::Coil coil;
+    container_.add(&coil, 0, 3);
+
+    EXPECT_TRUE(container_.move(0, 1, 1, 0));
+    EXPECT_TRUE(container_.getSchemat() == "-I-O-;-;");
+}
+
 TEST_F(ContainterLd_Move, movefirstLineInRigthWithoutNode)
 {
     Ld::Contact contact;
-    Ld::Coil coil;
-    container_.setFactory(&factory_);
 
-    container_.add(&contact, 0, 0);
     container_.add(&contact, 0, 3);
     container_.add(&contact, 0, 5);
-    container_.add(&coil, 0, 7);
+
 
     EXPECT_TRUE(container_.getSchemat() == "-I-I-I-O-;-;");
 
@@ -212,10 +229,6 @@ TEST_F(ContainterLd_Move, failMove)
     EXPECT_FALSE(container_.move(1, 1, 0, 7));
     EXPECT_FALSE(container_.move(1, 1, 0, 9));
 }
-
-
-
-
 
 
 

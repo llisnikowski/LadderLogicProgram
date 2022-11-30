@@ -24,12 +24,12 @@ Qt::DropAction DropNetworkValidator::valid(const QByteArray &dragArrayData)
     if(!dragNetworkData.setData(dragArrayData)){
         return Qt::DropAction::IgnoreAction;
     }
-    if(containerLd_->getId() == dragNetworkData.getContainerId()){
+    if(containerLd_->getId() == dragNetworkData.getId()){
         if(containerLd_->checkMoveCondition(dragNetworkData.getPosition().x(),
                                         dragNetworkData.getPosition().x(),
                                              position_.x(), position_.y())){
 
-            return Qt::DropAction::MoveAction;
+            return Qt::DropAction::CopyAction;
         }
     }
     else{
@@ -39,7 +39,7 @@ Qt::DropAction DropNetworkValidator::valid(const QByteArray &dragArrayData)
             if(containerLd_->checkAddCondition(static_cast<Ld::Drag*>(dragObj),
                                                 position_.x(), position_.y())){
                 delete dragObj;
-                return Qt::DropAction::CopyAction;
+                return Qt::DropAction::MoveAction;
             }
         }
         delete dragObj;
@@ -56,9 +56,9 @@ void DropNetworkValidator::doAction(const QByteArray &dragArrayData)
     DragNetworkData dragNetworkData;
     if(!dragNetworkData.setData(dragArrayData))return;
 
-    if(containerLd_->getId() == dragNetworkData.getContainerId()){
+    if(containerLd_->getId() == dragNetworkData.getId()){
         if(containerLd_->move(dragNetworkData.getPosition().x(),
-                               dragNetworkData.getPosition().x(),
+                               dragNetworkData.getPosition().y(),
                                position_.x(), position_.y())){
 
             return;

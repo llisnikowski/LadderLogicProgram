@@ -19,6 +19,8 @@ public:
 
 public slots:
     void joinToParent(QQuickItem *parent);
+    void addNewNetwork(ContainerLd *container);
+    void updateHeight(int nr, int height);
 
 protected:
     void changedFactory() override;

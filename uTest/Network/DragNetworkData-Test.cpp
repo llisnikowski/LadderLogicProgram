@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "contact.hpp"
+#include "containerLd.hpp"
 #include "dragNetworkData.hpp"
 #include <QPoint>
 #include <QIODevice>
@@ -24,7 +25,7 @@ TEST(DragNetworkData, setData)
 
     Ld::Contact contact;
     dragData.setLd(contact);
-    dragData.setContainerId(12);
+    dragData.setId(12);
     dragData.setPosition({7,5});
 
     QByteArray outputData = dragData.getData();
@@ -52,11 +53,20 @@ TEST(DragNetworkData, setGetLd)
     EXPECT_TRUE(dragData.getLd() == node.getData());
 }
 
-TEST(DragNetworkData, setGetNetworkId)
+TEST(DragNetworkData, setGetId)
 {
     DragNetworkData dragData;
-    dragData.setContainerId(25);
-    EXPECT_EQ(dragData.getContainerId(), 25);
+    dragData.setId(25);
+    EXPECT_EQ(dragData.getId(), 25);
+}
+
+TEST(DragNetworkData, setGetContainerLd)
+{
+    ContainerLd container;
+    container.setId(54);
+    DragNetworkData dragData;
+    dragData.setContainer(&container);
+    EXPECT_EQ(dragData.getId(), 54);
 }
 
 TEST(DragNetworkData, setGetPosition)

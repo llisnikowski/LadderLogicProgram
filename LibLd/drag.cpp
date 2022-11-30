@@ -25,7 +25,6 @@ Drag::Drag(QQuickItem *parent)
 
 Drag::~Drag()
 {
-    qDebug() << "~Drag()";
     if(dragData_) delete dragData_;
 }
 
@@ -58,11 +57,7 @@ void Drag::mouseMoveEvent(QMouseEvent *event)
         QDrag *drag = createQDrag(*event);
         Qt::DropAction dragAction =
             drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::IgnoreAction);
-        if (dragAction == Qt::CopyAction) {
-        }
-        else if (dragAction == Qt::MoveAction) {
-        }
-        qDebug() << "Drag " << dragAction;
+        if(dragData_) dragData_->doAction(dragAction);
     }
 }
 

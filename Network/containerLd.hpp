@@ -76,10 +76,13 @@ public:
 
     QString getSchemat();
     int getId() const;
+    void setId(int id){id_ = id;}
 
 protected:
     void changedFactory() override;
 
+signals:
+    void addLdObject(ContainerLd*);
 
 public:
     bool add(Ld::Drag *obj, uint line, uint x);
