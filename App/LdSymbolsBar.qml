@@ -8,6 +8,7 @@ Item{
         anchors.bottom: parent.bottom
         anchors.margins: 5
         width: 64
+        height: parent.height
         spacing: 8
 
         Component.onCompleted: {

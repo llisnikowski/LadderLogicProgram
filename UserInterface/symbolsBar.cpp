@@ -6,6 +6,8 @@
 #include "contact.hpp"
 #include "coil.hpp"
 #include "dragNetworkData.hpp"
+#include "dropDeleter.hpp"
+#include "emptyDrop.hpp"
 #include "factory.hpp"
 #include <QDebug>
 
@@ -24,7 +26,17 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     setHeight(parentItem->height());
     setParentItem(parentItem);
 
+    connect(parentItem, &QQuickItem::heightChanged, this,
+            [this, parentItem](){this->setHeight(parentItem->height());}
+    );
+
     if(!factory_) return;
+    factory_->create<Ld::EmptyDrop>(this, {width(), height()},
+                                    [this](Ld::EmptyDrop *obj){
+        connect(this, &QQuickItem::heightChanged, obj,
+                [this, obj](){obj->setHeight(this->height());});
+        obj->setDropValidator(new DropDeleter(obj));
+    });
     factory_->create<Ld::Contact>(this, {64, 64}, [this](Ld::Contact *obj){
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });

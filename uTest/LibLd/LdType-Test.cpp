@@ -21,7 +21,7 @@ TEST_P(TypeConditional, comparisonOperator) {
     for(Ld::Type testType :
          {Ld::Type::None, Ld::Type::Base, Ld::Type::Drop, Ld::Type::Drag,
           Ld::Type::Node, Ld::Type::Line, Ld::Type::Input, Ld::Type::Output,
-          Ld::Type::Contact, Ld::Type::Coil}){
+          Ld::Type::Contact, Ld::Type::Coil, Ld::Type::EmptyDrop}){
         EXPECT_TRUE((parameters.type >= testType)
                     == parameters.trueType.contains(testType));
         EXPECT_TRUE((parameters.type < testType)
@@ -40,6 +40,8 @@ INSTANTIATE_TEST_SUITE_P(TestKit, TypeConditional,
     TypeTestParameters{Ld::Type::Drag, {Ld::Type::None, Ld::Type::Base, Ld::Type::Drag}},
     TypeTestParameters{Ld::Type::Line, {Ld::Type::None, Ld::Type::Base,
                                         Ld::Type::Drop, Ld::Type::Line}},
+    TypeTestParameters{Ld::Type::EmptyDrop, {Ld::Type::None, Ld::Type::Base,
+                                        Ld::Type::Drop, Ld::Type::EmptyDrop}},
     TypeTestParameters{Ld::Type::Input, {Ld::Type::None, Ld::Type::Base,
                                          Ld::Type::Drag, Ld::Type::Input}},
     TypeTestParameters{Ld::Type::Output, {Ld::Type::None, Ld::Type::Base,

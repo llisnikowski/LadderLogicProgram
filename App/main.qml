@@ -10,21 +10,37 @@ ApplicationWindow {
     title: qsTr("PLC")
 
     header: ToolBar {
+        id: toolBar
         ToolMenu {
             anchors.fill: parent
         }
     }
 
     SplitView{
+        id: mainSplitView
         anchors.fill: parent
+//        fillHeight : true
         orientation: Qt.Horizontal
         clip: true
+//        Component.onCompleted: {
+//            console.log(height)
+//        }
+        SplitView.fillHeight: true
         LdSymbolsBar {
+
             id: symbolsView
             clip: true
             implicitWidth: 80
+            height: parent.height
             SplitView.minimumWidth: 70
             SplitView.maximumWidth: 100
+//            SplitView.minimumHeight: mainSplitView.height
+//            SplitView.fillHeight : true
+//            SplitView.fillHeight: true
+//            Component.onCompleted: {
+//                console.log(width)
+//                console.log(symbolsView.height)
+//            }
         }
         ProgramView {
             id: programView

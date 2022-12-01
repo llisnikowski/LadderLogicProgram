@@ -24,11 +24,13 @@ file(GLOB MAIN_FILE
 file(GLOB PROJECT_HEADERS  
      LibLd/*.hpp
      Network/*.hpp
+     UserInterface/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
     LibLd/*.cpp
     Network/*.cpp
+    UserInterface/*.cpp
 )
 
 set(PROJECT_RESOURSES
@@ -69,6 +71,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/LibLd
   ${CMAKE_SOURCE_DIR}/Network
+  ${CMAKE_SOURCE_DIR}/UserInterface
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -108,6 +111,7 @@ file(GLOB UTEST_SOURCES
     uTest/*.cpp
     uTest/LibLd/*.cpp
     uTest/Network/*.cpp
+    uTest/UserInterface/*.cpp
 )
 
 
@@ -148,6 +152,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/uTest
   ${CMAKE_SOURCE_DIR}/LibLd
   ${CMAKE_SOURCE_DIR}/Network
+  ${CMAKE_SOURCE_DIR}/UserInterface
 )
 
 

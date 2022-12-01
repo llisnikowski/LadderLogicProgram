@@ -11,6 +11,7 @@ enum class Type : int {
     Drag =      0x0004 | Base,
     Node =      0x0008 | Base,
     Line =      0x0010 | Drop,
+    EmptyDrop = 0x0020 | Drop,
     Input =     0x0010 | Drag,
     Output =    0x0020 | Drag,
     Contact =   0x0100 | Input,
