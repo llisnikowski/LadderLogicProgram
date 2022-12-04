@@ -7,7 +7,9 @@
 #ifndef DRAG_HPP
 #define DRAG_HPP
 
-#include "base.hpp"
+#include "Ld/base.hpp"
+#include "address.hpp"
+#include "ldPropertyFunctions.hpp"
 
 class QMimeData;
 class QPainter;
@@ -35,8 +37,9 @@ public:
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
-
     virtual void paintDrag(QPainter &painter);
+
+    LdProperty::Address address_;
 
 private:
     QDrag *createQDrag(QMouseEvent &event);

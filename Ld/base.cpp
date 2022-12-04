@@ -5,6 +5,7 @@
 */
 
 #include "base.hpp"
+#include <QQmlEngine>
 
 namespace Ld{
 
@@ -14,9 +15,14 @@ namespace Ld{
  * \param parent: Rodzic/Element nadrzędny.
  */
 Base::Base(QQuickItem *parent)
-    :QQuickPaintedItem{parent}, ldPainter_{}
+    :QQuickPaintedItem{parent}, ldPainter_{}, properties_{}
 {
     setAcceptedMouseButtons(Qt::LeftButton);
+
+    if(parent){
+        QQmlEngine::setContextForObject(this,
+                QQmlEngine::contextForObject(parent));
+    }
 }
 
 Type Base::getType() const
@@ -85,6 +91,7 @@ void Base::clickEvent(QMouseEvent *event)
 {
     qDebug() << "click";
 }
+
 
 
 

@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <QVector>
 
-#include "LibLd/type.hpp"
+#include "Ld/type.hpp"
 
 
 using namespace testing;

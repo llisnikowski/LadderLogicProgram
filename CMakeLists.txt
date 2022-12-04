@@ -22,19 +22,22 @@ file(GLOB MAIN_FILE
 )
 
 file(GLOB PROJECT_HEADERS  
-     LibLd/*.hpp
+     Ld/*.hpp
      Network/*.hpp
      UserInterface/*.hpp
+     LdProperty/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
-    LibLd/*.cpp
+    Ld/*.cpp
     Network/*.cpp
     UserInterface/*.cpp
+    LdProperty/*.cpp
 )
 
 set(PROJECT_RESOURSES
     App/qml.qrc
+    LdProperty/qml.qrc
 )
 
 file(GLOB OTHER_FILES
@@ -69,9 +72,10 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}
-  ${CMAKE_SOURCE_DIR}/LibLd
+  ${CMAKE_SOURCE_DIR}/Ld
   ${CMAKE_SOURCE_DIR}/Network
   ${CMAKE_SOURCE_DIR}/UserInterface
+  ${CMAKE_SOURCE_DIR}/LdProperty
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -109,9 +113,10 @@ file(GLOB GTEST_FILE
 
 file(GLOB UTEST_SOURCES
     uTest/*.cpp
-    uTest/LibLd/*.cpp
+    uTest/Ld/*.cpp
     uTest/Network/*.cpp
     uTest/UserInterface/*.cpp
+    uTest/LdProperty/*.cpp
 )
 
 
@@ -150,9 +155,10 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/uTest/googlemock/include
   ${CMAKE_SOURCE_DIR}
   ${CMAKE_SOURCE_DIR}/uTest
-  ${CMAKE_SOURCE_DIR}/LibLd
+  ${CMAKE_SOURCE_DIR}/Ld
   ${CMAKE_SOURCE_DIR}/Network
   ${CMAKE_SOURCE_DIR}/UserInterface
+  ${CMAKE_SOURCE_DIR}/LdProperty
 )
 
 

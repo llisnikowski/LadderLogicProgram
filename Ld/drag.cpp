@@ -18,9 +18,9 @@ namespace Ld{
  * \param parent: rodzic/element nadrzędny.
  */
 Drag::Drag(QQuickItem *parent)
-    :Base{parent}, dragData_{}
+    :Base{parent}, address_{this}, dragData_{}
 {
-
+    properties_.append(&address_);
 }
 
 Drag::~Drag()

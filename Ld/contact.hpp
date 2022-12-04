@@ -22,7 +22,6 @@ public:
     Base *clone(QQuickItem *parent = nullptr) override;
 
     Type getType() const override;
-
     void paint(QPainter *painter) override;
     QByteArray getData() const override;
 };

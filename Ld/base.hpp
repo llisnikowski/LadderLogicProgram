@@ -8,6 +8,7 @@
 #define COMPONENTLD_HPP
 
 #include <QQuickPaintedItem>
+#include "LdProperty/base.hpp"
 #include "type.hpp"
 
 namespace Ld{
@@ -48,6 +49,7 @@ protected:
 
     Painter *ldPainter_;
     bool isDrag_;
+    QVector<LdProperty::Base*> properties_;
 };
 
 
