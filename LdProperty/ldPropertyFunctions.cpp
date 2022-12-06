@@ -1,6 +1,9 @@
 #include "ldPropertyFunctions.hpp"
 #include <QString>
-
+#include "LdProperty/base.hpp"
+#include "address.hpp"
+#include "textField.hpp"
+#include "type.hpp"
 
 
 QDataStream & operator >>(QDataStream & stream, LdProperty::Base **property)
@@ -13,6 +16,15 @@ QDataStream & operator >>(QDataStream & stream, LdProperty::Base **property)
         return stream;
     }
 
+    switch(type)
+    {
+    case static_cast<int>(LdProperty::Type::TextField):
+        *property = new LdProperty::TextField;
+        break;
+    case static_cast<int>(LdProperty::Type::Address):
+        *property = new LdProperty::Address;
+        break;
+    }
 
     return stream;
 }

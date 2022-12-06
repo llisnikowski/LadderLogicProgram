@@ -5,6 +5,7 @@
 #include "contact.hpp"
 #include "node.hpp"
 #include "type.hpp"
+#include "drag.hpp"
 
 QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
 {
@@ -18,11 +19,19 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
     switch(type)
     {
     case static_cast<int>(Ld::Type::Contact):
-        *ld = new Ld::Contact;
+    {
+        auto contact = new Ld::Contact;
+        stream >> contact->address_;
+        *ld = contact;
         break;
+    }
     case static_cast<int>(Ld::Type::Coil):
-        *ld = new Ld::Coil;
+    {
+        auto coil = new Ld::Coil;
+        stream >> coil->address_;
+        *ld = coil;
         break;
+    }
     case static_cast<int>(Ld::Type::Line):
         *ld = new Ld::Line;
         break;

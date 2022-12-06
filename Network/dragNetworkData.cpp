@@ -33,7 +33,9 @@ void DragNetworkData::doAction(Qt::DropAction action)
 QByteArray DragNetworkData::getData() const
 {
     int id = id_;
-    if(containerLd_) id = containerLd_->getId();
+    if(containerLd_){
+        id = containerLd_->getId();
+    }
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
     dataStream << comp_ << id << position_;

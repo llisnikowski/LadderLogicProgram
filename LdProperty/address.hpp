@@ -14,6 +14,7 @@ class Address : public TextField
 public:
     Address(QQuickItem *parent = nullptr);
     ~Address();
+    Address &operator=(const Address &address); 
 
     Type getType() const override;
 
@@ -24,5 +25,11 @@ private:
 
 
 } // namespace LdProperty
+
+
+QDataStream & operator<<(QDataStream &stream, const LdProperty::Address &address);
+QDataStream & operator>>(QDataStream &stream, LdProperty::Address &address);
+
+
 
 #endif // ADDRESS_HPP

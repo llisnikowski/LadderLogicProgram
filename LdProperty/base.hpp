@@ -11,18 +11,26 @@ class Base : public QQuickItem
     Q_OBJECT
 public:
     explicit Base(QQuickItem *parent = nullptr);
+    virtual ~Base() = default;
+    Base &operator=(const Base &base);
 
-    virtual QByteArray getData() const = 0;
     virtual Type getType() const;
+    virtual QByteArray getData() const;
 
     void setPropertyName(QString propertyName){propertyName_ = propertyName;}
-    QString getPropertyName(){return propertyName_;}
+    QString getPropertyName() const {return propertyName_;}
 
 protected:
     QString propertyName_;
 
 };
 
+
+
 } // namespace LdProperty
+
+
+QDataStream & operator<<(QDataStream &stream, const LdProperty::Base &base);
+QDataStream & operator>>(QDataStream &stream, LdProperty::Base &base);
 
 #endif // PROPERTYOFLD_HPP

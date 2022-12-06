@@ -104,6 +104,7 @@ QMimeData *Drag::createDragData(QMouseEvent &event)
 {
     QMimeData *mimeData = new QMimeData;
     if(dragData_){
+        dragData_->setLd(*this);
         mimeData->setData("application/x-dnditemdata", dragData_->getData());
     }
 

@@ -7,6 +7,15 @@ TextField::TextField(QQuickItem *parent)
 {
 }
 
+TextField &TextField::operator=(const TextField &textField)
+{
+    if(this != &textField){
+        Base::operator=(textField);
+        setTextValue(textField.textValue_);
+    }
+    return *this;
+}
+
 Type TextField::getType() const
 {
     return Type::TextField;
@@ -14,14 +23,12 @@ Type TextField::getType() const
 
 void TextField::setTextValue(QString textValue)
 {
-    qDebug() <<"set value: "<< textValue;
     textValue_ = textValue;
     emit textValueChanged();
 }
 
-QString TextField::getTextValue()
+QString TextField::getTextValue() const
 {
-    qDebug() <<"get value: "<< textValue_;
     return textValue_;
 }
 
@@ -35,6 +42,22 @@ QByteArray TextField::getData() const
 
 
 
-
-
 } // namespace LdProperty
+
+
+
+QDataStream & operator<<(QDataStream &stream, const LdProperty::TextField &textField)
+{
+    stream << static_cast<const LdProperty::Base&>(textField) << textField.getTextValue();
+    return stream;
+}
+
+QDataStream & operator>>(QDataStream &stream, LdProperty::TextField &textField)
+{
+    QString value;
+    stream >> static_cast<LdProperty::Base&>(textField) >> value;
+    textField.setTextValue(value);
+    return stream;
+}
+
+

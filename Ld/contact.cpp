@@ -6,6 +6,7 @@
 #include "contact.hpp"
 #include "painter.hpp"
 #include <QDebug>
+#include "address.hpp"
 
 namespace Ld {
 
@@ -20,7 +21,8 @@ Contact::Contact(QQuickItem *parent)
 
 Base *Contact::clone(QQuickItem *parent)
 {
-    Base *copyObject = new Contact{parent};
+    Contact *copyObject = new Contact{parent};
+    copyObject->address_ = this->address_;
     return copyObject;
 }
 
@@ -40,7 +42,7 @@ QByteArray Contact::getData() const
 {
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("Ld") << static_cast<int>(getType());
+    dataStream << QString("Ld") << static_cast<int>(getType()) << address_;
     return itemData;
 }
 

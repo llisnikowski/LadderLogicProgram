@@ -25,9 +25,9 @@ public:
     QByteArray getData() const override;
     bool setData(const QByteArray & data) override;
 
+    void setLd(const Ld::Base &comp) override;
     Ld::Base *getLdObj() const;
     QByteArray getLd() const;
-    void setLd(const Ld::Base &comp);
     int getId() const;
     void setId(int id);
     QPoint getPosition() const;

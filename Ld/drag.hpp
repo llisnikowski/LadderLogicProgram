@@ -9,7 +9,7 @@
 
 #include "Ld/base.hpp"
 #include "address.hpp"
-#include "ldPropertyFunctions.hpp"
+#include "ldFunction.hpp"
 
 class QMimeData;
 class QPainter;
@@ -32,8 +32,8 @@ public:
     virtual ~Drag();
 
     Type getType() const override;
-
     void setDragData(DragData *data);
+    friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;

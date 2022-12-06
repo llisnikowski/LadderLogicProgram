@@ -12,12 +12,13 @@ class TextField : public Base
     Q_PROPERTY(QString textValue READ getTextValue WRITE setTextValue NOTIFY textValueChanged)
 public:
     TextField(QQuickItem *parent = nullptr);
+    TextField &operator=(const TextField &textField);
 
     Type getType() const override;
     QByteArray getData() const override;
 
     void setTextValue(QString textValue);
-    QString getTextValue();
+    QString getTextValue() const;
 
 private:
     bool validText();
@@ -30,5 +31,10 @@ protected:
 };
 
 } // namespace LdProperty
+
+
+QDataStream & operator<<(QDataStream &stream, const LdProperty::TextField &textField);
+QDataStream & operator>>(QDataStream &stream, LdProperty::TextField &textField);
+
 
 #endif // TEXTFIELD_HPP

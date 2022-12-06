@@ -10,7 +10,6 @@ class Base;
 
 QDataStream & operator >>(QDataStream & stream, Ld::Base ** ld);
 
-
 Ld::Base * getLdObject(const QByteArray &dataArray);
 
 #endif // LDFUNCTION_HPP

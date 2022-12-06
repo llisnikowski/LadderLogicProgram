@@ -21,7 +21,8 @@ Coil::Coil(QQuickItem *parent)
 
 Base *Coil::clone(QQuickItem *parent)
 {
-    Base *copyObject = new Coil{parent};
+    Coil *copyObject = new Coil{parent};
+    copyObject->address_ = this->address_;
     return copyObject;
 }
 
@@ -41,7 +42,7 @@ QByteArray Coil::getData() const
 {
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("Ld") << static_cast<int>(getType());
+    dataStream << QString("Ld") << static_cast<int>(getType()) << address_;
     return itemData;
 }
 
