@@ -1,4 +1,5 @@
 #include "textField.hpp"
+#include <QQmlEngine>
 
 namespace LdProperty {
 
@@ -31,6 +32,28 @@ QString TextField::getTextValue() const
 {
     return textValue_;
 }
+
+void TextField::setVisible(bool visible)
+{
+    if(qmlObject_){
+        delete qmlObject_;
+        qmlObject_ = nullptr;
+    }
+
+    if(!visible) return;
+    if(QCoreApplication::startingUp()) return;
+
+    QQmlEngine *engine = new QQmlEngine{this};
+    qDebug() << "";
+    QQmlComponent component(engine, QUrl(QStringLiteral("qrc:/LdProperty_textField.qml")),
+                            QQmlComponent::PreferSynchronous, this);
+    QVariantMap qvMap{{"rootModel", QVariant::fromValue(this)}};
+    qmlObject_ = qobject_cast<QQuickItem *>(component.createWithInitialProperties(qvMap));
+    if(qmlObject_){
+        qmlObject_->setParentItem(this);
+    }
+}
+
 
 QByteArray TextField::getData() const
 {

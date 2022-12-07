@@ -39,6 +39,8 @@ public:
     Painter *getPainter();
 
     virtual QByteArray getData() const = 0;
+    void setVisibleProperties(bool visible);
+    void addProperty(LdProperty::Base* property);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -50,6 +52,7 @@ protected:
     Painter *ldPainter_;
     bool isDrag_;
     QVector<LdProperty::Base*> properties_;
+    bool showProperties_;
 };
 
 

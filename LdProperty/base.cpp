@@ -4,9 +4,16 @@
 namespace LdProperty{
 
 Base::Base(QQuickItem *parent)
-    : QQuickItem{parent}
+    : QQuickItem{parent}, qmlObject_{}
 {
+}
 
+Base::~Base()
+{
+    if(qmlObject_){
+        delete qmlObject_;
+        qmlObject_ = nullptr;
+    }
 }
 
 Base &Base::operator=(const Base &base)
@@ -30,7 +37,10 @@ QByteArray Base::getData() const
     return itemData;
 }
 
+
 } // namespace LdProperty
+
+
 
 QDataStream & operator<<(QDataStream &stream, const LdProperty::Base &base)
 {

@@ -18,9 +18,7 @@ public:
 
     Type getType() const override;
 
-    void display();
-private:
-    QQuickItem *qmlObject;
+
 };
 
 

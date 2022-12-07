@@ -11,17 +11,19 @@ class Base : public QQuickItem
     Q_OBJECT
 public:
     explicit Base(QQuickItem *parent = nullptr);
-    virtual ~Base() = default;
+    virtual ~Base();
     Base &operator=(const Base &base);
 
     virtual Type getType() const;
     virtual QByteArray getData() const;
+    virtual void setVisible(bool visible){};
 
     void setPropertyName(QString propertyName){propertyName_ = propertyName;}
     QString getPropertyName() const {return propertyName_;}
 
 protected:
     QString propertyName_;
+    QQuickItem *qmlObject_;
 
 };
 

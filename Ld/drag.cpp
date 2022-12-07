@@ -20,7 +20,7 @@ namespace Ld{
 Drag::Drag(QQuickItem *parent)
     :Base{parent}, address_{this}, dragData_{}
 {
-    properties_.append(&address_);
+    addProperty(&address_);
 }
 
 Drag::~Drag()

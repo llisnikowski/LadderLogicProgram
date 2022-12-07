@@ -15,7 +15,7 @@ namespace Ld{
  * \param parent: Rodzic/Element nadrzędny.
  */
 Base::Base(QQuickItem *parent)
-    :QQuickPaintedItem{parent}, ldPainter_{}, properties_{}
+    :QQuickPaintedItem{parent}, ldPainter_{}, properties_{}, showProperties_{true}
 {
     setAcceptedMouseButtons(Qt::LeftButton);
 
@@ -53,6 +53,24 @@ void Base::setPainter(Painter *ldPainter)
 Painter *Base::getPainter()
 {
     return ldPainter_;
+}
+
+void Base::setVisibleProperties(bool visible)
+{
+    if(showProperties_ == visible) return;
+    showProperties_ = visible;
+    for(auto property : properties_){
+        property->setVisible(showProperties_);
+    }
+}
+
+void Base::addProperty(LdProperty::Base *property)
+{
+    if(!property) return;
+    properties_.append(property);
+
+    if(showProperties_)
+    property->setVisible(true);
 }
 
 /*!

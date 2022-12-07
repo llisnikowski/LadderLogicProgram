@@ -39,10 +39,12 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     });
     factory_->create<Ld::Contact>(this, {64, 64}, [this](Ld::Contact *obj){
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
+        obj->setVisibleProperties(false);
     });
     factory_->create<Ld::Coil>(this, {64, 64}, [this](Ld::Coil *obj){
         obj->setY(64);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
+        obj->setVisibleProperties(false);
     });
 }
 
