@@ -35,7 +35,9 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 
-    bool dragOverThem_;
+    int getDroppingFlag();
+
+    bool droppingItem_;
 
 private:
     DropValidator *dropValidator_;

@@ -35,6 +35,13 @@ class Painter : public QObject
 {
     QML_ELEMENT
 public:
+    enum flags{
+        noFlags = 0x00,
+        dropping = 0x01,
+        select = 0x02,
+    };
+
+
     Painter(float penSize);
 
     /*!
@@ -43,12 +50,13 @@ public:
      */
     float getPenSize() const {return penSize_;}
 
-    void drawContact(QPainter &painter, QSizeF objectSize);
-    void drawCoil(QPainter &painter, QSizeF objectSize);
-    void drawLine(QPainter &painter, QSizeF objectSize);
-    void drawNode(QPainter &painter, QSizeF objectSize);
+    void drawContact(QPainter *painter, QSizeF objectSize, int flags = noFlags);
+    void drawCoil(QPainter *painter, QSizeF objectSize, int flags = noFlags);
+    void drawLine(QPainter *painter, QSizeF objectSize, int flags = noFlags);
+    void drawNode(QPainter *painter, QSizeF objectSize, int flags = noFlags);
 
 private:
+    void drawFlags(QPainter &painter, int flags);
     void drawContactContour(QPainter &painter);
     void drawCoilContour(QPainter &painter);
     void drawVerticalPairLine(QPainter &painter, float x, float height);
@@ -58,6 +66,9 @@ private:
     void drawPairArc(QPainter &painter, float angle, float radiusX, float offsetX = 0);
     QRectF getCenteredRect(float width, float height, float offsetX = 0, float offsetY = 0);
     void drawHoryzontalLine(QPainter &painter);
+    void drawDrop(QPainter &painter);
+    void drawSelect(QPainter &painter);
+
 
     /*!
      * \brief Ddomyślną szerokość symbolów w pixelach.

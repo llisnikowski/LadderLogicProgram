@@ -7,6 +7,7 @@
 #include "drop.hpp"
 #include "dropValidator.hpp"
 #include <QMimeData>
+#include "painter.hpp"
 
 namespace Ld {
 
@@ -16,7 +17,7 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny.
  */
 Drop::Drop(QQuickItem *parent)
-    :Base{parent}, dropValidator_{}, dragOverThem_{}, dragAction_{}
+    :Base{parent}, dropValidator_{}, droppingItem_{}, dragAction_{}
 {
     setFlag(ItemAcceptsDrops , true);
 }
@@ -47,8 +48,8 @@ void Drop::setDropValidator(DropValidator *validator)
 void Drop::dragEnterEvent(QDragEnterEvent *event)
 {
     event->accept();
-    if(!dragOverThem_){
-        dragOverThem_ = true;
+    if(!droppingItem_){
+        droppingItem_ = true;
         if(!dropValidator_){
             dragAction_ = Qt::IgnoreAction;
         }
@@ -58,6 +59,7 @@ void Drop::dragEnterEvent(QDragEnterEvent *event)
         }
     }
     event->setDropAction(dragAction_);
+    update();
 }
 
 /*!
@@ -70,6 +72,8 @@ void Drop::dragEnterEvent(QDragEnterEvent *event)
 void Drop::dragLeaveEvent(QDragLeaveEvent *event)
 {
     event->accept();
+    droppingItem_ = false;
+    update();
 }
 
 /*!
@@ -82,7 +86,6 @@ void Drop::dragLeaveEvent(QDragLeaveEvent *event)
 void Drop::dragMoveEvent(QDragMoveEvent *event)
 {
     event->accept();
-    dragOverThem_ = false;
 }
 
 /*!
@@ -94,13 +97,21 @@ void Drop::dragMoveEvent(QDragMoveEvent *event)
  */
 void Drop::dropEvent(QDropEvent *event)
 {
-    dragOverThem_= false;
+    droppingItem_= false;
     event->accept();
     event->setDropAction(dragAction_);
     if(dragAction_ != Qt::IgnoreAction){
         dropValidator_->doAction(
             event->mimeData()->data("application/x-dnditemdata"));
     }
+    update();
+}
+
+int Drop::getDroppingFlag()
+{
+    if(!droppingItem_) return 0;
+    return Painter::flags::dropping;
+
 }
 
 

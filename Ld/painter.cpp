@@ -30,13 +30,15 @@ Painter::Painter(float penSize)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void Painter::drawContact(QPainter &painter, QSizeF objectSize)
+void Painter::drawContact(QPainter *painter, QSizeF objectSize, int flags)
 {
+    if(!painter) return;
     objectSize_= objectSize;
     verticalLineX_ = CONTACT_V_LINE_X_FACTORY * objectSize_.width();
     verticalLineHeight_ = CONTACT_V_LINE_HEIGHT_FACTORY * objectSize_.width();
-    painter.setPen(QPen(Qt::white, penSize_));
-    drawContactContour(painter);
+    painter->setPen(QPen(Qt::white, penSize_));
+    drawContactContour(*painter);
+    drawFlags(*painter, flags);
 }
 
 /*!
@@ -44,13 +46,15 @@ void Painter::drawContact(QPainter &painter, QSizeF objectSize)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void Painter::drawCoil(QPainter &painter, QSizeF objectSize)
+void Painter::drawCoil(QPainter *painter, QSizeF objectSize, int flags)
 {
+    if(!painter) return;
     objectSize_= objectSize;
     coilArcRadius_ = COIL_ARC_RADIOUS_FACTORY * objectSize_.width();
     coilArcOffsetX_ = COIL_ARC_OFFSET_FACTORY * objectSize_.width();
-    painter.setPen(QPen(Qt::white, penSize_));
-    drawCoilContour(painter);
+    painter->setPen(QPen(Qt::white, penSize_));
+    drawCoilContour(*painter);
+    drawFlags(*painter, flags);
 }
 
 /*!
@@ -58,19 +62,34 @@ void Painter::drawCoil(QPainter &painter, QSizeF objectSize)
  * \param painter: Referencja do klasy
  * <a href="https://doc.qt.io/qt-5/qpainter.html">QPainter</a>.
  */
-void Painter::drawLine(QPainter &painter, QSizeF objectSize)
+void Painter::drawLine(QPainter *painter, QSizeF objectSize, int flags)
 {
+    if(!painter) return;
     objectSize_= objectSize;
-    painter.setPen(QPen(Qt::white, penSize_));
-    drawHoryzontalLine(painter);
+    painter->setPen(QPen(Qt::white, penSize_));
+    drawHoryzontalLine(*painter);
+    drawFlags(*painter, flags);
 }
 
-void Painter::drawNode(QPainter &painter, QSizeF objectSize)
+void Painter::drawNode(QPainter *painter, QSizeF objectSize, int flags)
 {
+    if(!painter) return;
     objectSize_= objectSize;
-    painter.setPen(QPen(Qt::white, penSize_));
-    drawHoryzontalLine(painter);
-    drawVerticalLine(painter);
+    painter->setPen(QPen(Qt::white, penSize_));
+    drawHoryzontalLine(*painter);
+    drawVerticalLine(*painter);
+    drawFlags(*painter, flags);
+}
+
+void Painter::drawFlags(QPainter &painter, int flags)
+{
+    if(flags & dropping){
+        drawDrop(painter);
+    }
+    if(flags & select){
+        drawSelect(painter);
+
+    }
 }
 
 /*!
@@ -191,6 +210,20 @@ QRectF Painter::getCenteredRect(float width, float height, float offsetX, float 
 void Painter::drawHoryzontalLine(QPainter &painter)
 {
     painter.drawLine(0, objectSize_.height() / 2, objectSize_.width(), objectSize_.height() / 2);
+}
+
+void Painter::drawDrop(QPainter &painter)
+{
+    painter.fillRect(QRectF{{0, 0}, objectSize_}, QColor(0,0,0,20));
+}
+
+void Painter::drawSelect(QPainter &painter)
+{
+    QPen pen(Qt::black, penSize_);
+    painter.setPen(pen);
+    painter.drawRect(penSize_ / 2, penSize_ / 2,
+                     objectSize_.width() - penSize_ / 2,
+                     objectSize_.height() - penSize_ / 2);
 }
 
 
