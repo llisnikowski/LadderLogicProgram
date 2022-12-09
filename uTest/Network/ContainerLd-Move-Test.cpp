@@ -41,7 +41,6 @@ TEST_F(ContainterLd_Move, movefirstLineInRigthWithoutNode)
     container_.add(&contact, 0, 3);
     container_.add(&contact, 0, 5);
 
-
     EXPECT_TRUE(container_.getSchemat() == "-I-I-I-O-;-;");
 
     auto item1 = container_.getItem(0, 1);

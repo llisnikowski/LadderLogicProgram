@@ -7,6 +7,7 @@
 #include "base.hpp"
 #include "painter.hpp"
 #include <QQmlEngine>
+#include <functional>
 
 namespace Ld{
 
@@ -20,6 +21,8 @@ Base::Base(QQuickItem *parent)
     showProperties_{true}, selected_{}
 {
     setAcceptedMouseButtons(Qt::LeftButton);
+    QObject::connect(this, &Base::clicked,
+                     std::bind(&Base::setSelect, this, true));
 
     if(parent){
         QQmlEngine::setContextForObject(this,
@@ -115,9 +118,8 @@ void Base::mouseReleaseEvent(QMouseEvent *event)
 
 void Base::clickEvent(QMouseEvent *event)
 {
-    selected_ = true;
+    forceActiveFocus();
     emit clicked();
-    update();
 }
 
 int Base::getSelectedFlag()

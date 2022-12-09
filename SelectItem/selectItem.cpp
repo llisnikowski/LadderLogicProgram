@@ -1,5 +1,6 @@
 #include "selectItem.hpp"
 #include "Ld/base.hpp"
+#include "drag.hpp"
 #include <functional>
 
 SelectItem::SelectItem(QObject *parent)
@@ -14,13 +15,21 @@ void SelectItem::addItemToList(Ld::Base *item)
                      std::bind(&SelectItem::setItem, this, item));
     QObject::connect(item, &QObject::destroyed,
                      std::bind(&SelectItem::removeItemFromList, this, item));
+
+    if(auto drag = qobject_cast<Ld::Drag*>(item)){
+        QObject::connect(drag, &Ld::Drag::dragged,
+                         this, &SelectItem::resetItem);
+    }
 }
 
 void SelectItem::removeItemFromList(Ld::Base *item)
 {
-    QObject::disconnect(item, &QObject::destroyed, this, nullptr);
-    QObject::disconnect(item, &Ld::Base::clicked, this, nullptr);
-    if(item == selectedItem_) resetItem();
+    QObject::disconnect(item, nullptr, this, nullptr);
+    if(item == selectedItem_){
+        selectedItem_ = nullptr;
+        emit changedSelectItem(nullptr);
+    }
+
 }
 
 void SelectItem::setItem(Ld::Base *item)
@@ -37,6 +46,7 @@ void SelectItem::resetItem()
 {
     if(!selectedItem_) return;
     selectedItem_->setSelect(false);
+    selectedItem_ = nullptr;
     emit changedSelectItem(nullptr);
 }
 

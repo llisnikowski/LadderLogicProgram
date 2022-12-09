@@ -50,9 +50,26 @@ TEST_F(ContainterLd_Add, AddNotInOrder)
     EXPECT_TRUE(container_.getSchemat() == "-;");
 }
 
-TEST_F(ContainterLd_Add, AddOnLine)
+TEST_F(ContainterLd_Add, AddOutput)
+{
+    Ld::Coil coil;
+    container_.add(&coil, 0, 0);
+    ASSERT_TRUE(container_.getSchemat() == "-O-;");
+}
+
+TEST_F(ContainterLd_Add, AddInputBehindOutput)
 {
     Ld::Contact contact;
+    container_.add(&contact, 0, 2);
+    ASSERT_TRUE(container_.getSchemat() == "-O-;");
+}
+
+TEST_F(ContainterLd_Add, AddInput)
+{
+    Ld::Contact contact;
+    container_.remove(0, 1);
+    ASSERT_TRUE(container_.getSchemat() == "-;");
+
     container_.add(&contact, 0, 0);
     ASSERT_TRUE(container_.getSchemat() == "-I-;-;");
 }
@@ -127,7 +144,7 @@ TEST_F(ContainterLd_Add, AddToThridLine)
 TEST_F(ContainterLd_Add, AddLastObject)
 {
     Ld::Contact contact;
-    container_.add(&contact, 0, 6);
+    container_.add(&contact, 0, 7);
     EXPECT_TRUE(container_.getSchemat() == "-I-+-I-I-O-;-I-+;-I-+;");
 }
 

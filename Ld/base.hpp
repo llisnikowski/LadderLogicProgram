@@ -60,6 +60,7 @@ protected:
 
 signals:
     void clicked();
+    void itemFocus();
 };
 
 

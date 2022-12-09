@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("networkList", &networkList);
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);
+    engine.rootContext()->setContextProperty("selectItem", &selectItem);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

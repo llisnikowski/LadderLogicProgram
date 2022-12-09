@@ -30,6 +30,9 @@ Item{
                 rootModel.textValue = textField.text
             }
         }
+        onFocusChanged: {
+            parent.onFocusChanged(textField.activeFocus);
+        }
     }
 }
 

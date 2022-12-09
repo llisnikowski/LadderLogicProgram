@@ -51,6 +51,8 @@ void TextField::setVisible(bool visible)
     qmlObject_ = qobject_cast<QQuickItem *>(component.createWithInitialProperties(qvMap));
     if(qmlObject_){
         qmlObject_->setParentItem(this);
+        QObject::connect(qmlObject_, &QQuickItem::focusChanged,
+                         this, &TextField::itemFocus);
     }
 }
 

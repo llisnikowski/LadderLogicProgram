@@ -41,6 +41,9 @@ protected:
 
     LdProperty::Address address_;
 
+signals:
+    void dragged();
+
 private:
     QDrag *createQDrag(QMouseEvent &event);
     QMimeData *createDragData(QMouseEvent &event);

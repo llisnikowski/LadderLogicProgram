@@ -21,10 +21,12 @@ public:
     void setPropertyName(QString propertyName){propertyName_ = propertyName;}
     QString getPropertyName() const {return propertyName_;}
 
+signals:
+    void itemFocus(bool);
+
 protected:
     QString propertyName_;
     QQuickItem *qmlObject_;
-
 };
 
 

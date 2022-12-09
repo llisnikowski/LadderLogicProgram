@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QDrag>
+#include <functional>
 
 namespace Ld{
 
@@ -21,6 +22,8 @@ Drag::Drag(QQuickItem *parent)
     :Base{parent}, address_{this}, dragData_{}
 {
     addProperty(&address_);
+    QObject::connect(&address_, &LdProperty::TextField::itemFocus,
+                     this, [this](bool focus){if(focus) emit clicked();});
 }
 
 Drag::~Drag()
@@ -58,6 +61,10 @@ void Drag::mouseMoveEvent(QMouseEvent *event)
         Qt::DropAction dragAction =
             drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::IgnoreAction);
         if(dragData_) dragData_->doAction(dragAction);
+        if(dragAction != Qt::IgnoreAction){
+            emit dragged();
+            forceActiveFocus();
+        }
     }
 }
 

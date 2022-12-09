@@ -17,9 +17,11 @@ public:
     void addItemToList(Ld::Base *item);
     void removeItemFromList(Ld::Base *item);
     void setItem(Ld::Base *item);
-    void resetItem();
 
     Ld::Base *getSelectedItem();
+
+public slots:
+    void resetItem();
 
 signals:
     void changedSelectItem(Ld::Base*);

@@ -261,6 +261,8 @@ bool ContainerLd::checkAddInputCondition(const Ld::Input *obj, uint line, uint x
     if(getNumberObjectInLine(line, Ld::Type::Input)
         >= MAX_INPUT_IN_LINE[line]) return false;
     if(x > container_[line].count()) return false;
+    int outputPlace = find(line, Ld::Type::Output);
+    if(outputPlace > 0 && x > outputPlace) return false;
     int node = find(line, Ld::Type::Node);
     if(node > -1 && x <= node) return false;
     return true;
@@ -295,9 +297,9 @@ bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uin
     toX = (toX / 2) * 2 + 1;
     fromX = (fromX / 2) * 2 + 1;
     if(fromLine >= container_.count()) return false;
-    if(fromX > container_[fromLine].count()) return false;
+    if(fromX >= container_[fromLine].count()) return false;
     if(toLine >= container_.count()) return false;
-    if(toX > container_[toLine].count() + 1) return false;
+    if(toX >= container_[toLine].count() + 1) return false;
 
     Ld::Base *fromObj = container_[fromLine][fromX];
     if(!fromObj) return false;
