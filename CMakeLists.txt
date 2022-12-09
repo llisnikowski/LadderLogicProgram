@@ -26,6 +26,8 @@ file(GLOB PROJECT_HEADERS
      Network/*.hpp
      UserInterface/*.hpp
      LdProperty/*.hpp
+     LdFactory/*.hpp
+     SelectItem/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
@@ -33,6 +35,8 @@ file(GLOB PROJECT_SOURCES
     Network/*.cpp
     UserInterface/*.cpp
     LdProperty/*.cpp
+    LdFactory/*.cpp
+    SelectItem/*.cpp
 )
 
 set(PROJECT_RESOURSES
@@ -76,6 +80,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/Network
   ${CMAKE_SOURCE_DIR}/UserInterface
   ${CMAKE_SOURCE_DIR}/LdProperty
+  ${CMAKE_SOURCE_DIR}/SelectItem
+  ${CMAKE_SOURCE_DIR}/LdFactory
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -117,6 +123,8 @@ file(GLOB UTEST_SOURCES
     uTest/Network/*.cpp
     uTest/UserInterface/*.cpp
     uTest/LdProperty/*.cpp
+    uTest/LdFactory/*.cpp
+    uTest/SelectItem/*.cpp
 )
 
 
@@ -159,6 +167,8 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/Network
   ${CMAKE_SOURCE_DIR}/UserInterface
   ${CMAKE_SOURCE_DIR}/LdProperty
+  ${CMAKE_SOURCE_DIR}/LdFactory
+  ${CMAKE_SOURCE_DIR}/SelectItem
 )
 
 

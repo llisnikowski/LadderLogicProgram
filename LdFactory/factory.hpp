@@ -29,10 +29,6 @@ public:
     void setPainter(Painter *painter);
     Painter *getPainter();
 
-//    Line *createLine(QQuickItem *parent = nullptr) const;
-//    Contact *createContact(QQuickItem *parent = nullptr) const;
-//    Coil *createCoil(QQuickItem *parent = nullptr) const;
-
     template <typename T>
     T *create(QQuickItem *parent = nullptr, QSizeF size = {0,0},
               std::function<void(T *obj)> initFunction = nullptr) const;
