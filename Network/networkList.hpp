@@ -4,14 +4,13 @@
 #include <QQuickItem>
 #include <QVector>
 #include "network.hpp"
-#include "factoryContainer.hpp"
 
 
 namespace Ld{
 class Factory;
 }
 
-class NetworkList : public QQuickItem, public Ld::FactoryContainer
+class NetworkList : public QQuickItem
 {
     Q_OBJECT
 public:
@@ -21,9 +20,6 @@ public slots:
     void joinToParent(QQuickItem *parent);
     void addNewNetwork(ContainerLd *container);
     void updateHeight(int nr, int height);
-
-protected:
-    void changedFactory() override;
 
 private:
     QVector<Network*> networks_;

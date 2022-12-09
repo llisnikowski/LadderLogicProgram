@@ -3,12 +3,12 @@
 #include <QQmlContext>
 
 #include "config.hpp"
-#include "factory.hpp"
+#include "factoryLd.hpp"
 #include "networkList.hpp"
 #include "painter.hpp"
 #include "symbolsBar.hpp"
 
-Ld::Factory factory;
+
 Ld::Painter mainPainter{LD_PEN_WIDTH};
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
@@ -19,10 +19,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    factory.setPainter(&mainPainter);
-    ldSymbolsBar.setFactory(&factory);
-    networkList.setFactory(&factory);
-
+    FactoryLd::setPainter(&mainPainter);
 
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;

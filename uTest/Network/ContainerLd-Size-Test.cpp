@@ -4,24 +4,21 @@
 #include "coil.hpp"
 #include "contact.hpp"
 #include "containerLd.hpp"
-#include "factory.hpp"
-//#include <QQuickItem>
 
 
 class ContainterLd_Size : public ::testing::Test
 {
-    void SetUp() override
-    {
-        container_.setFactory(&factory_);
-    }
 
 protected:
     ContainerLd container_;
-    Ld::Factory factory_;
 };
 
 
 bool testSizeAndPos(QQuickItem * obj, qreal x,  qreal y,  qreal w,  qreal h){
+    if(!obj){
+        qDebug() << "empty pointer QQuickItem";
+        return false;
+    }
     if(obj->x() != x) {
         qDebug() << "x: " <<  obj->x() << " != " << x;
         return false;
@@ -42,6 +39,10 @@ bool testSizeAndPos(QQuickItem * obj, qreal x,  qreal y,  qreal w,  qreal h){
 }
 
 bool testSize(QQuickItem * obj, qreal w,  qreal h){
+    if(!obj){
+        qDebug() << "empty pointer QQuickItem";
+        return false;
+    }
     if(obj->width() != w) {
         qDebug() << "w: " <<  obj->width() << " != " << w;
         return false;

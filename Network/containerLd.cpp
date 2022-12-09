@@ -5,7 +5,7 @@
 #include "input.hpp"
 #include "line.hpp"
 #include "node.hpp"
-#include "factory.hpp"
+#include "factoryLd.hpp"
 #include "type.hpp"
 
 int ContainerLd::currentId = 0;
@@ -14,6 +14,9 @@ ContainerLd::ContainerLd(QQuickItem *parent)
     : QQuickItem{parent},
     container_{}, id_{currentId++}
 {
+    addLineIfLineIsEmpty(0);
+    updataSize();
+    updataLdObjectData();
 }
 
 ContainerLd::~ContainerLd()
@@ -146,17 +149,6 @@ int ContainerLd::getId() const
     return id_;
 }
 
-void ContainerLd::changedFactory()
-{
-    if(factory_){
-        addLineIfLineIsEmpty(0);
-        updataSize();
-        updataLdObjectData();
-    }
-}
-
-
-
 
 bool ContainerLd::add(Ld::Drag *obj, uint line, uint x)
 {
@@ -177,8 +169,8 @@ bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
     if(!checkAddInputCondition(obj, line, x)) return false;
 
     container_[line].insert(x, obj->clone(this));
-    container_[line][x]->setPainter(factory_->getPainter());
-    container_[line].insert(x + 1, factory_->create<Ld::Line>(this,{64,64}));
+    container_[line][x]->setPainter(FactoryLd::getPainter());
+    container_[line].insert(x + 1, FactoryLd::create<Ld::Line>(this,{64,64}));
 
     insertNode();
     addLineIfLineIsEmpty(line + 1);
@@ -194,8 +186,8 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     if(!checkAddOutputCondition(obj, line, x)) return false;
 
     container_[line].insert(x, obj->clone(this));
-    container_[line][x]->setPainter(factory_->getPainter());
-    container_[line].insert(x+1, factory_->create<Ld::Line>(this,{64,64}));
+    container_[line][x]->setPainter(FactoryLd::getPainter());
+    container_[line].insert(x+1, FactoryLd::create<Ld::Line>(this,{64,64}));
 
     updataSize();
     updataLdObjectData();
@@ -378,7 +370,7 @@ void ContainerLd::addLineIfLineIsEmpty(uint line)
     if(line >= 3) return;
     if(line == container_.count()){
         container_.append(Line{1, nullptr});
-        container_[line][0] = factory_->create<Ld::Line>(this,{64,64});
+        container_[line][0] = FactoryLd::create<Ld::Line>(this,{64,64});
         setHeight(container_.count() * LD_H);
     }
 }
@@ -393,12 +385,12 @@ void ContainerLd::insertNode()
             getNumberObjectInLine(line-1, Ld::Type::Input) <= 0) continue;
 
         if(line == 0){
-            container_[line].insert(NODE_POSITION, factory_->create<Ld::Node>(this,{64,64}));
-            container_[line].insert(NODE_POSITION+1, factory_->create<Ld::Line>(this,{64,64}));
+            container_[line].insert(NODE_POSITION, FactoryLd::create<Ld::Node>(this,{64,64}));
+            container_[line].insert(NODE_POSITION+1, FactoryLd::create<Ld::Line>(this,{64,64}));
         }
         else{
             if(container_[line].count() <= NODE_POSITION)
-                container_[line].insert(NODE_POSITION,factory_->create<Ld::Node>(this,{64,64}));
+                container_[line].insert(NODE_POSITION, FactoryLd::create<Ld::Node>(this,{64,64}));
         }
     }
 }

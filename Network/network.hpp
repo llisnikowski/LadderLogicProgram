@@ -3,11 +3,9 @@
 
 #include <QQuickItem>
 #include "containerLd.hpp"
-#include "factoryContainer.hpp"
 
 
-
-class Network : public QQuickItem, public Ld::FactoryContainer
+class Network : public QQuickItem
 {
     Q_OBJECT
 public:
@@ -21,9 +19,6 @@ public:
 
 public slots:
     void updateHeight();
-
-protected:
-    void changedFactory() override;
 
 signals:
     void changedHeight(int nr, int height);

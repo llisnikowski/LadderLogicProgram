@@ -21,9 +21,3 @@ void Network::updateHeight()
     emit changedHeight(nr_, this->height());
 }
 
-
-void Network::changedFactory()
-{
-    containerLd_.setFactory(factory_);
-}
-

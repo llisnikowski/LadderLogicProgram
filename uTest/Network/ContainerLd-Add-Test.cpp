@@ -4,7 +4,6 @@
 #include "coil.hpp"
 #include "contact.hpp"
 #include "containerLd.hpp"
-#include "factory.hpp"
 
 
 class ContainterLd_Add : public ::testing::Test
@@ -12,16 +11,13 @@ class ContainterLd_Add : public ::testing::Test
 protected:
 
     static ContainerLd container_;
-    static Ld::Factory factory_;
 };
 
 ContainerLd ContainterLd_Add::container_;
-Ld::Factory ContainterLd_Add::factory_;
 
 
 TEST_F(ContainterLd_Add, empty)
 {
-    container_.setFactory(&factory_);
     EXPECT_TRUE(container_.getSchemat() == "-;");
 }
 

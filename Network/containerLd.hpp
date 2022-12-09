@@ -5,7 +5,6 @@
 #include <QVector>
 #include <cstddef>
 #include "drag.hpp"
-#include "factoryContainer.hpp"
 #include "input.hpp"
 #include "output.hpp"
 #include "type.hpp"
@@ -38,7 +37,7 @@ constexpr float LINE_BESIDE_NODE{32};
 constexpr uint MAX_INPUT_IN_LINE[] = {3, 1, 1};
 constexpr uint NODE_POSITION = 3;
 
-class ContainerLd : public QQuickItem, public Ld::FactoryContainer
+class ContainerLd : public QQuickItem
 {
     Q_OBJECT
 public:
@@ -77,9 +76,6 @@ public:
     QString getSchemat();
     int getId() const;
     void setId(int id){id_ = id;}
-
-protected:
-    void changedFactory() override;
 
 signals:
     void addLdObject(ContainerLd*);

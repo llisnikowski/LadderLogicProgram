@@ -15,35 +15,34 @@ class Line;
 class Contact;
 class Coil;
 class Painter;
+} // namespace Ld
 
 /*!
  * \brief Klasą Factory jest odpowiedzialną za tworzenie obiektów symboli Ld
  * i inicjalizacje ich odpowiednimi zmiennymi (np. rozmiar obiektu).
  */
-class Factory : public QObject
+class FactoryLd
 {
-    Q_OBJECT
 public:
-    explicit Factory(QObject *parent = nullptr);
-
-    void setPainter(Painter *painter);
-    Painter *getPainter();
+    FactoryLd() = delete;
+    static void setPainter(Ld::Painter *painter);
+    static Ld::Painter *getPainter();
 
     template <typename T>
-    T *create(QQuickItem *parent = nullptr, QSizeF size = {0,0},
-              std::function<void(T *obj)> initFunction = nullptr) const;
+    static T *create(QQuickItem *parent = nullptr, QSizeF size = {0,0},
+              std::function<void(T *obj)> initFunction = nullptr);
     template <typename T>
-    T *create(QSizeF size, std::function<void(T *obj)> initFunction= nullptr) const;
+    static T *create(QSizeF size, std::function<void(T *obj)> initFunction= nullptr);
 
 private:
     template <typename T>
-    T *initObject(T * obj, QSizeF size) const;
+    static T *initObject(T * obj, QSizeF size);
 
     /*!
      * \brief Przypisywana klasa Painter
      * \see setPainter, getPainter
      */
-    Painter *painter_;
+    static Ld::Painter *painter_;
 };
 
 
@@ -58,7 +57,7 @@ private:
  * \return Wskaźnik do wcześniej przekazanego obiektu.
  */
 template <typename T>
-T *Ld::Factory::initObject(T *obj, QSizeF size) const
+T *FactoryLd::initObject(T *obj, QSizeF size)
 {
     obj->setSize({size.width(), size.height()});
     obj->setPainter(painter_);
@@ -80,8 +79,8 @@ T *Ld::Factory::initObject(T *obj, QSizeF size) const
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
 template <typename T>
-T *Ld::Factory::create(QQuickItem *parent, QSizeF size,
-                       std::function<void(T *obj)> initFunction) const
+T *FactoryLd::create(QQuickItem *parent, QSizeF size,
+                       std::function<void(T *obj)> initFunction)
 {
     T * obj = initObject(new T{parent}, size);
     if(initFunction) initFunction(obj);
@@ -102,7 +101,7 @@ T *Ld::Factory::create(QQuickItem *parent, QSizeF size,
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
 template <typename T>
-T *Ld::Factory::create(QSizeF size,std::function<void(T *obj)> initFunction) const
+T *FactoryLd::create(QSizeF size,std::function<void(T *obj)> initFunction)
 {
     T * obj = initObject(new T, size);
     if(initFunction) initFunction(obj);
@@ -122,6 +121,6 @@ T *Ld::Factory::create(QSizeF size,std::function<void(T *obj)> initFunction) con
 
 
 
-} // namespace Ld
+
 
 #endif // LDFACTORY_HPP

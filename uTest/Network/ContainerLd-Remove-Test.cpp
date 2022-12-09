@@ -4,7 +4,6 @@
 #include "coil.hpp"
 #include "contact.hpp"
 #include "containerLd.hpp"
-#include "factory.hpp"
 
 
 class ContainterLd_Remove : public ::testing::Test
@@ -12,17 +11,14 @@ class ContainterLd_Remove : public ::testing::Test
 protected:
 
     static ContainerLd container_;
-    static Ld::Factory factory_;
 };
 
 ContainerLd ContainterLd_Remove::container_;
-Ld::Factory ContainterLd_Remove::factory_;
 
 TEST_F(ContainterLd_Remove, init)
 {
     Ld::Contact contact;
     Ld::Coil coil;
-    container_.setFactory(&factory_);
 
     container_.add(&contact, 0, 0);
     container_.add(&contact, 0, 0);

@@ -1,6 +1,6 @@
 #include "networkList.hpp"
 #include "containerLd.hpp"
-#include "factory.hpp"
+#include "factoryLd.hpp"
 
 NetworkList::NetworkList(QQuickItem *parent)
     :QQuickItem{parent}, networks_{}
@@ -13,7 +13,6 @@ void NetworkList::joinToParent(QQuickItem *parent)
     if(!parent) return;
     setParentItem(parent);
     auto network = new Network{this, 0};
-    network->setFactory(factory_);
     networks_.append(network);
     connect(&network->getContainerLd(), &ContainerLd::addLdObject,
             this, &NetworkList::addNewNetwork);
@@ -27,7 +26,6 @@ void NetworkList::addNewNetwork(ContainerLd *container)
     disconnect(container, &ContainerLd::addLdObject,
                this, &NetworkList::addNewNetwork);
     auto network = new Network{this};
-    network->setFactory(factory_);
     network->setNr(networks_.count());
     network->setY(lastNetwork->y() + lastNetwork->height());
     networks_.append(network);
@@ -47,7 +45,3 @@ void NetworkList::updateHeight(int nr, int height)
     }
 }
 
-void NetworkList::changedFactory()
-{
-    update();
-}

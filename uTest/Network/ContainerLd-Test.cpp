@@ -3,7 +3,6 @@
 
 #include "line.hpp"
 #include "containerLd.hpp"
-#include "factory.hpp"
 
 using namespace testing;
 
@@ -19,40 +18,10 @@ TEST(ContainterLd, constructor)
     ContainerLd container;
 
     const ContainerLd::Array & array = container.getArray();
+    ASSERT_EQ(array.count(), 1);
 
-    EXPECT_EQ(array.count(), 0);
-}
-
-TEST(ContainterLd, empty)
-{
-    ContainerLd container;
-
-    EXPECT_FALSE(container.getItem(0, 0));
-    EXPECT_FALSE(container.getItem(1, 0));
-    EXPECT_FALSE(container.getItem(0, 1));
-}
-
-TEST(ContainterLd, setFactoryNullprt)
-{
-    ContainerLd container;
-    container.setFactory(nullptr);
-
-    const ContainerLd::Array & array = container.getArray();
-    EXPECT_EQ(array.count(), 0);
-    EXPECT_FALSE(container.getItem(0, 0));
-    EXPECT_FALSE(container.getItem(1, 0));
-    EXPECT_FALSE(container.getItem(0, 1));
-}
-
-TEST(ContainterLd, setFactory)
-{
-    ContainerLd container;
-    Ld::Factory factory;
-    container.setFactory(&factory);
-
-    const ContainerLd::Array & array = container.getArray();
-    EXPECT_EQ(array.count(), 1);
     EXPECT_EQ(array[0].count(), 1);
+
     EXPECT_TRUE(qobject_cast<const Ld::Line*>(container.getItem(0, 0)));
     EXPECT_FALSE(container.getItem(1, 0));
     EXPECT_FALSE(container.getItem(0, 1));
