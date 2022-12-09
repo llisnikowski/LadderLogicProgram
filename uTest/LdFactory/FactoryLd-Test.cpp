@@ -22,12 +22,12 @@ TEST(LD_Factory, create)
     Ld::Painter painter{1.8};
     FactoryLd::setPainter(&painter);
     QQuickItem parent;
-    auto line = FactoryLd::create<Ld::Line>(&parent, {12, 7.5});
+    auto line = FactoryLd::create<Ld::Line>(&parent);
 
     EXPECT_TRUE(line->parent() == &parent);
     EXPECT_TRUE(line->parentItem() == &parent);
-    EXPECT_FLOAT_EQ(line->width(), 12);
-    EXPECT_FLOAT_EQ(line->height(), 7.5);
+    EXPECT_FLOAT_EQ(line->width(), 0);
+    EXPECT_FLOAT_EQ(line->height(), 0);
     EXPECT_FLOAT_EQ(line->x(), 0);
     EXPECT_FLOAT_EQ(line->y(), 0);
 }
@@ -37,8 +37,8 @@ TEST(LD_Factory, createWithLambda)
     Ld::Painter painter{1.8};
     FactoryLd::setPainter(&painter);
     QQuickItem parent;
-    auto contact = FactoryLd::create<Ld::Contact>(&parent,{33.8, 25.6}
-                                               ,[](Ld::Contact *obj){
+    auto contact = FactoryLd::create<Ld::Contact>(&parent,[](Ld::Contact *obj){
+        obj->setSize({33.8, 25.6});
         obj->setX(10.2);
         obj->setY(15.5);
     });

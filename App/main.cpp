@@ -12,6 +12,7 @@
 Ld::Painter mainPainter{LD_PEN_WIDTH};
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
+SelectItem selectItem;
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
 #endif
 
     FactoryLd::setPainter(&mainPainter);
+    FactoryLd::setSelectItem(&selectItem);
 
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;

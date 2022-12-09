@@ -31,7 +31,9 @@ Type Line::getType() const
 
 void Line::paint(QPainter *painter)
 {
-    ldPainter_->drawLine(painter, size(), getDroppingFlag());
+    if(ldPainter_)
+        ldPainter_->drawLine(painter, size(),
+                             getDroppingFlag() | getSelectedFlag());
 }
 
 QByteArray Line::getData() const

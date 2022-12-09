@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QQuickItem>
 #include <functional>
+#include "selectItem.hpp"
 
 namespace Ld {
 class Base;
@@ -17,6 +18,7 @@ class Coil;
 class Painter;
 } // namespace Ld
 
+
 /*!
  * \brief Klasą Factory jest odpowiedzialną za tworzenie obiektów symboli Ld
  * i inicjalizacje ich odpowiednimi zmiennymi (np. rozmiar obiektu).
@@ -25,24 +27,29 @@ class FactoryLd
 {
 public:
     FactoryLd() = delete;
+
     static void setPainter(Ld::Painter *painter);
     static Ld::Painter *getPainter();
+    static void setSelectItem(SelectItem *selectItem);
+    static SelectItem *getSelectItem();
 
     template <typename T>
-    static T *create(QQuickItem *parent = nullptr, QSizeF size = {0,0},
-              std::function<void(T *obj)> initFunction = nullptr);
+    static T *create(QQuickItem *parent,
+                     std::function<void(T *obj)> initFunction = nullptr);
+
     template <typename T>
-    static T *create(QSizeF size, std::function<void(T *obj)> initFunction= nullptr);
+    static T *initObject(T * obj, std::function<void(T *obj)> initFunction = nullptr);
 
 private:
     template <typename T>
-    static T *initObject(T * obj, QSizeF size);
+    static T *basicInit(T * obj);
 
     /*!
      * \brief Przypisywana klasa Painter
      * \see setPainter, getPainter
      */
     static Ld::Painter *painter_;
+    static SelectItem *selectItem_;
 };
 
 
@@ -50,39 +57,20 @@ private:
 //---------------------------------------
 
 
-/*!
- * \brief Ustawia obiektowi właściwości wspólne dla wszystkich typów.
- * \tparam T: Typ obiektu.
- * \param obj: Obiekt.
- * \return Wskaźnik do wcześniej przekazanego obiektu.
- */
 template <typename T>
-T *FactoryLd::initObject(T *obj, QSizeF size)
+T *FactoryLd::basicInit(T * obj)
 {
-    obj->setSize({size.width(), size.height()});
     obj->setPainter(painter_);
+    if(selectItem_) selectItem_->addItemToList(obj);
     return obj;
 }
 
 
-/*!
- * \brief Alokuje i inicjalizuje obiekt wybranej klasy i zwraca wskaźnik
- *  na niego.
- *
- *  Pozwala wysłać zbiór dodatkowych instrukcji inicjalizujących za pomocą
- *  funkcji, obiektu funkcyjnego lub wyrażenia lambda.
- * \tparam T: Typ tworzonego obiektu
- * \param parent: Rodzic/Element nadrzędny dla tworzonego obiektu.
- * \param initFunction: Dodatkowy instrukcje inicjalizujące.
- * \return Wskaźnik do utworzonego obiektu.
- * \warning Jeśli nie podaliśmy rodzica jako agument funkcji
- * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
- */
 template <typename T>
-T *FactoryLd::create(QQuickItem *parent, QSizeF size,
-                       std::function<void(T *obj)> initFunction)
+T *FactoryLd::initObject(T * obj, std::function<void(T *obj)> initFunction)
 {
-    T * obj = initObject(new T{parent}, size);
+    if(!obj) return obj;
+    basicInit(obj);
     if(initFunction) initFunction(obj);
     return obj;
 }
@@ -101,10 +89,10 @@ T *FactoryLd::create(QQuickItem *parent, QSizeF size,
  * i nie ustawiliśmy mu go, po zakończeniu pracy z obiektem należy go usunąć.
  */
 template <typename T>
-T *FactoryLd::create(QSizeF size,std::function<void(T *obj)> initFunction)
+T *FactoryLd::create(QQuickItem *parent, std::function<void(T *obj)> initFunction)
 {
-    T * obj = initObject(new T, size);
-    if(initFunction) initFunction(obj);
+    T * obj = new T{parent};
+    initObject(obj, initFunction);
     return obj;
 }
 

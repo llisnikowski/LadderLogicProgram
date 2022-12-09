@@ -34,7 +34,8 @@ Type Coil::getType() const
 
 void Coil::paint(QPainter *painter)
 {
-    ldPainter_->drawCoil(painter, size());
+    if(ldPainter_)
+        ldPainter_->drawCoil(painter, size(), getSelectedFlag());
 }
 
 QByteArray Coil::getData() const

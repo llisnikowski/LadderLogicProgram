@@ -65,7 +65,7 @@ void Painter::drawCoil(QPainter *painter, QSizeF objectSize, int flags)
 void Painter::drawLine(QPainter *painter, QSizeF objectSize, int flags)
 {
     if(!painter) return;
-    objectSize_= objectSize;
+    objectSize_ = objectSize;
     painter->setPen(QPen(Qt::white, penSize_));
     drawHoryzontalLine(*painter);
     drawFlags(*painter, flags);

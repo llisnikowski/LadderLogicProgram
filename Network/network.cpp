@@ -6,6 +6,7 @@ Network::Network(QQuickItem *parent, int nr)
 {
     connect(&containerLd_, &QQuickItem::heightChanged,
             this, &Network::updateHeight);
+    updateHeight();
 }
 
 Network::Network(int nr)
@@ -13,6 +14,7 @@ Network::Network(int nr)
 {
     connect(&containerLd_, &QQuickItem::heightChanged,
             this, &Network::updateHeight);
+    updateHeight();
 }
 
 void Network::updateHeight()

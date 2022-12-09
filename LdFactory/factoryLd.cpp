@@ -7,6 +7,7 @@
 
 
 Ld::Painter *FactoryLd::painter_ = nullptr;
+SelectItem *FactoryLd::selectItem_ = nullptr;
 
 /*!
  * \brief Ustawia klase Painter która będzie przypisana do nowo tworzonych obiektów.
@@ -24,6 +25,18 @@ Ld::Painter *FactoryLd:: getPainter()
 {
     return painter_;
 }
+
+void FactoryLd::setSelectItem(SelectItem *selectItem)
+{
+    selectItem_ = selectItem;
+}
+
+SelectItem *FactoryLd::getSelectItem()
+{
+    return selectItem_;
+}
+
+
 
 
 

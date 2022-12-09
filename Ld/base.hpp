@@ -42,17 +42,24 @@ public:
     void setVisibleProperties(bool visible);
     void addProperty(LdProperty::Base* property);
 
+    void setSelect(bool sel);
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
     virtual void clickEvent(QMouseEvent *event);
+    int getSelectedFlag();
 
     Painter *ldPainter_;
     bool isDrag_;
     QVector<LdProperty::Base*> properties_;
     bool showProperties_;
+    bool selected_;
+
+signals:
+    void clicked();
 };
 
 

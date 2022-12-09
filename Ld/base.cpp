@@ -5,6 +5,7 @@
 */
 
 #include "base.hpp"
+#include "painter.hpp"
 #include <QQmlEngine>
 
 namespace Ld{
@@ -15,7 +16,8 @@ namespace Ld{
  * \param parent: Rodzic/Element nadrzędny.
  */
 Base::Base(QQuickItem *parent)
-    :QQuickPaintedItem{parent}, ldPainter_{}, properties_{}, showProperties_{true}
+    :QQuickPaintedItem{parent}, ldPainter_{}, isDrag_{}, properties_{},
+    showProperties_{true}, selected_{}
 {
     setAcceptedMouseButtons(Qt::LeftButton);
 
@@ -70,7 +72,13 @@ void Base::addProperty(LdProperty::Base *property)
     properties_.append(property);
 
     if(showProperties_)
-    property->setVisible(true);
+        property->setVisible(true);
+}
+
+void Base::setSelect(bool sel)
+{
+    selected_ = sel;
+    update();
 }
 
 /*!
@@ -107,7 +115,15 @@ void Base::mouseReleaseEvent(QMouseEvent *event)
 
 void Base::clickEvent(QMouseEvent *event)
 {
-    qDebug() << "click";
+    selected_ = true;
+    emit clicked();
+    update();
+}
+
+int Base::getSelectedFlag()
+{
+    if(!selected_) return 0;
+    return Painter::flags::select;
 }
 
 

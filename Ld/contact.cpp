@@ -34,7 +34,8 @@ Type Contact::getType() const
 
 void Contact::paint(QPainter *painter)
 {
-    ldPainter_->drawContact(painter, size());
+    if(ldPainter_)
+        ldPainter_->drawContact(painter, size(), getSelectedFlag());
 }
 
 QByteArray Contact::getData() const

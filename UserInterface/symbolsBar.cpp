@@ -30,17 +30,19 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
             [this, parentItem](){this->setHeight(parentItem->height());}
     );
 
-    FactoryLd::create<Ld::EmptyDrop>(this, {width(), height()},
-                                    [this](Ld::EmptyDrop *obj){
+    FactoryLd::create<Ld::EmptyDrop>(this, [this](Ld::EmptyDrop *obj){
         connect(this, &QQuickItem::heightChanged, obj,
                 [this, obj](){obj->setHeight(this->height());});
+        obj->setSize({width(), height()});
         obj->setDropValidator(new DropDeleter(obj));
     });
-    FactoryLd::create<Ld::Contact>(this, {64, 64}, [this](Ld::Contact *obj){
+    FactoryLd::create<Ld::Contact>(this, [this](Ld::Contact *obj){
+        obj->setSize({64, 64});
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
         obj->setVisibleProperties(false);
     });
-    FactoryLd::create<Ld::Coil>(this, {64, 64}, [this](Ld::Coil *obj){
+    FactoryLd::create<Ld::Coil>(this, [this](Ld::Coil *obj){
+        obj->setSize({64, 64});
         obj->setY(64);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
         obj->setVisibleProperties(false);

@@ -26,7 +26,8 @@ Base *Node::clone(QQuickItem *parent)
 
 void Node::paint(QPainter *painter)
 {
-    ldPainter_->drawNode(painter, size());
+    if(ldPainter_)
+        ldPainter_->drawNode(painter, size(), getSelectedFlag());
 }
 
 Type Node::getType() const
