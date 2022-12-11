@@ -7,6 +7,7 @@
 #define CONTACT_HPP
 
 #include "input.hpp"
+#include "comboboxField.hpp"
 
 namespace Ld {
 
@@ -24,8 +25,11 @@ public:
     Type getType() const override;
     void paint(QPainter *painter) override;
     QByteArray getData() const override;
+    friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
-private:
+protected:
+    LdProperty::ComboboxField type_;
+
 };
 
 

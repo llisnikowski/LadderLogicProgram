@@ -7,6 +7,7 @@
 #define COIL_HPP
 
 #include "output.hpp"
+#include "comboboxField.hpp"
 
 namespace Ld {
 
@@ -25,6 +26,10 @@ public:
 
     void paint(QPainter *painter) override;
     QByteArray getData() const override;
+    friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
+
+protected:
+    LdProperty::ComboboxField type_;
 };
 
 } //namespace Ld

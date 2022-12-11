@@ -39,6 +39,18 @@ public:
         noFlags = 0x00,
         dropping = 0x01,
         select = 0x02,
+
+        contactNO = 0x00,
+        contactNC= 0x10,
+
+        coilNormal= 0x00,
+        coilSet= 0x10,
+        coilReset= 0x20,
+    };
+
+    enum flagOffset{
+        contactType = 4,
+        coilType = 4
     };
 
 

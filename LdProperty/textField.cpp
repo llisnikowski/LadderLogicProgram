@@ -44,7 +44,6 @@ void TextField::setVisible(bool visible)
     if(QCoreApplication::startingUp()) return;
 
     QQmlEngine *engine = new QQmlEngine{this};
-    qDebug() << "";
     QQmlComponent component(engine, QUrl(QStringLiteral("qrc:/LdProperty_textField.qml")),
                             QQmlComponent::PreferSynchronous, this);
     QVariantMap qvMap{{"rootModel", QVariant::fromValue(this)}};

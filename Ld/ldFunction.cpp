@@ -21,14 +21,14 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
     case static_cast<int>(Ld::Type::Contact):
     {
         auto contact = new Ld::Contact;
-        stream >> contact->address_;
+        stream >> contact->address_ >> contact->type_;
         *ld = contact;
         break;
     }
     case static_cast<int>(Ld::Type::Coil):
     {
         auto coil = new Ld::Coil;
-        stream >> coil->address_;
+        stream >> coil->address_ >> coil->type_;
         *ld = coil;
         break;
     }
