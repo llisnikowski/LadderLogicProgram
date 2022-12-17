@@ -4,9 +4,8 @@
 */
 
 #include "contact.hpp"
-#include "painterLd.hpp"
-#include <QDebug>
 #include <QPainter>
+#include "painterLd.hpp"
 
 namespace Ld {
 

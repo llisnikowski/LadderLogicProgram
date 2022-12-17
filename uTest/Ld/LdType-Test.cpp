@@ -22,7 +22,7 @@ TEST_P(TypeConditional, comparisonOperator) {
          {Ld::Type::None, Ld::Type::Base, Ld::Type::Drop, Ld::Type::Drag,
           Ld::Type::Node, Ld::Type::Line, Ld::Type::Input, Ld::Type::Output,
           Ld::Type::Contact, Ld::Type::Coil, Ld::Type::Timer, Ld::Type::Counter,
-          Ld::Type::EmptyDrop}){
+          Ld::Type::Weektimer, Ld::Type::EmptyDrop}){
         EXPECT_TRUE((parameters.type >= testType)
                     == parameters.trueType.contains(testType));
         EXPECT_TRUE((parameters.type < testType)
@@ -49,6 +49,8 @@ INSTANTIATE_TEST_SUITE_P(TestKit, TypeConditional,
                                         Ld::Type::Drag, Ld::Type::Output}},
     TypeTestParameters{Ld::Type::Contact, {Ld::Type::None, Ld::Type::Base,
                             Ld::Type::Drag, Ld::Type::Input, Ld::Type::Contact}},
+    TypeTestParameters{Ld::Type::Weektimer, {Ld::Type::None, Ld::Type::Base,
+                            Ld::Type::Drag, Ld::Type::Input, Ld::Type::Weektimer}},
     TypeTestParameters{Ld::Type::Coil, {Ld::Type::None, Ld::Type::Base,
                             Ld::Type::Drag,Ld::Type::Output, Ld::Type::Coil}},
     TypeTestParameters{Ld::Type::Timer, {Ld::Type::None, Ld::Type::Base,

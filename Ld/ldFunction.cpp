@@ -5,6 +5,7 @@
 #include "timer.hpp"
 #include "counter.hpp"
 #include "contact.hpp"
+#include "weektimer.hpp"
 #include "node.hpp"
 #include "type.hpp"
 #include "drag.hpp"
@@ -25,6 +26,13 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
         auto contact = new Ld::Contact;
         stream >> contact->address_ >> contact->type_;
         *ld = contact;
+        break;
+    }
+    case static_cast<int>(Ld::Type::Weektimer):
+    {
+        auto weektimer = new Ld::Weektimer;
+        stream >> weektimer->address_;
+        *ld = weektimer;
         break;
     }
     case static_cast<int>(Ld::Type::Coil):

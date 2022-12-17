@@ -27,7 +27,7 @@ constexpr qreal COIL_ARC_RADIOUS_FACTORY {0.2};
 constexpr qreal COIL_ARC_OFFSET_FACTORY {0.02};
 constexpr int CENTER_LETTER_SIZE {16};
 constexpr bool CENTER_LETTER_BOLD {true};
-constexpr qreal CORRECT_CENTER_LETTER_OFFSET_X {0.6};
+constexpr qreal CORRECT_CENTER_LETTER_OFFSET_X {0.0};
 constexpr qreal CORRECT_CENTER_LETTER_OFFSET_Y {-2.0};
 /*! @} */
 

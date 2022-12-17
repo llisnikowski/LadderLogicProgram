@@ -15,6 +15,7 @@ enum class Type : int {
     Input =     0x0010 | Drag,
     Output =    0x0020 | Drag,
     Contact =   0x0100 | Input,
+    Weektimer = 0x0200 | Input,
     Coil =      0x0100 | Output,
     Timer =     0x0200 | Output,
     Counter =   0x0400 | Output
