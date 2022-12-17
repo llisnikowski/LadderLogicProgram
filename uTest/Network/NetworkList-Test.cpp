@@ -22,6 +22,6 @@ TEST(NetworkList, setParentItem)
     NetworkList networkList;
 
     EXPECT_EQ(networkList.childItems().count(), 0);
-    networkList.joinToParent(&parent);
+    networkList.setParentItem(&parent);
     EXPECT_EQ(networkList.childItems().count(), 1);
 }

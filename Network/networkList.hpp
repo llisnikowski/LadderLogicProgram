@@ -15,11 +15,11 @@ class NetworkList : public QQuickItem
     Q_OBJECT
 public:
     explicit NetworkList(QQuickItem *parent = nullptr);
+    ~NetworkList();
 
-public slots:
-    void joinToParent(QQuickItem *parent);
-    void addNewNetwork(ContainerLd *container);
+    void addNewNetwork();
     void updateHeight(int nr, int height);
+    void clearList();
 
 private:
     QVector<Network*> networks_;

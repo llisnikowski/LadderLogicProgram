@@ -11,6 +11,7 @@ Item {
     }
 
     Component.onCompleted: {
-        networkList.joinToParent(this);
+//        networkList.joinToParent(this);
+        networkList.parent = this;
     }
 }
