@@ -5,7 +5,6 @@
 */
 
 #include "base.hpp"
-#include "painter.hpp"
 #include <QQmlEngine>
 #include <functional>
 
@@ -17,7 +16,7 @@ namespace Ld{
  * \param parent: Rodzic/Element nadrzędny.
  */
 Base::Base(QQuickItem *parent)
-    :QQuickPaintedItem{parent}, ldPainter_{}, isDrag_{}, properties_{},
+    :QQuickPaintedItem{parent}, isDrag_{}, properties_{},
     showProperties_{true}, selected_{}
 {
     setAcceptedMouseButtons(Qt::LeftButton);
@@ -33,31 +32,6 @@ Base::Base(QQuickItem *parent)
 Type Base::getType() const
 {
     return Type::Base;
-}
-
-/*!
- * \brief Ustawia klase Painter odpowiedzialną za wyświetlanie na ekranie.
- *
- * Wywołanie funkcji powoduję również wyświetlenie symbolu wywołując funkcję
- * <a href="https://doc.qt.io/qt-5/qquickpainteditem.html#update">
- * QQuickPaintedItem::update()</a>.
- * \param ldPainter: Wskaźnik do klasy Painter.
- * \see getLdPainter()
- */
-void Base::setPainter(Painter *ldPainter)
-{
-    this->ldPainter_ = ldPainter;
-    update();
-}
-
-/*!
- * \brief Zwraca klase Painter przypisaną do obiektu.
- * \return Wskaźnik do używanej klasy LdPainter.
- * \see setLdPainter()
- */
-Painter *Base::getPainter()
-{
-    return ldPainter_;
 }
 
 void Base::setVisibleProperties(bool visible)
@@ -127,11 +101,6 @@ void Base::clickEvent(QMouseEvent *event)
     emit clicked();
 }
 
-int Base::getSelectedFlag()
-{
-    if(!selected_) return 0;
-    return Painter::flags::select;
-}
 
 
 

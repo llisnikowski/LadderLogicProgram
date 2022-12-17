@@ -13,8 +13,6 @@
 
 namespace Ld{
 
-class Painter;
-
 /*!
  * \brief ComponentLd jest klasą bazową dla klas symboli z języka LD takich
  *  jak Coil, Contact, Line, Timer itp..
@@ -35,9 +33,6 @@ public:
 
     virtual Type getType() const;
 
-    void setPainter(Painter *ldPainter);
-    Painter *getPainter();
-
     virtual QByteArray getData() const = 0;
     void setVisibleProperties(bool visible);
     void addProperty(LdProperty::Base* property);
@@ -51,9 +46,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
     virtual void clickEvent(QMouseEvent *event);
-    int getSelectedFlag();
 
-    Painter *ldPainter_;
     bool isDrag_;
     QVector<LdProperty::Base*> properties_;
     bool showProperties_;

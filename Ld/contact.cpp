@@ -4,7 +4,7 @@
 */
 
 #include "contact.hpp"
-#include "painter.hpp"
+#include "painterLd.hpp"
 #include <QDebug>
 #include "address.hpp"
 #include <QPainter>
@@ -42,14 +42,18 @@ Type Contact::getType() const
 
 void Contact::paint(QPainter *painter)
 {
-    if(ldPainter_)
-        ldPainter_->drawContact(painter, size(), getSelectedFlag()
-                        | (1 << (type_.getValue() + Painter::contactType)));
-
+    PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
+    painterLd.drawContact();
+
     if(type_.getValue()){
         painter->drawLine(QLineF{64*0.42, 64/2+64*0.08,
                                  64-64*0.42, 64/2-64*0.08});
+    }
+
+    if(selected_){
+        painter->setPen(QPen(Qt::black, 2));
+        painterLd.drawFrame();
     }
 }
 

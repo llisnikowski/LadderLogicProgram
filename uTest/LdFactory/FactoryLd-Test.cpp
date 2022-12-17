@@ -2,25 +2,15 @@
 #include <gtest/gtest.h>
 #include "line.hpp"
 #include "contact.hpp"
-#include "painter.hpp"
 #include <QSizeF>
 
 using namespace testing;
 
 
-TEST(LD_Factory, setPainter)
-{
-    Ld::Painter painter{1.2};
-    FactoryLd::setPainter(&painter);
-    EXPECT_TRUE(FactoryLd::getPainter() ==  &painter);
-}
-
 
 
 TEST(LD_Factory, create)
 {
-    Ld::Painter painter{1.8};
-    FactoryLd::setPainter(&painter);
     QQuickItem parent;
     auto line = FactoryLd::create<Ld::Line>(&parent);
 
@@ -34,8 +24,6 @@ TEST(LD_Factory, create)
 
 TEST(LD_Factory, createWithLambda)
 {
-    Ld::Painter painter{1.8};
-    FactoryLd::setPainter(&painter);
     QQuickItem parent;
     auto contact = FactoryLd::create<Ld::Contact>(&parent,[](Ld::Contact *obj){
         obj->setSize({33.8, 25.6});

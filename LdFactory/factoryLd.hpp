@@ -15,7 +15,6 @@ class Base;
 class Line;
 class Contact;
 class Coil;
-class Painter;
 } // namespace Ld
 
 
@@ -28,8 +27,6 @@ class FactoryLd
 public:
     FactoryLd() = delete;
 
-    static void setPainter(Ld::Painter *painter);
-    static Ld::Painter *getPainter();
     static void setSelectItem(SelectItem *selectItem);
     static SelectItem *getSelectItem();
 
@@ -44,11 +41,6 @@ private:
     template <typename T>
     static T *basicInit(T * obj);
 
-    /*!
-     * \brief Przypisywana klasa Painter
-     * \see setPainter, getPainter
-     */
-    static Ld::Painter *painter_;
     static SelectItem *selectItem_;
 };
 
@@ -60,7 +52,6 @@ private:
 template <typename T>
 T *FactoryLd::basicInit(T * obj)
 {
-    obj->setPainter(painter_);
     if(selectItem_) selectItem_->addItemToList(obj);
     return obj;
 }

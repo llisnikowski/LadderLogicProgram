@@ -5,11 +5,9 @@
 #include "config.hpp"
 #include "factoryLd.hpp"
 #include "networkList.hpp"
-#include "painter.hpp"
 #include "symbolsBar.hpp"
 #include "propertiesList.hpp"
 
-Ld::Painter mainPainter{LD_PEN_WIDTH};
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 SelectItem selectItem;
@@ -22,7 +20,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
-    FactoryLd::setPainter(&mainPainter);
     FactoryLd::setSelectItem(&selectItem);
 
     QObject::connect(&selectItem, &SelectItem::changedSelectItem,

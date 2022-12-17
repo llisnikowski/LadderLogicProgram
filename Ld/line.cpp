@@ -5,7 +5,8 @@
 */
 
 #include "line.hpp"
-#include "painter.hpp"
+#include <QPainter>
+#include "painterLd.hpp"
 
 namespace Ld {
 
@@ -31,9 +32,18 @@ Type Line::getType() const
 
 void Line::paint(QPainter *painter)
 {
-    if(ldPainter_)
-        ldPainter_->drawLine(painter, size(),
-                             getDroppingFlag() | getSelectedFlag());
+    PainterLd painterLd{painter, size()};
+    painter->setPen(QPen(Qt::white, 2));
+    painterLd.drawLine();
+
+    if(droppingItem_){
+        painterLd.fillColor();
+    }
+
+    if(selected_){
+        painter->setPen(QPen(Qt::black, 2));
+        painterLd.drawFrame();
+    }
 }
 
 QByteArray Line::getData() const

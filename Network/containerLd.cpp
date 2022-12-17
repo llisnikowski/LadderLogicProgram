@@ -170,7 +170,6 @@ bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
     if(!checkAddInputCondition(obj, line, x)) return false;
 
     container_[line].insert(x, FactoryLd::initObject(obj->clone(this)));
-    container_[line][x]->setPainter(FactoryLd::getPainter());
     container_[line].insert(x + 1, FactoryLd::create<Ld::Line>(this));
 
     insertNode();
@@ -187,7 +186,6 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     if(!checkAddOutputCondition(obj, line, x)) return false;
 
     container_[line].insert(x, FactoryLd::initObject(obj->clone(this)));
-    container_[line][x]->setPainter(FactoryLd::getPainter());
     container_[line].insert(x+1, FactoryLd::create<Ld::Line>(this));
 
     updataSize();

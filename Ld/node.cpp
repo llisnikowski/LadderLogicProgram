@@ -5,7 +5,8 @@
 */
 
 #include "node.hpp"
-#include "painter.hpp"
+#include <QPainter>
+#include "painterLd.hpp"
 
 namespace Ld {
 
@@ -26,8 +27,14 @@ Base *Node::clone(QQuickItem *parent)
 
 void Node::paint(QPainter *painter)
 {
-    if(ldPainter_)
-        ldPainter_->drawNode(painter, size(), getSelectedFlag());
+    PainterLd painterLd{painter, size()};
+    painter->setPen(QPen(Qt::white, 2));
+    painterLd.drawNode();
+
+    if(selected_){
+        painter->setPen(QPen(Qt::black, 2));
+        painterLd.drawFrame();
+    }
 }
 
 Type Node::getType() const

@@ -4,7 +4,7 @@
 */
 
 #include "coil.hpp"
-#include "painter.hpp"
+#include "painterLd.hpp"
 #include "type.hpp"
 #include <QDebug>
 #include <QPainter>
@@ -44,11 +44,12 @@ Type Coil::getType() const
 
 void Coil::paint(QPainter *painter)
 {
-    if(ldPainter_)
-        ldPainter_->drawCoil(painter, size(), getSelectedFlag());
-
+    PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
+    painterLd.drawCoil();
+
     if(type_.getValue()){
+        painter->setPen(QPen(Qt::white, 2));
         QFont font = painter->font();
         font.setPixelSize(16*height()/64);
         font.setBold(true);
@@ -61,6 +62,11 @@ void Coil::paint(QPainter *painter)
         else if(type_.getValue() == 2){
             painter->drawText(rectFont, Qt::AlignCenter, tr("R"));
         }
+    }
+
+    if(selected_){
+        painter->setPen(QPen(Qt::black, 2));
+        painterLd.drawFrame();
     }
 }
 

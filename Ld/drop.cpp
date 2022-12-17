@@ -7,7 +7,6 @@
 #include "drop.hpp"
 #include "dropValidator.hpp"
 #include <QMimeData>
-#include "painter.hpp"
 
 namespace Ld {
 
@@ -107,12 +106,6 @@ void Drop::dropEvent(QDropEvent *event)
     update();
 }
 
-int Drop::getDroppingFlag()
-{
-    if(!droppingItem_) return 0;
-    return Painter::flags::dropping;
-
-}
 
 
 
