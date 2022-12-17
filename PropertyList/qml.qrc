@@ -3,5 +3,6 @@
         <file>PropertyList.qml</file>
         <file>textFieldProperty.qml</file>
         <file>comboboxProperty.qml</file>
+        <file>timeFieldProperty.qml</file>
     </qresource>
 </RCC>

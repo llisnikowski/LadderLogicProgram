@@ -2,6 +2,7 @@
 #include "Ld/base.hpp"
 #include "comboboxField.hpp"
 #include "textField.hpp"
+#include "timeField.hpp"
 #include <QQmlEngine>
 
 PropertiesList::PropertiesList(QQuickItem *parent)
@@ -68,8 +69,14 @@ void PropertiesList::displayProperties()
             propertiesList_.append(obj);
             emit addPropertyItem(obj);
         }
-        if(qobject_cast<LdProperty::ComboboxField*>(property)){
+        else if(qobject_cast<LdProperty::ComboboxField*>(property)){
             auto obj = createQQuickItem("qrc:/comboboxProperty.qml",
+                                        {{"rootModel", QVariant::fromValue(property)}});
+            propertiesList_.append(obj);
+            emit addPropertyItem(obj);
+        }
+        else if(qobject_cast<LdProperty::TimeField*>(property)){
+            auto obj = createQQuickItem("qrc:/timeFieldProperty.qml",
                                         {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);

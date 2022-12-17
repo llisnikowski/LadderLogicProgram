@@ -5,6 +5,7 @@ namespace LdProperty {
 TimeField::TimeField(QQuickItem *parent)
     :Base{parent}, textValue_{}, units_{}, model_{}
 {
+    setPropertyName("Czas");
     setModel({"s:ms*10", "min:s", "h:min"});
 }
 
