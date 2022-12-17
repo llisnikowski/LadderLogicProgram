@@ -24,19 +24,6 @@ Base &Base::operator=(const Base &base)
     return *this;
 }
 
-Type Base::getType() const
-{
-    return Type::Base;
-}
-
-QByteArray Base::getData() const
-{
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("LdProperty") << static_cast<int>(getType());
-    return itemData;
-}
-
 void Base::setPropertyName(QString propertyName){
     propertyName_ = propertyName;
     emit propertyNameChanged();

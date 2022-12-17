@@ -14,9 +14,6 @@ public:
     TextField(QQuickItem *parent = nullptr);
     TextField &operator=(const TextField &textField);
 
-    Type getType() const override;
-    QByteArray getData() const override;
-
     void setTextValue(QString textValue);
     QString getTextValue() const;
 

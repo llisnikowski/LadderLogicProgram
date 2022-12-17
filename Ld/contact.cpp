@@ -6,7 +6,6 @@
 #include "contact.hpp"
 #include "painterLd.hpp"
 #include <QDebug>
-#include "address.hpp"
 #include <QPainter>
 
 namespace Ld {

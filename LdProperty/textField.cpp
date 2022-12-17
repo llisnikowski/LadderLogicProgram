@@ -17,11 +17,6 @@ TextField &TextField::operator=(const TextField &textField)
     return *this;
 }
 
-Type TextField::getType() const
-{
-    return Type::TextField;
-}
-
 void TextField::setTextValue(QString textValue)
 {
     textValue_ = textValue;
@@ -54,16 +49,6 @@ void TextField::setVisible(bool visible)
                          this, &TextField::itemFocus);
     }
 }
-
-
-QByteArray TextField::getData() const
-{
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("LdProperty") << static_cast<int>(getType());
-    return itemData;
-}
-
 
 
 } // namespace LdProperty

@@ -2,7 +2,6 @@
 #define PROPERTYOFLD_HPP
 
 #include <QQuickItem>
-#include "LdProperty/type.hpp"
 
 namespace LdProperty {
 
@@ -16,8 +15,6 @@ public:
     virtual ~Base();
     Base &operator=(const Base &base);
 
-    virtual Type getType() const;
-    virtual QByteArray getData() const;
     virtual void setVisible(bool visible){};
 
     void setPropertyName(QString propertyName);
