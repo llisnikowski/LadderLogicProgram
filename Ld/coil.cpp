@@ -18,7 +18,7 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny
  */
 Coil::Coil(QQuickItem *parent)
-    :Output(parent), type_{this}
+    :Output{parent}, type_{this}
 {
     addProperty(&type_);
     type_.setModel({"Normal", "Set", "Reset"});

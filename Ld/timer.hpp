@@ -2,6 +2,8 @@
 #define TIMER_HPP
 
 #include "output.hpp"
+#include "comboboxField.hpp"
+#include "timeField.hpp"
 
 namespace Ld {
 
@@ -19,7 +21,8 @@ public:
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
 protected:
-
+    LdProperty::ComboboxField type_;
+    LdProperty::TimeField time_;
 };
 
 } //namespace Ld

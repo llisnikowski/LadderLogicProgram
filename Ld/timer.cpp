@@ -6,14 +6,23 @@
 namespace Ld {
 
 Timer::Timer(QQuickItem *parent)
-    :Output(parent)
+    :Output{parent}, type_{this}, time_{this}
 {
+    addProperty(&type_);
+    type_.setModel({"Imp1", "Imp2", "Ton", "Tof", "Imp3", "Tof2", "Gen"});
+    QObject::connect(&type_, &LdProperty::ComboboxField::valueChanged,
+                     this, &QQuickItem::update);
+    QObject::connect(&type_, &LdProperty::ComboboxField::itemFocus,
+                     this, [this](bool focus){if(focus) emit clicked();});
+    addProperty(&time_);
 }
 
 Base *Timer::clone(QQuickItem *parent)
 {
     Timer *copyObject = new Timer{parent};
     copyObject->address_ = this->address_;
+    copyObject->type_ = this->type_;
+    copyObject->time_ = this->time_;
     return copyObject;
 }
 
@@ -39,7 +48,8 @@ QByteArray Timer::getData() const
 {
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("Ld") << static_cast<int>(getType()) << address_;
+    dataStream << QString("Ld") << static_cast<int>(getType()) << address_
+               << type_ << time_;
     return itemData;
 }
 
