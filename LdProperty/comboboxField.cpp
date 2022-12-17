@@ -14,6 +14,7 @@ ComboboxField &ComboboxField::operator=(const ComboboxField &comboboxField)
     if(this != &comboboxField){
         Base::operator=(comboboxField);
         setValue(comboboxField.value_);
+        setModel(comboboxField.model_);
     }
     return *this;
 }
@@ -34,13 +35,13 @@ const QStringList &ComboboxField::getModel() const
     return model_;
 }
 
-void ComboboxField::setModel(QStringList &model)
+void ComboboxField::setModel(const QStringList &model)
 {
     model_ = model;
     emit modelChanged();
 }
 
-void ComboboxField::setModel(QStringList &&model)
+void ComboboxField::setModel(const QStringList &&model)
 {
     model_ = model;
     emit modelChanged();

@@ -19,8 +19,8 @@ public:
     void setValue(int value);
     int getValue() const;
     const QStringList &getModel() const;
-    void setModel(QStringList &model);
-    void setModel(QStringList &&model);
+    void setModel(const QStringList &model);
+    void setModel(const QStringList &&model);
 
 signals:
     void valueChanged();
