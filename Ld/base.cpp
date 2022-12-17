@@ -78,6 +78,11 @@ void Base::addProperty(LdProperty::Base *property)
         property->setVisible(true);
 }
 
+QVector<LdProperty::Base*> &Base::getPropertiesList()
+{
+    return properties_;
+}
+
 void Base::setSelect(bool sel)
 {
     selected_ = sel;

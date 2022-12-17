@@ -9,6 +9,8 @@ namespace LdProperty {
 class Base : public QQuickItem
 {
     Q_OBJECT
+    Q_PROPERTY(QString propertyName READ getPropertyName WRITE setPropertyName
+                   NOTIFY propertyNameChanged)
 public:
     explicit Base(QQuickItem *parent = nullptr);
     virtual ~Base();
@@ -18,10 +20,11 @@ public:
     virtual QByteArray getData() const;
     virtual void setVisible(bool visible){};
 
-    void setPropertyName(QString propertyName){propertyName_ = propertyName;}
+    void setPropertyName(QString propertyName);
     QString getPropertyName() const {return propertyName_;}
 
 signals:
+    void propertyNameChanged();
     void itemFocus(bool);
 
 protected:

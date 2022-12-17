@@ -28,6 +28,7 @@ file(GLOB PROJECT_HEADERS
      LdProperty/*.hpp
      LdFactory/*.hpp
      SelectItem/*.hpp
+     PropertyList/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
@@ -37,11 +38,13 @@ file(GLOB PROJECT_SOURCES
     LdProperty/*.cpp
     LdFactory/*.cpp
     SelectItem/*.cpp
+    PropertyList/*.cpp
 )
 
 set(PROJECT_RESOURSES
     App/qml.qrc
     LdProperty/qml.qrc
+    PropertyList/qml.qrc
 )
 
 file(GLOB OTHER_FILES
@@ -82,6 +85,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/LdProperty
   ${CMAKE_SOURCE_DIR}/SelectItem
   ${CMAKE_SOURCE_DIR}/LdFactory
+  ${CMAKE_SOURCE_DIR}/PropertyList
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -125,6 +129,7 @@ file(GLOB UTEST_SOURCES
     uTest/LdProperty/*.cpp
     uTest/LdFactory/*.cpp
     uTest/SelectItem/*.cpp
+    uTest/PropertyList/*.cpp
 )
 
 
@@ -169,6 +174,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/LdProperty
   ${CMAKE_SOURCE_DIR}/LdFactory
   ${CMAKE_SOURCE_DIR}/SelectItem
+  ${CMAKE_SOURCE_DIR}/PropertyList
 )
 
 

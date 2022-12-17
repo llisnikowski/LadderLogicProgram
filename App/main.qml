@@ -19,19 +19,16 @@ ApplicationWindow {
     SplitView{
         id: mainSplitView
         anchors.fill: parent
-//        fillHeight : true
         orientation: Qt.Horizontal
         clip: true
-//        Component.onCompleted: {
-//            console.log(height)
-//        }
-        SplitView.fillHeight: true
+//        SplitView.fillHeight: true
+
         LdSymbolsBar {
 
             id: symbolsView
             clip: true
             implicitWidth: 80
-            height: parent.height
+//            height: parent.height
             SplitView.minimumWidth: 70
             SplitView.maximumWidth: 100
 //            SplitView.minimumHeight: mainSplitView.height
@@ -55,6 +52,10 @@ ApplicationWindow {
             implicitWidth: 600
             SplitView.minimumWidth: 150
             SplitView.maximumWidth: 1000
+            Component.onCompleted: {
+                height = parent.height
+                propertyList.parent = this;
+            }
         }
     }
 

@@ -5,6 +5,7 @@ namespace LdProperty {
 Address::Address(QQuickItem *parent)
     :TextField{parent}
 {
+    setPropertyName("Adres");
 }
 
 Address::~Address()

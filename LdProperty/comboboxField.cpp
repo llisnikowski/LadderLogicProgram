@@ -6,6 +6,7 @@ namespace LdProperty {
 ComboboxField::ComboboxField(QQuickItem *parent)
     :Base{parent}, value_{}, model_{}
 {
+    setPropertyName("Typ");
 }
 
 ComboboxField &ComboboxField::operator=(const ComboboxField &comboboxField)
@@ -56,7 +57,7 @@ void ComboboxField::setVisible(bool visible)
     if(QCoreApplication::startingUp()) return;
 
     QQmlEngine *engine = new QQmlEngine{this};
-    QQmlComponent component(engine, QUrl(QStringLiteral("qrc:/LdProperty_comboboxField.qml")),
+    QQmlComponent component(engine, QUrl(QStringLiteral("qrc:/LdProperty_combobox.qml")),
                             QQmlComponent::PreferSynchronous, this);
     QVariantMap qvMap{{"rootModel", QVariant::fromValue(this)}};
     qmlObject_ = qobject_cast<QQuickItem *>(component.createWithInitialProperties(qvMap));

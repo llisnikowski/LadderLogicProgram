@@ -41,6 +41,7 @@ public:
     virtual QByteArray getData() const = 0;
     void setVisibleProperties(bool visible);
     void addProperty(LdProperty::Base* property);
+    QVector<LdProperty::Base*> &getPropertiesList();
 
     void setSelect(bool sel);
 

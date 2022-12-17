@@ -37,6 +37,11 @@ QByteArray Base::getData() const
     return itemData;
 }
 
+void Base::setPropertyName(QString propertyName){
+    propertyName_ = propertyName;
+    emit propertyNameChanged();
+}
+
 
 } // namespace LdProperty
 

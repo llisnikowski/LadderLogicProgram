@@ -7,12 +7,14 @@
 #include "networkList.hpp"
 #include "painter.hpp"
 #include "symbolsBar.hpp"
-
+#include "propertiesList.hpp"
 
 Ld::Painter mainPainter{LD_PEN_WIDTH};
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 SelectItem selectItem;
+PropertiesList propertyList;
+
 
 int main(int argc, char *argv[])
 {
@@ -23,12 +25,16 @@ int main(int argc, char *argv[])
     FactoryLd::setPainter(&mainPainter);
     FactoryLd::setSelectItem(&selectItem);
 
+    QObject::connect(&selectItem, &SelectItem::changedSelectItem,
+                     &propertyList, &PropertiesList::display);
+
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty("networkList", &networkList);
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);
     engine.rootContext()->setContextProperty("selectItem", &selectItem);
+    engine.rootContext()->setContextProperty("propertyList", &propertyList);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

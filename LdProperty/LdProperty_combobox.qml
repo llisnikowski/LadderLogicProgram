@@ -16,7 +16,7 @@ Item {
         anchors.horizontalCenterOffset:(64-width)/2-2;
         width:15;
         height:36;
-        font.pixelSize: 12
+        font.pixelSize: 10
         model: rootModel.model
         currentIndex: rootModel.value;
 
