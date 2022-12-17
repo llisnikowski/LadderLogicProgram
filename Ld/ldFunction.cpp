@@ -2,6 +2,7 @@
 #include <QString>
 #include "line.hpp"
 #include "coil.hpp"
+#include "timer.hpp"
 #include "contact.hpp"
 #include "node.hpp"
 #include "type.hpp"
@@ -30,6 +31,13 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
         auto coil = new Ld::Coil;
         stream >> coil->address_ >> coil->type_;
         *ld = coil;
+        break;
+    }
+    case static_cast<int>(Ld::Type::Timer):
+    {
+        auto timer = new Ld::Timer;
+        stream >> timer->address_;
+        *ld = timer;
         break;
     }
     case static_cast<int>(Ld::Type::Line):

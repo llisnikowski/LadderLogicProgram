@@ -15,7 +15,8 @@ enum class Type : int {
     Input =     0x0010 | Drag,
     Output =    0x0020 | Drag,
     Contact =   0x0100 | Input,
-    Coil =      0x0100 | Output
+    Coil =      0x0100 | Output,
+    Timer =     0x0200 | Output
 };
 
 inline bool operator >=(Type derivative, Type base){

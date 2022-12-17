@@ -9,6 +9,7 @@
 #include "dropDeleter.hpp"
 #include "emptyDrop.hpp"
 #include "factoryLd.hpp"
+#include "timer.hpp"
 #include <QDebug>
 
 namespace Ld {
@@ -44,6 +45,12 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     FactoryLd::create<Ld::Coil>(this, [this](Ld::Coil *obj){
         obj->setSize({64, 64});
         obj->setY(64);
+        obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
+        obj->setVisibleProperties(false);
+    });
+    FactoryLd::create<Ld::Timer>(this, [this](Ld::Timer *obj){
+        obj->setSize({64, 64});
+        obj->setY(128);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
         obj->setVisibleProperties(false);
     });
