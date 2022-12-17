@@ -5,6 +5,7 @@
 #include "symbolsBar.hpp"
 #include "contact.hpp"
 #include "coil.hpp"
+#include "counter.hpp"
 #include "dragNetworkData.hpp"
 #include "dropDeleter.hpp"
 #include "emptyDrop.hpp"
@@ -50,7 +51,13 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     });
     FactoryLd::create<Ld::Timer>(this, [this](Ld::Timer *obj){
         obj->setSize({64, 64});
-        obj->setY(128);
+        obj->setY(64 * 2);
+        obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
+        obj->setVisibleProperties(false);
+    });
+    FactoryLd::create<Ld::Counter>(this, [this](Ld::Counter *obj){
+        obj->setSize({64, 64});
+        obj->setY(64 * 3);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
         obj->setVisibleProperties(false);
     });

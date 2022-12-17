@@ -3,6 +3,7 @@
 #include "line.hpp"
 #include "coil.hpp"
 #include "timer.hpp"
+#include "counter.hpp"
 #include "contact.hpp"
 #include "node.hpp"
 #include "type.hpp"
@@ -38,6 +39,13 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
         auto timer = new Ld::Timer;
         stream >> timer->address_ >> timer->type_ >> timer->time_;
         *ld = timer;
+        break;
+    }
+    case static_cast<int>(Ld::Type::Counter):
+    {
+        auto counter = new Ld::Counter;
+        stream >> counter->address_ >> counter->type_ >> counter->counter_;
+        *ld = counter;
         break;
     }
     case static_cast<int>(Ld::Type::Line):
