@@ -18,9 +18,11 @@ PainterLd::PainterLd(QPainter *painter, QSizeF objectSize)
     :painter_{painter},
     objectSize_{objectSize},
     verticalLineX_{CONTACT_V_LINE_X_FACTORY * objectSize.width()},
-    verticalLineHeight_{CONTACT_V_LINE_HEIGHT_FACTORY * objectSize.width()},
+    verticalLineHeight_{CONTACT_V_LINE_HEIGHT_FACTORY * objectSize.height()},
+    contactSlashOffsetX_{CONTACT_SLASH_OFFSET_X_FACTORY * objectSize.width()},
+    contactSlashHeight_{CONTACT_SLASH_HEIGHT_FACTORY*objectSize.height()},
     coilArcAngle_{COIL_ARC_ANGLE},
-    coilArcRadius_{COIL_ARC_RADIOUS_FACTORY * objectSize_.width()},
+    coilArcRadius_{COIL_ARC_RADIOUS_FACTORY * objectSize_.height()},
     coilArcOffsetX_{COIL_ARC_OFFSET_FACTORY * objectSize_.width()}
 {
 }
@@ -33,6 +35,11 @@ PainterLd::PainterLd(QPainter *painter, QSizeF objectSize)
 void PainterLd::drawContact()
 {
     drawContactContour();
+}
+
+void PainterLd::drawContactSlash()
+{
+    drawSlashLine(verticalLineX_ + contactSlashOffsetX_, contactSlashHeight_);
 }
 
 /*!
@@ -104,7 +111,15 @@ void PainterLd::drawVerticalPairLine(float x, float height)
 void PainterLd::drawVerticalLine(float x, float height)
 {
     painter_->drawLine(x, objectSize_.height() / 2 - height / 2,
-                     x, objectSize_.height() / 2 + height / 2);
+                       x, objectSize_.height() / 2 + height / 2);
+}
+
+void PainterLd::drawSlashLine(float x, float height)
+{
+    painter_->drawLine(x,
+                       objectSize_.height() / 2 + height / 2,
+                       objectSize_.width() - x,
+                       objectSize_.height() / 2 - height / 2);
 }
 
 /*!
@@ -191,7 +206,18 @@ void PainterLd::drawFrame(qreal frameWidth)
 {
     painter_->drawRect(frameWidth / 2, frameWidth / 2,
                      objectSize_.width() - frameWidth / 2,
-                     objectSize_.height() - frameWidth / 2);
+                       objectSize_.height() - frameWidth / 2);
+}
+
+void PainterLd::printCenterLetter(QChar letter)
+{
+    QFont font = painter_->font();
+    font.setPixelSize(CENTER_LETTER_SIZE);
+    font.setBold(CENTER_LETTER_BOLD);
+    painter_->setFont(font);
+    QRectF litterRect {{CORRECT_CENTER_LETTER_OFFSET_X,
+                       CORRECT_CENTER_LETTER_OFFSET_Y}, objectSize_};
+    painter_->drawText(litterRect, Qt::AlignCenter, letter);
 }
 
 

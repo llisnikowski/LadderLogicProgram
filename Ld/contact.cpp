@@ -47,8 +47,7 @@ void Contact::paint(QPainter *painter)
     painterLd.drawContact();
 
     if(type_.getValue()){
-        painter->drawLine(QLineF{64*0.42, 64/2+64*0.08,
-                                 64-64*0.42, 64/2-64*0.08});
+        painterLd.drawContactSlash();
     }
 
     if(selected_){

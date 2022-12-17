@@ -48,20 +48,11 @@ void Coil::paint(QPainter *painter)
     painter->setPen(QPen(Qt::white, 2));
     painterLd.drawCoil();
 
-    if(type_.getValue()){
-        painter->setPen(QPen(Qt::white, 2));
-        QFont font = painter->font();
-        font.setPixelSize(16*height()/64);
-        font.setBold(true);
-        painter->setFont(font);
-        QRectF rectFont = boundingRect();
-        rectFont.setHeight(rectFont.height()*0.95);
-        if(type_.getValue() == 1){
-            painter->drawText(rectFont, Qt::AlignCenter, tr("S"));
-        }
-        else if(type_.getValue() == 2){
-            painter->drawText(rectFont, Qt::AlignCenter, tr("R"));
-        }
+    if(type_.getValue() == 1){
+        painterLd.printCenterLetter('S');
+    }
+    else if(type_.getValue() == 2){
+        painterLd.printCenterLetter('R');
     }
 
     if(selected_){

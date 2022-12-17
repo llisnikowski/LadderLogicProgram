@@ -9,6 +9,7 @@
 #include <QQmlEngine>
 #include <QSizeF>
 #include <QColor>
+#include <QPair>
 
 /*!
  * \defgroup GlobalParameters Globalne parametry rysowania
@@ -19,9 +20,15 @@
 constexpr qreal CONTACT_V_LINE_X_FACTORY {0.35};
 constexpr qreal CONTACT_VL_LINE_HEIGHT_FACTORY {0.25};
 constexpr qreal CONTACT_V_LINE_HEIGHT_FACTORY {0.25};
+constexpr qreal CONTACT_SLASH_OFFSET_X_FACTORY {0.07};
+constexpr qreal CONTACT_SLASH_HEIGHT_FACTORY {0.16};
 constexpr qreal COIL_ARC_ANGLE {90};
 constexpr qreal COIL_ARC_RADIOUS_FACTORY {0.2};
 constexpr qreal COIL_ARC_OFFSET_FACTORY {0.02};
+constexpr int CENTER_LETTER_SIZE {16};
+constexpr bool CENTER_LETTER_BOLD {true};
+constexpr qreal CORRECT_CENTER_LETTER_OFFSET_X {0.6};
+constexpr qreal CORRECT_CENTER_LETTER_OFFSET_Y {-2.0};
 /*! @} */
 
 
@@ -39,18 +46,21 @@ public:
     PainterLd(QPainter *painter, QSizeF objectSize);
 
     void drawContact();
+    void drawContactSlash();
     void drawCoil();
     void drawLine();
     void drawNode();
 
     void fillColor(QColor color = {0,0,0,20});
     void drawFrame(qreal frameWidth = 2);
+    void printCenterLetter(QChar letter);
 
 private:
     void drawContactContour();
     void drawCoilContour();
     void drawVerticalPairLine(float x, float height);
     void drawVerticalLine(float x, float height);
+    void drawSlashLine(float x, float height);
     void drawVerticalLine();
     void drawHorizontalPairLine(float x);
     void drawPairArc(float angle, float radiusX, float offsetX = 0);
@@ -71,6 +81,8 @@ private:
      */
     qreal verticalLineX_;
     qreal verticalLineHeight_;
+    qreal contactSlashOffsetX_;
+    qreal contactSlashHeight_;
     qreal coilArcAngle_;
     qreal coilArcRadius_;
     qreal coilArcOffsetX_;
