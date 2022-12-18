@@ -18,7 +18,8 @@ enum class Type : int {
     Weektimer = 0x0200 | Input,
     Coil =      0x0100 | Output,
     Timer =     0x0200 | Output,
-    Counter =   0x0400 | Output
+    Counter =   0x0400 | Output,
+    Text =      0x0800 | Output
 };
 
 inline bool operator >=(Type derivative, Type base){
