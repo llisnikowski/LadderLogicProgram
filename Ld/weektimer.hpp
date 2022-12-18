@@ -2,6 +2,8 @@
 #define WEEKTIMER_HPP
 
 #include "input.hpp"
+#include "textField.hpp"
+#include "daysOfWeekField.hpp"
 
 namespace Ld {
 
@@ -19,6 +21,9 @@ public:
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
 protected:
+    LdProperty::TextField timeOn_;
+    LdProperty::TextField timeOff_;
+    LdProperty::DaysOfWeekField daysOfWeek_;
 };
 
 

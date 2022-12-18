@@ -3,6 +3,7 @@
 #include "comboboxField.hpp"
 #include "textField.hpp"
 #include "timeField.hpp"
+#include "daysOfWeekField.hpp"
 #include <QQmlEngine>
 
 PropertiesList::PropertiesList(QQuickItem *parent)
@@ -77,6 +78,12 @@ void PropertiesList::displayProperties()
         }
         else if(qobject_cast<LdProperty::TimeField*>(property)){
             auto obj = createQQuickItem("qrc:/timeFieldProperty.qml",
+                                        {{"rootModel", QVariant::fromValue(property)}});
+            propertiesList_.append(obj);
+            emit addPropertyItem(obj);
+        }
+        else if(qobject_cast<LdProperty::DaysOfWeekField*>(property)){
+            auto obj = createQQuickItem("qrc:/daysOfWeekFieldProperty.qml",
                                         {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);

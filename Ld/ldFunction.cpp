@@ -31,7 +31,8 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
     case static_cast<int>(Ld::Type::Weektimer):
     {
         auto weektimer = new Ld::Weektimer;
-        stream >> weektimer->address_;
+        stream >> weektimer->address_ >> weektimer->timeOn_
+            >> weektimer->timeOff_ >> weektimer->daysOfWeek_;
         *ld = weektimer;
         break;
     }
