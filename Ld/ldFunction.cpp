@@ -6,6 +6,7 @@
 #include "counter.hpp"
 #include "contact.hpp"
 #include "weektimer.hpp"
+#include "text.hpp"
 #include "node.hpp"
 #include "type.hpp"
 #include "drag.hpp"
@@ -55,6 +56,13 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
         auto counter = new Ld::Counter;
         stream >> counter->address_ >> counter->type_ >> counter->counter_;
         *ld = counter;
+        break;
+    }
+    case static_cast<int>(Ld::Type::Text):
+    {
+        auto text = new Ld::Text;
+        stream >> text->address_ >> text->texts_;
+        *ld = text;
         break;
     }
     case static_cast<int>(Ld::Type::Line):

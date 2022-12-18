@@ -6,15 +6,17 @@
 namespace Ld {
 
 Text::Text(QQuickItem *parent)
-    :Output{parent}
+    :Output{parent}, texts_{4, this}
 {
-
+    addProperty(&texts_);
+    texts_.setPropertyName("Text");
 }
 
 Base *Text::clone(QQuickItem *parent)
 {
     Text *copyObject = new Text{parent};
     copyObject->address_ = this->address_;
+    copyObject->texts_ = this->texts_;
     return copyObject;
 }
 
@@ -33,14 +35,14 @@ void Text::paint(QPainter *painter)
 
 Type Text::getType() const
 {
-    return Type::Timer;
+    return Type::Text;
 }
 
 QByteArray Text::getData() const
 {
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("Ld") << static_cast<int>(getType()) << address_;
+    dataStream << QString("Ld") << static_cast<int>(getType()) << address_ << texts_;
     return itemData;
 }
 

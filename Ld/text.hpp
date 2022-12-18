@@ -2,6 +2,7 @@
 #define TEXT_HPP
 
 #include "output.hpp"
+#include "multitextfield.hpp"
 
 namespace Ld {
 
@@ -17,6 +18,9 @@ public:
     Type getType() const override;
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
+
+protected:
+    LdProperty::MultitextField texts_;
 };
 
 } //namespace Ld

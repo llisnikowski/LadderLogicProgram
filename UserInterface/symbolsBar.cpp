@@ -10,6 +10,7 @@
 #include "dropDeleter.hpp"
 #include "emptyDrop.hpp"
 #include "factoryLd.hpp"
+#include "text.hpp"
 #include "timer.hpp"
 #include "weektimer.hpp"
 #include <QDebug>
@@ -65,6 +66,12 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     FactoryLd::create<Ld::Weektimer>(this, [this](Ld::Weektimer *obj){
         obj->setSize({64, 64});
         obj->setY(64 * 4);
+        obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
+        obj->setVisibleProperties(false);
+    });
+    FactoryLd::create<Ld::Text>(this, [this](Ld::Text *obj){
+        obj->setSize({64, 64});
+        obj->setY(64 * 5);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
         obj->setVisibleProperties(false);
     });
