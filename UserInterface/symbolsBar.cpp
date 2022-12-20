@@ -10,8 +10,10 @@
 #include "dropDeleter.hpp"
 #include "emptyDrop.hpp"
 #include "factoryLd.hpp"
+#include "imitatorLd.hpp"
 #include "text.hpp"
 #include "timer.hpp"
+#include "type.hpp"
 #include "weektimer.hpp"
 #include <QDebug>
 
@@ -40,33 +42,40 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
         obj->setSize({width(), height()});
         obj->setDropValidator(new DropDeleter(obj));
     });
-    FactoryLd::create<Ld::Contact>(this, [this](Ld::Contact *obj){
+    FactoryLd::create<ImitatorLd>(this, [this](ImitatorLd *obj){
+        obj->setType(Ld::Type::Contact);
         obj->setSize({64, 64});
+        obj->setY(0);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
-    FactoryLd::create<Ld::Coil>(this, [this](Ld::Coil *obj){
+    FactoryLd::create<ImitatorLd>(this, [this](ImitatorLd *obj){
+        obj->setType(Ld::Type::Coil);
         obj->setSize({64, 64});
         obj->setY(64);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
-    FactoryLd::create<Ld::Timer>(this, [this](Ld::Timer *obj){
+    FactoryLd::create<ImitatorLd>(this, [this](ImitatorLd *obj){
+        obj->setType(Ld::Type::Timer);
         obj->setSize({64, 64});
-        obj->setY(64 * 2);
+        obj->setY(64*2);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
-    FactoryLd::create<Ld::Counter>(this, [this](Ld::Counter *obj){
+    FactoryLd::create<ImitatorLd>(this, [this](ImitatorLd *obj){
+        obj->setType(Ld::Type::Counter);
         obj->setSize({64, 64});
-        obj->setY(64 * 3);
+        obj->setY(64*3);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
-    FactoryLd::create<Ld::Weektimer>(this, [this](Ld::Weektimer *obj){
+    FactoryLd::create<ImitatorLd>(this, [this](ImitatorLd *obj){
+        obj->setType(Ld::Type::Weektimer);
         obj->setSize({64, 64});
-        obj->setY(64 * 4);
+        obj->setY(64*4);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
-    FactoryLd::create<Ld::Text>(this, [this](Ld::Text *obj){
+    FactoryLd::create<ImitatorLd>(this, [this](ImitatorLd *obj){
+        obj->setType(Ld::Type::Text);
         obj->setSize({64, 64});
-        obj->setY(64 * 5);
+        obj->setY(64*5);
         obj->setDragData(new DragNetworkData(obj, obj->getData(), -1, {}));
     });
 }
