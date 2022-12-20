@@ -1,6 +1,6 @@
 #include "imitatorLd.hpp"
-
-
+#include "painterLd.hpp"
+#include <QPainter>
 
 ImitatorLd::ImitatorLd(QQuickItem *parent)
     :Ld::Drag{parent}, type_{}
@@ -15,7 +15,26 @@ Ld::Base *ImitatorLd::clone(QQuickItem *parent)
 
 void ImitatorLd::paint(QPainter *painter)
 {
-
+    Ld::PainterLd painterLd{painter, size()};
+    painter->setPen(QPen(Qt::white, 2));
+    if(type_ >= Ld::Type::Input){
+        painterLd.drawContact();
+        if(type_ == Ld::Type::Weektimer){
+            painterLd.printCenterLetter('Z');
+        }
+    }
+    else if(type_ >= Ld::Type::Output){
+        painterLd.drawCoil();
+        if(type_ == Ld::Type::Timer){
+            painterLd.printCenterLetter('T');
+        }
+        else if(type_ == Ld::Type::Counter){
+            painterLd.printCenterLetter('C');
+        }
+        else if(type_ == Ld::Type::Text){
+            painterLd.printCenterLetter('X');
+        }
+    }
 }
 
 Ld::Type ImitatorLd::getType() const
