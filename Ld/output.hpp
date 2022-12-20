@@ -8,7 +8,7 @@
 #ifndef OUTPUT_HPP
 #define OUTPUT_HPP
 
-#include "drag.hpp"
+#include "address.hpp"
 
 namespace Ld {
 
@@ -18,7 +18,7 @@ namespace Ld {
  * Klasa dziedziczy z klasy Drag udostępniając mechanizm przenoszenia.
  * \see Input
  */
-class Output : public Drag
+class Output : public Address
 {
     Q_OBJECT
 public:

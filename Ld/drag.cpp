@@ -19,12 +19,8 @@ namespace Ld{
  * \param parent: rodzic/element nadrzędny.
  */
 Drag::Drag(QQuickItem *parent)
-    :Base{parent}, address_{this}, dragData_{}
+    :Base{parent}, dragData_{}
 {
-    address_.setPropertyName("Adres");
-    addProperty(&address_);
-    QObject::connect(&address_, &LdProperty::TextField::itemFocus,
-                     this, [this](bool focus){if(focus) emit clicked();});
 }
 
 Drag::~Drag()

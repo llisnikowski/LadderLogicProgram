@@ -13,7 +13,7 @@ namespace Ld{
  * \param parent: rodzic/element nadrzędny
  */
 Input::Input(QQuickItem *parent)
-    :Drag{parent}
+    :Address{parent}
 {
 }
 
