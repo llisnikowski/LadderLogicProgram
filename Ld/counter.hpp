@@ -2,7 +2,7 @@
 #define COUNETER_HPP
 
 #include "output.hpp"
-#include "comboboxField.hpp"
+#include "typeField.hpp"
 #include "textField.hpp"
 
 namespace Ld {
@@ -21,7 +21,7 @@ public:
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
 protected:
-    LdProperty::ComboboxField type_;
+    LdProperty::TypeField type_;
     LdProperty::TextField counter_;
 };
 

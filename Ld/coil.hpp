@@ -7,7 +7,7 @@
 #define COIL_HPP
 
 #include "output.hpp"
-#include "comboboxField.hpp"
+#include "typeField.hpp"
 
 namespace Ld {
 
@@ -29,7 +29,7 @@ public:
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
 protected:
-    LdProperty::ComboboxField type_;
+    LdProperty::TypeField type_;
 };
 
 } //namespace Ld

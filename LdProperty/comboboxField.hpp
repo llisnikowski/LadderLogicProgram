@@ -14,8 +14,6 @@ public:
     ComboboxField(QQuickItem *parent = nullptr);
     ComboboxField &operator=(const ComboboxField &comboboxField);
 
-    void setVisible(bool visible) override;
-
     void setValue(int value);
     int getValue() const;
     const QStringList &getModel() const;

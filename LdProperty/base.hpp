@@ -12,10 +12,8 @@ class Base : public QQuickItem
                    NOTIFY propertyNameChanged)
 public:
     explicit Base(QQuickItem *parent = nullptr);
-    virtual ~Base();
+    virtual ~Base() = default;
     Base &operator=(const Base &base);
-
-    virtual void setVisible(bool visible){};
 
     void setPropertyName(QString propertyName);
     QString getPropertyName() const {return propertyName_;}
@@ -26,7 +24,6 @@ signals:
 
 protected:
     QString propertyName_;
-    QQuickItem *qmlObject_;
 };
 
 

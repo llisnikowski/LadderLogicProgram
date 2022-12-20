@@ -7,7 +7,7 @@
 #define CONTACT_HPP
 
 #include "input.hpp"
-#include "comboboxField.hpp"
+#include "typeField.hpp"
 
 namespace Ld {
 
@@ -28,7 +28,7 @@ public:
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
 protected:
-    LdProperty::ComboboxField type_;
+    LdProperty::TypeField type_;
 
 };
 

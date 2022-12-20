@@ -34,7 +34,6 @@ public:
     virtual Type getType() const;
 
     virtual QByteArray getData() const = 0;
-    void setVisibleProperties(bool visible);
     void addProperty(LdProperty::Base* property);
     QVector<LdProperty::Base*> &getPropertiesList();
 
@@ -49,7 +48,6 @@ protected:
 
     bool isDrag_;
     QVector<LdProperty::Base*> properties_;
-    bool showProperties_;
     bool selected_;
 
 signals:

@@ -17,11 +17,6 @@ public:
     void setTextValue(QString textValue);
     QString getTextValue() const;
 
-    void setVisible(bool visible) override;
-
-private:
-    bool validText();
-
 signals:
     void textValueChanged();
 

@@ -47,28 +47,6 @@ void ComboboxField::setModel(const QStringList &&model)
     emit modelChanged();
 }
 
-void ComboboxField::setVisible(bool visible)
-{
-    if(qmlObject_){
-        delete qmlObject_;
-        qmlObject_ = nullptr;
-    }
-
-    if(!visible) return;
-    if(QCoreApplication::startingUp()) return;
-
-    QQmlEngine *engine = new QQmlEngine{this};
-    QQmlComponent component(engine, QUrl(QStringLiteral("qrc:/LdProperty_combobox.qml")),
-                            QQmlComponent::PreferSynchronous, this);
-    QVariantMap qvMap{{"rootModel", QVariant::fromValue(this)}};
-    qmlObject_ = qobject_cast<QQuickItem *>(component.createWithInitialProperties(qvMap));
-    if(qmlObject_){
-        qmlObject_->setParentItem(this);
-        QObject::connect(qmlObject_, &QQuickItem::focusChanged,
-                         this, &ComboboxField::itemFocus);
-    }
-}
-
 
 } // namespace LdProperty
 

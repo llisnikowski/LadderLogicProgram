@@ -4,16 +4,8 @@
 namespace LdProperty{
 
 Base::Base(QQuickItem *parent)
-    : QQuickItem{parent}, qmlObject_{}
+    : QQuickItem{parent}
 {
-}
-
-Base::~Base()
-{
-    if(qmlObject_){
-        delete qmlObject_;
-        qmlObject_ = nullptr;
-    }
 }
 
 Base &Base::operator=(const Base &base)

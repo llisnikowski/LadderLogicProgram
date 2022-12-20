@@ -5,7 +5,7 @@
 namespace Ld {
 
 Counter::Counter(QQuickItem *parent)
-    :Output{parent}
+    :Output{parent}, type_{this}, counter_{}
 {
     addProperty(&type_);
     type_.setModel({"Add", "Dir", "Reset"});

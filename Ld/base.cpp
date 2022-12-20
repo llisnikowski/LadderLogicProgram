@@ -17,7 +17,7 @@ namespace Ld{
  */
 Base::Base(QQuickItem *parent)
     :QQuickPaintedItem{parent}, isDrag_{}, properties_{},
-    showProperties_{true}, selected_{}
+    selected_{}
 {
     setAcceptedMouseButtons(Qt::LeftButton);
     QObject::connect(this, &Base::clicked,
@@ -34,22 +34,10 @@ Type Base::getType() const
     return Type::Base;
 }
 
-void Base::setVisibleProperties(bool visible)
-{
-    if(showProperties_ == visible) return;
-    showProperties_ = visible;
-    for(auto property : properties_){
-        property->setVisible(showProperties_);
-    }
-}
-
 void Base::addProperty(LdProperty::Base *property)
 {
     if(!property) return;
     properties_.append(property);
-
-    if(showProperties_)
-        property->setVisible(true);
 }
 
 QVector<LdProperty::Base*> &Base::getPropertiesList()

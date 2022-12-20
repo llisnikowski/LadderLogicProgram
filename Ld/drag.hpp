@@ -8,7 +8,7 @@
 #define DRAG_HPP
 
 #include "Ld/base.hpp"
-#include "textField.hpp"
+#include "addressField.hpp"
 #include "ldFunction.hpp"
 
 class QMimeData;
@@ -39,7 +39,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     virtual void paintDrag(QPainter &painter);
 
-    LdProperty::TextField address_;
+    LdProperty::AddressField address_;
 
 signals:
     void dragged();
