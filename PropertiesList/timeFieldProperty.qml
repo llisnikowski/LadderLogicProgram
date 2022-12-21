@@ -12,7 +12,7 @@ Row {
 
     Label{
         anchors.verticalCenter: parent.verticalCenter
-        text: rootModel.name+":"
+        text: rootModel.propertyName+":"
     }
 
     TextField{

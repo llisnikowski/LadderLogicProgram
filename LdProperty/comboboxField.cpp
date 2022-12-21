@@ -6,7 +6,6 @@ namespace LdProperty {
 ComboboxField::ComboboxField(QQuickItem *parent)
     :Base{parent}, value_{}, model_{}
 {
-    setPropertyName("Typ");
 }
 
 ComboboxField &ComboboxField::operator=(const ComboboxField &comboboxField)

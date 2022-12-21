@@ -47,7 +47,9 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
     case static_cast<int>(Ld::Type::Timer):
     {
         auto timer = new Ld::Timer;
-        stream >> timer->address_ >> timer->type_ >> timer->time_;
+        stream >> timer->address_;
+        stream >> timer->type_;
+        stream >>timer->time_;
         *ld = timer;
         break;
     }

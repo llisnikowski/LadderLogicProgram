@@ -10,7 +10,7 @@ Row {
 
     Label{
         anchors.verticalCenter: parent.verticalCenter
-        text: rootModel.name+":"
+        text: rootModel.propertyName+":"
     }
 
     readonly property var daysName: ["pn","wt","sr","cz","pt","so","nd"]

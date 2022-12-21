@@ -6,6 +6,7 @@ namespace LdProperty {
 TypeField::TypeField(QQuickItem *parent)
     :ComboboxField{parent}, qmlObject_{}
 {
+    setPropertyName("Typ");
     display();
 }
 

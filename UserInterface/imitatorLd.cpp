@@ -1,5 +1,11 @@
 #include "imitatorLd.hpp"
+#include "coil.hpp"
+#include "contact.hpp"
 #include "painterLd.hpp"
+#include "timer.hpp"
+#include "weektimer.hpp"
+#include "counter.hpp"
+#include "text.hpp"
 #include <QPainter>
 
 ImitatorLd::ImitatorLd(QQuickItem *parent)
@@ -49,10 +55,32 @@ void ImitatorLd::setType(Ld::Type type)
 
 QByteArray ImitatorLd::getData() const
 {
-    QByteArray itemData;
-    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << QString("Ld") << static_cast<int>(type_);
-    return itemData;
+    Ld::Base *obj;
+    if(type_ >= Ld::Type::Input){
+        if(type_ == Ld::Type::Contact){
+            obj = new Ld::Contact;
+        }
+        if(type_ == Ld::Type::Weektimer){
+            obj = new Ld::Weektimer;
+        }
+    }
+    else if(type_ >= Ld::Type::Output){
+        if(type_ == Ld::Type::Coil){
+            obj = new Ld::Coil;
+        }
+        else if(type_ == Ld::Type::Timer){
+            obj = new Ld::Timer;
+        }
+        else if(type_ == Ld::Type::Counter){
+            obj = new Ld::Counter;
+        }
+        else if(type_ == Ld::Type::Text){
+            obj = new Ld::Text;
+        }
+    }
+    QByteArray data = obj->getData();
+    if(obj) delete obj;
+    return data;
 }
 
 
