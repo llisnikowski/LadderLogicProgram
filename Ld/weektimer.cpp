@@ -1,6 +1,7 @@
 #include "weektimer.hpp"
 #include <QPainter>
 #include "painterLd.hpp"
+#include <QRegularExpression>
 
 namespace Ld {
 
@@ -12,6 +13,36 @@ Weektimer::Weektimer(QQuickItem *parent)
     addProperty(&timeOff_);
     timeOff_.setPropertyName("Czas wyłączenia");
     addProperty(&daysOfWeek_);
+
+    timeOn_.setPlaceholder("[0-23]:[00-59]");
+    timeOff_.setPlaceholder("[0-23]:[00-59]");
+
+    auto validTimeFun = [](QString &text)->bool{
+        QStringList textList = text.split(':');
+        if(textList.count() < 2){
+            text = text.remove(QRegularExpression{"[^\\d]"});
+            return false;
+        }
+        textList[0] = textList[0].remove(QRegularExpression{"[^\\d{0,2}]"});
+        textList[1] = textList[1].remove(QRegularExpression{"[^\\d{0,2}]"});
+        text = textList[0] + ":" + textList[1];
+        int textInt0 = textList[0].toInt();
+        int textInt1 = textList[1].toInt();
+        if(textInt0 < 0 || textInt0 >= 24) return false;
+        if(textInt1 < 0 || textInt1 >= 60) return false;
+        return true;
+    };
+
+    timeOn_.setValidator(validTimeFun);
+    timeOff_.setValidator(validTimeFun);
+
+
+    address_.setPlaceholder("Z[00-15]");
+    address_.setValidator([](QString &text)->bool{
+        text = text.toUpper();
+        QRegularExpression regExp{"^[Z]((0?\\d)|(1[0-5]))$"};
+        return regExp.match(text).hasMatch();
+    });
 }
 
 Base *Weektimer::clone(QQuickItem *parent)

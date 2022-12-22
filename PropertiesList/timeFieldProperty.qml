@@ -19,12 +19,12 @@ Row {
         id:textField;
         anchors.verticalCenter: parent.verticalCenter
         text: rootModel.textValue;
-        placeholderText: "..."
-        color: "white"
+        placeholderText: rootModel.placeholder
+        color:  rootModel.textIsValid ? "white" : "red"
         selectByMouse: true
         clip: true
 
-        onTextChanged: {
+        onTextEdited: {
             if(textField.activeFocus){
                 rootModel.textValue = textField.text
             }

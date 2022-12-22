@@ -1,6 +1,7 @@
 #include "counter.hpp"
 #include <QPainter>
 #include "painterLd.hpp"
+#include <QRegularExpression>
 
 namespace Ld {
 
@@ -15,6 +16,20 @@ Counter::Counter(QQuickItem *parent)
                      this, [this](bool focus){if(focus) emit clicked();});
     addProperty(&counter_);
     counter_.setPropertyName("Wartość zadana");
+    counter_.setPlaceholder("1-9999");
+    counter_.setValidator([](QString &text)->bool{
+        text = text.remove(QRegularExpression{"[^\\d{0,4}\\$]"});
+        int textInt = text.toInt();
+        if(textInt >= 0 && textInt <= 9999) return true;
+        return false;
+    });
+
+    address_.setPlaceholder("C[00-15]");
+    address_.setValidator([](QString &text)->bool{
+        text = text.toUpper();
+        QRegularExpression regExp{"^[C]((0?\\d)|(1[0-5]))$"};
+        return regExp.match(text).hasMatch();
+    });
 }
 
 Base *Counter::clone(QQuickItem *parent)

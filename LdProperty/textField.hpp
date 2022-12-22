@@ -10,18 +10,31 @@ class TextField : public Base
 {
     Q_OBJECT
     Q_PROPERTY(QString textValue READ getTextValue WRITE setTextValue NOTIFY textValueChanged)
+    Q_PROPERTY(bool textIsValid READ textIsValid NOTIFY textValueChanged)
+    Q_PROPERTY(QString placeholder READ getPlaceholder WRITE setPlaceholder
+                   NOTIFY placeholderChanged)
 public:
     TextField(QQuickItem *parent = nullptr);
     TextField &operator=(const TextField &textField);
 
     void setTextValue(QString textValue);
     QString getTextValue() const;
+    void setPlaceholder(const QString &textValue);
+    void setPlaceholder(QString &&textValue);
+    QString getPlaceholder() const;
+
+    void setValidator(std::function<bool(QString &text)>);
+    bool textIsValid();
 
 signals:
     void textValueChanged();
+    void placeholderChanged();
 
 protected:
     QString textValue_;
+    QString placeholder_;
+    std::function<bool(QString &text)> validFunction_;
+    bool textIsValid_;
 };
 
 } // namespace LdProperty

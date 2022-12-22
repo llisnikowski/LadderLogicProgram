@@ -22,7 +22,6 @@ Rectangle{
         anchors.left: networkText.right;
         anchors.right: label.right;
         anchors.leftMargin: 10
-        //font.pixelSize: networkText.font.pixelSize*0.5;
         verticalAlignment: TextInput.AlignVCenter;
         font.pointSize: 8
         anchors.verticalCenterOffset: 4

@@ -23,6 +23,8 @@ TimeField &TimeField::operator=(const TimeField &timeField)
 void TimeField::setTextValue(QString textValue)
 {
     textValue_ = textValue;
+    if(validFunction_)
+        textIsValid_ = validFunction_(textValue_);
     emit textValueChanged();
 }
 
@@ -30,6 +32,34 @@ QString TimeField::getTextValue() const
 {
     return textValue_;
 }
+
+void TimeField::setPlaceholder(const QString &textValue)
+{
+    placeholder_ = textValue;
+    emit placeholderChanged();
+}
+
+void TimeField::setPlaceholder(QString &&textValue)
+{
+    placeholder_ = textValue;
+    emit placeholderChanged();
+}
+
+QString TimeField::getPlaceholder() const
+{
+    return placeholder_;
+}
+
+void TimeField::setValidator(std::function<bool(QString &)> fun)
+{
+    validFunction_ = fun;
+}
+
+bool TimeField::textIsValid()
+{
+    return textIsValid_;
+}
+
 
 void TimeField::setUnits(int units)
 {
