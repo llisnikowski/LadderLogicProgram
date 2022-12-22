@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>NetworkLabel.qml</file>
+    </qresource>
+</RCC>

@@ -43,6 +43,7 @@ file(GLOB PROJECT_SOURCES
 
 set(PROJECT_RESOURSES
     App/qml.qrc
+    Network/qml.qrc
     LdProperty/qml.qrc
     PropertiesList/qml.qrc
 )

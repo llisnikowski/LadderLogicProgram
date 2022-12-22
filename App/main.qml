@@ -21,7 +21,7 @@ ApplicationWindow {
         anchors.fill: parent
         orientation: Qt.Horizontal
         clip: true
-//        SplitView.fillHeight: true
+        SplitView.fillHeight: true
 
         LdSymbolsBar {
 
@@ -42,7 +42,11 @@ ApplicationWindow {
         ProgramView {
             id: programView
             clip: true
-            SplitView.minimumWidth: 50
+            SplitView.minimumWidth: 200
+            SplitView.maximumWidth: 1000
+            implicitWidth: 500
+            SplitView.preferredWidth: 1000
+
             SplitView.fillWidth: true
 
         }
