@@ -26,6 +26,13 @@ public:
     void paint(QPainter *painter) override;
     Type getType() const override;
     QByteArray getData() const override;
+
+    void displayLine(bool right, bool top, bool bottom);
+
+private:
+    bool isNextLine;
+    bool isTopLine;
+    bool isBottomLine;
 };
 
 

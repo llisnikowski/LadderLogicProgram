@@ -62,10 +62,21 @@ void PainterLd::drawLine()
     drawHoryzontalLine();
 }
 
-void PainterLd::drawNode()
+void PainterLd::drawNode(bool left, bool right, bool top, bool bottom)
 {
-    drawHoryzontalLine();
-    drawVerticalLine();
+    if(left){
+        drawLineToMiddle(0, objectSize_.height() / 2);
+    }
+    if(right){
+        drawLineToMiddle(objectSize_.width(), objectSize_.height() / 2);
+    }
+    if(top){
+        drawLineToMiddle(objectSize_.width() / 2, 0);
+    }
+    if(bottom){
+        drawLineToMiddle(objectSize_.width() / 2, objectSize_.height());
+    }
+    drawPointInMiddle(NODE_POINT_SIZE_FACTORY * objectSize_.height());
 }
 
 /*!
@@ -195,6 +206,23 @@ void PainterLd::drawHoryzontalLine()
 {
     painter_->drawLine(0, objectSize_.height() / 2, objectSize_.width(),
                        objectSize_.height() / 2);
+}
+
+void PainterLd::drawLineToMiddle(float x, float y)
+{
+    painter_->drawLine(x, y, objectSize_.width() / 2,
+                       objectSize_.height() / 2);
+}
+
+void PainterLd::drawPointInMiddle(float size)
+{
+    QPen oldPen = painter_->pen();
+    QPen newPen = oldPen;
+    newPen.setWidth(size);
+    painter_->setPen(newPen);
+    painter_->drawPoint(objectSize_.width() / 2,
+                        objectSize_.height() / 2);
+    painter_->setPen(oldPen);
 }
 
 void PainterLd::fillColor(QColor color)

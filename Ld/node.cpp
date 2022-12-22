@@ -29,7 +29,7 @@ void Node::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
-    painterLd.drawNode();
+    painterLd.drawNode(true, isNextLine, isTopLine, isBottomLine);
 
     if(selected_){
         painter->setPen(QPen(Qt::black, 2));
@@ -48,6 +48,14 @@ QByteArray Node::getData() const
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
     dataStream << QString("Ld") << static_cast<int>(getType());
     return itemData;
+}
+
+void Node::displayLine(bool right, bool top, bool bottom)
+{
+    isNextLine = right;
+    isTopLine = top;
+    isBottomLine = bottom;
+    update();
 }
 
 

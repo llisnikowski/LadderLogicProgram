@@ -29,6 +29,7 @@ constexpr int CENTER_LETTER_SIZE {16};
 constexpr bool CENTER_LETTER_BOLD {true};
 constexpr qreal CORRECT_CENTER_LETTER_OFFSET_X {0.0};
 constexpr qreal CORRECT_CENTER_LETTER_OFFSET_Y {-2.0};
+constexpr qreal NODE_POINT_SIZE_FACTORY {0.16};
 /*! @} */
 
 
@@ -49,7 +50,7 @@ public:
     void drawContactSlash();
     void drawCoil();
     void drawLine();
-    void drawNode();
+    void drawNode(bool left, bool right, bool top, bool bottom);
 
     void fillColor(QColor color = {0,0,0,20});
     void drawFrame(qreal frameWidth = 2);
@@ -66,6 +67,8 @@ private:
     void drawPairArc(float angle, float radiusX, float offsetX = 0);
     QRectF getCenteredRect(float width, float height, float offsetX = 0, float offsetY = 0);
     void drawHoryzontalLine();
+    void drawLineToMiddle(float x, float y);
+    void drawPointInMiddle(float size);
 
     QPainter *painter_;
     QSizeF objectSize_;

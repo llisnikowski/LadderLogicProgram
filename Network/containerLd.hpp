@@ -103,8 +103,9 @@ private:
     void removeUnnecesseryNode();
     void removeEmptyLine();
     void shiftUp();
-    void updataSize();
-    void updataLdObjectData();
+    void updateSize();
+    void updateLdObjectData();
+    void updateNodeDisplay();
 
     static int currentId;
     int id_;

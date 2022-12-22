@@ -15,8 +15,8 @@ ContainerLd::ContainerLd(QQuickItem *parent)
     container_{}, id_{currentId++}
 {
     addLineIfLineIsEmpty(0);
-    updataSize();
-    updataLdObjectData();
+    updateSize();
+    updateLdObjectData();
     setHeight(container_.count() * LD_H);
 }
 
@@ -174,8 +174,8 @@ bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
 
     insertNode();
     addLineIfLineIsEmpty(line + 1);
-    updataSize();
-    updataLdObjectData();
+    updateSize();
+    updateLdObjectData();
     emit addLdObject(this);
     return true;
 }
@@ -188,8 +188,8 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     container_[line].insert(x, FactoryLd::initObject(obj->clone(this)));
     container_[line].insert(x+1, FactoryLd::create<Ld::Line>(this));
 
-    updataSize();
-    updataLdObjectData();
+    updateSize();
+    updateLdObjectData();
     emit addLdObject(this);
     return true;
 }
@@ -205,8 +205,8 @@ bool ContainerLd::remove(uint line, uint x)
     shiftUp();
     removeUnnecesseryNode();
     removeEmptyLine();
-    updataSize();
-    updataLdObjectData();
+    updateSize();
+    updateLdObjectData();
     return true;
 }
 
@@ -233,8 +233,8 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
     addLineIfLineIsEmpty((fromLine > toLine ? fromLine : toLine) + 1);
     removeUnnecesseryNode();
     removeEmptyLine();
-    updataSize();
-    updataLdObjectData();
+    updateSize();
+    updateLdObjectData();
     return true;
 }
 
@@ -394,6 +394,7 @@ void ContainerLd::insertNode()
                 container_[line].insert(NODE_POSITION, FactoryLd::create<Ld::Node>(this));
         }
     }
+    updateNodeDisplay();
 }
 
 void ContainerLd::removeUnnecesseryNode()
@@ -415,6 +416,7 @@ void ContainerLd::removeUnnecesseryNode()
             }
         }
     }
+    updateNodeDisplay();
 }
 
 void ContainerLd::removeEmptyLine()
@@ -444,7 +446,7 @@ void ContainerLd::shiftUp()
     }
 }
 
-void ContainerLd::updataSize()
+void ContainerLd::updateSize()
 {
     int curX = 0;
     iteratorLineX(ItAll, [this, &curX](uint line, uint x, Ld::Base* obj){
@@ -487,7 +489,7 @@ void ContainerLd::updataSize()
         });
 }
 
-void ContainerLd::updataLdObjectData()
+void ContainerLd::updateLdObjectData()
 {
     iteratorLineX(ItDropDrag, [this](uint line, uint x, Ld::Base* obj){
         if(obj->getType() >= Ld::Type::Drag){
@@ -502,8 +504,13 @@ void ContainerLd::updataLdObjectData()
     });
 }
 
-
-
+void ContainerLd::updateNodeDisplay()
+{
+    iteratorLineX(ItNode, [this](uint line, uint x, Ld::Base* obj){
+        Ld::Node* node = static_cast<Ld::Node*>(obj);
+        node->displayLine(getItem(line, x+1), getItem(line-1, x), getItem(line+1, x));
+    });
+}
 
 
 
