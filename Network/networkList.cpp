@@ -8,6 +8,11 @@ NetworkList::NetworkList(QQuickItem *parent)
                      [this](QQuickItem *parent){
                          clearList();
                          if(!parent) return;
+                         setWidth(parent->width());
+                         connect(parent, &QQuickItem::widthChanged,
+                                 this, [this,parent](){
+                                     setWidth(parent->width());
+                                 });
                          addNewNetwork();
                      });
 }
