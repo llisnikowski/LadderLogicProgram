@@ -2,6 +2,7 @@
 #include <QPainter>
 #include "painterLd.hpp"
 #include "type.hpp"
+#include <QRegularExpression>
 
 namespace Ld {
 
@@ -15,6 +16,46 @@ Timer::Timer(QQuickItem *parent)
     QObject::connect(&type_, &LdProperty::ComboboxField::itemFocus,
                      this, [this](bool focus){if(focus) emit clicked();});
     addProperty(&time_);
+
+    address_.setPlaceholder("Txx");
+    address_.setValidator([](QString &text)->bool{
+        text = text.toUpper();
+        QRegularExpression regExp{"^[T]((0?\\d)|(1[0-5]))$"};
+        return regExp.match(text).hasMatch();
+    });
+
+    time_.setPlaceholder("s:ms*10");
+    connect(&time_, &LdProperty::TimeField::unitsChanged, this, [this](){
+        int units = time_.getUnits();
+        switch (units)
+        {
+        case 0:
+            time_.setPlaceholder("s:ms*10");
+            break;
+        case 1:
+            time_.setPlaceholder("min:s");
+            break;
+        case 2:
+            time_.setPlaceholder("h:min");
+            break;
+        }
+
+    });
+    time_.setValidator([](QString &text)->bool{
+        QStringList textList = text.split(':');
+        if(textList.count() < 2){
+            text = text.remove(QRegularExpression{"[^\\d]"});
+            return false;
+        }
+        textList[0] = textList[0].remove(QRegularExpression{"[^\\d{0,2}]"});
+        textList[1] = textList[1].remove(QRegularExpression{"[^\\d{0,2}]"});
+        text = textList[0] + ":" + textList[1];
+        int textInt0 = textList[0].toInt();
+        int textInt1 = textList[1].toInt();
+        if(textInt0 < 0 || textInt0 > 99) return false;
+        if(textInt1 < 0 || textInt1 > 99) return false;
+        return true;
+    });
 }
 
 Base *Timer::clone(QQuickItem *parent)

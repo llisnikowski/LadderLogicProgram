@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QRectF>
-
+#include <QRegularExpression>
 
 namespace Ld {
 
@@ -26,6 +26,13 @@ Coil::Coil(QQuickItem *parent)
                      this, &QQuickItem::update);
     QObject::connect(&type_, &LdProperty::ComboboxField::itemFocus,
                      this, [this](bool focus){if(focus) emit clicked();});
+
+    address_.setPlaceholder("Q/M[00-15]");
+    address_.setValidator([](QString &text)->bool{
+        text = text.toUpper();
+        QRegularExpression regExp{"^[QM]((0?\\d)|(1[0-5]))$"};
+        return regExp.match(text).hasMatch();
+    });
 }
 
 Base *Coil::clone(QQuickItem *parent)

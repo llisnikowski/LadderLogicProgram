@@ -23,6 +23,7 @@ Item{
         clip: true
         font.pointSize: 8
         placeholderText: "..."
+        color: rootModel.textIsValid ? "white" : "red"
         text: rootModel.textValue
 
         onTextEdited: {

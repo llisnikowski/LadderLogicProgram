@@ -20,12 +20,13 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
         horizontalAlignment: TextInput.AlignHCenter
         text: rootModel.textValue
-        placeholderText: "..."
-        color: "white"
+        placeholderText: rootModel.placeholder
+        color: rootModel.textIsValid ? "white" : "red"
         selectByMouse: true
         clip: true
+        width: 150
 
-        onTextChanged: {
+        onTextEdited: {
             if(textField.activeFocus){
                 rootModel.textValue = textField.text
             }
