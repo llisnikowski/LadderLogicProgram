@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ConsoleLog.qml</file>
+    </qresource>
+</RCC>

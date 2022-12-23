@@ -50,15 +50,33 @@ ApplicationWindow {
             SplitView.fillWidth: true
 
         }
-        Item{
+        SplitView{
             id: rightView
             clip: true
             implicitWidth: 600
             SplitView.minimumWidth: 150
             SplitView.maximumWidth: 1000
-            Component.onCompleted: {
-                height = parent.height
-                propertyList.parent = this;
+
+            orientation: Qt.Vertical
+
+            Item{
+                clip: true
+                implicitHeight: 400
+                SplitView.minimumHeight: 100
+                SplitView.fillHeight: true
+                Component.onCompleted: {
+                    propertyList.parent = this
+                }
+            }
+            Item{
+                clip: true
+                SplitView.minimumHeight: 100
+                implicitHeight: rightView.height / 3
+                SplitView.maximumHeight: 700
+                SplitView.fillWidth: true
+                Component.onCompleted: {
+                    consoleLog.parent = this
+                }
             }
         }
     }

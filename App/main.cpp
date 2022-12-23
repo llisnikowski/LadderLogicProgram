@@ -7,11 +7,13 @@
 #include "networkList.hpp"
 #include "symbolsBar.hpp"
 #include "propertiesList.hpp"
+#include "consoleLog.hpp"
 
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 SelectItem selectItem;
 PropertiesList propertyList;
+ConsoleLog consoleLog;
 
 
 int main(int argc, char *argv[])
@@ -32,6 +34,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);
     engine.rootContext()->setContextProperty("selectItem", &selectItem);
     engine.rootContext()->setContextProperty("propertyList", &propertyList);
+    engine.rootContext()->setContextProperty("consoleLog", &consoleLog);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
