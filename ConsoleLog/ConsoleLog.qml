@@ -7,7 +7,7 @@ Rectangle{
     border.width: 1
 
     Connections{
-        target: consoleLog
+        target: parent
         ignoreUnknownSignals: true
         function onLogTextChanged(text){
             logTextArea.append(text)

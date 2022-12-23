@@ -63,6 +63,7 @@ void Base::mousePressEvent(QMouseEvent *event)
 
 void Base::mouseMoveEvent(QMouseEvent *event)
 {
+    event->accept();
     isDrag_ = true;
 }
 
@@ -85,6 +86,7 @@ void Base::mouseReleaseEvent(QMouseEvent *event)
 
 void Base::clickEvent(QMouseEvent *event)
 {
+    event->accept();
     forceActiveFocus();
     emit clicked();
 }

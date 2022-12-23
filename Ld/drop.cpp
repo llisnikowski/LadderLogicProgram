@@ -16,7 +16,7 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny.
  */
 Drop::Drop(QQuickItem *parent)
-    :Base{parent}, dropValidator_{}, droppingItem_{}, dragAction_{}
+    :Base{parent}, droppingItem_{}, dropValidator_{}, dragAction_{}
 {
     setFlag(ItemAcceptsDrops , true);
 }

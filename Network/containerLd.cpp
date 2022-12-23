@@ -12,7 +12,7 @@ int ContainerLd::currentId = 0;
 
 ContainerLd::ContainerLd(QQuickItem *parent)
     : QQuickItem{parent},
-    container_{}, id_{currentId++}
+    id_{currentId++}, container_{}
 {
     addLineIfLineIsEmpty(0);
     updateSize();
@@ -24,18 +24,29 @@ ContainerLd::~ContainerLd()
 {
 }
 
-const ContainerLd::Item ContainerLd::getItem(uint line, uint x) const
+Ld::Base *ContainerLd::getItem(uint line, uint x)
 {
     if(line >= container_.count()) return nullptr;
     if(x >= container_[line].count()) return nullptr;
     return container_.at(line).at(x);
 }
 
-ContainerLd::Item ContainerLd::getItemNoConst(uint line, uint x)
+const Ld::Base *ContainerLd::getItem(uint line, uint x) const
 {
     if(line >= container_.count()) return nullptr;
     if(x >= container_[line].count()) return nullptr;
     return container_.at(line).at(x);
+}
+
+
+Ld::Drag *ContainerLd::getDragItem(uint line, uint x)
+{
+    auto obj = getItem(line, x);
+    if(!obj) return nullptr;
+    if(obj->getType() >= Ld::Type::Drag){
+        return static_cast<Ld::Drag*>(obj);
+    }
+    return nullptr;
 }
 
 const Ld::Drag *ContainerLd::getDragItem(uint line, uint x) const
@@ -44,16 +55,6 @@ const Ld::Drag *ContainerLd::getDragItem(uint line, uint x) const
     if(!obj) return nullptr;
     if(obj->getType() >= Ld::Type::Drag){
         return static_cast<const Ld::Drag*>(obj);
-    }
-    return nullptr;
-}
-
-Ld::Drag *ContainerLd::getDragItemNoConst(uint line, uint x)
-{
-    auto obj = getItem(line, x);
-    if(!obj) return nullptr;
-    if(obj->getType() >= Ld::Type::Drag){
-        return static_cast<Ld::Drag*>(obj);
     }
     return nullptr;
 }
@@ -220,8 +221,8 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
         toX -= 2;
     }
 
-    Ld::Drag *moveObj = getDragItemNoConst(fromLine, fromX);
-    Ld::Base *moveNextObj = getItemNoConst(fromLine, fromX + 1);
+    Ld::Drag *moveObj = getDragItem(fromLine, fromX);
+    Ld::Base *moveNextObj = getItem(fromLine, fromX + 1);
     container_[fromLine][fromX] = nullptr;
     container_[fromLine][fromX+1] = nullptr;
     container_[fromLine].remove(fromX, 2);

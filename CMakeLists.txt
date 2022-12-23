@@ -11,6 +11,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_options(
+    -Wall -Wextra -Wpedantic -Werror
+    -Wno-error=unused-function -Wno-error=unused-variable
+    -Wno-unused-parameter -Wno-sign-compare
+)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick Gui)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Gui)
 

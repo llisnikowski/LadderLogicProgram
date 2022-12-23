@@ -104,7 +104,7 @@ QDrag *Drag::createQDrag(QMouseEvent &event)
  * \return Wskaźnik do utworzonego obiektu
  * <a href="https://doc.qt.io/qt-6/qmimedata.html">QMimeData</a>.
  */
-QMimeData *Drag::createDragData(QMouseEvent &event)
+QMimeData *Drag::createDragData(QMouseEvent &)
 {
     QMimeData *mimeData = new QMimeData;
     if(dragData_){

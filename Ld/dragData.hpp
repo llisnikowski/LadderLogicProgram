@@ -16,7 +16,7 @@ public:
 
     virtual QByteArray getData() const = 0;
     virtual bool setData(const QByteArray & data) = 0;
-    virtual void setLd(const Ld::Base &comp){};
+    virtual void setLd(const Ld::Base &){};
 
 };
 

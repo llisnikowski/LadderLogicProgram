@@ -61,10 +61,12 @@ public:
     using ItEndLineArg = void(uint line);
 
     explicit ContainerLd(QQuickItem *parent = nullptr);
-    ~ContainerLd();
+    virtual ~ContainerLd();
 
     const Array & getArray() const {return container_;}
-    const Item getItem(uint line, uint x) const;
+    Ld::Base* getItem(uint line, uint x);
+    const Ld::Base *getItem(uint line, uint x) const;
+    Ld::Drag *getDragItem(uint line, uint x);
     const Ld::Drag *getDragItem(uint line, uint x) const;
 
     void iteratorLineX(ItType itType, std::function<ItArg> fun,
@@ -94,8 +96,6 @@ public:
     bool checkMoveCondition(uint fromLine, uint fromX, uint toLine, uint toX) const;
 
 private:
-    Item getItemNoConst(uint line, uint x);
-    Ld::Drag *getDragItemNoConst(uint line, uint x);
     int find(uint line, Ld::Type type) const;
     int getNumberObjectInLine(uint line, Ld::Type type) const;
     void addLineIfLineIsEmpty(uint line);

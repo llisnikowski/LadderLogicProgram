@@ -25,12 +25,12 @@ void Base::setPropertyName(QString propertyName){
 
 
 
-QDataStream & operator<<(QDataStream &stream, const LdProperty::Base &base)
+QDataStream & operator<<(QDataStream &stream, const LdProperty::Base &)
 {
     return stream;
 }
 
-QDataStream & operator>>(QDataStream &stream, LdProperty::Base &base)
+QDataStream & operator>>(QDataStream &stream, LdProperty::Base &)
 {
     return stream;
 }
