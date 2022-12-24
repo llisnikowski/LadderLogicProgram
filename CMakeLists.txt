@@ -36,6 +36,7 @@ file(GLOB PROJECT_HEADERS
      SelectItem/*.hpp
      PropertiesList/*.hpp
      ConsoleLog/*.hpp
+     CodeGenerator/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
@@ -47,6 +48,7 @@ file(GLOB PROJECT_SOURCES
     SelectItem/*.cpp
     PropertiesList/*.cpp
     ConsoleLog/*.cpp
+    CodeGenerator/*.cpp
 )
 
 set(PROJECT_RESOURSES
@@ -97,6 +99,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/LdFactory
   ${CMAKE_SOURCE_DIR}/PropertiesList
   ${CMAKE_SOURCE_DIR}/ConsoleLog
+  ${CMAKE_SOURCE_DIR}/CodeGenerator
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -142,6 +145,7 @@ file(GLOB UTEST_SOURCES
     uTest/SelectItem/*.cpp
     uTest/PropertiesList/*.cpp
     uTest/ConsoleLog/*.cpp
+    uTest/CodeGenerator/*.cpp
 )
 
 
@@ -188,6 +192,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/SelectItem
   ${CMAKE_SOURCE_DIR}/PropertiesList
   ${CMAKE_SOURCE_DIR}/ConsoleLog
+  ${CMAKE_SOURCE_DIR}/CodeGenerator
 )
 
 

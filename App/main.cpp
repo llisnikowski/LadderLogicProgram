@@ -8,12 +8,14 @@
 #include "symbolsBar.hpp"
 #include "propertiesList.hpp"
 #include "consoleLog.hpp"
+#include "codeGenerator.hpp"
 
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 SelectItem selectItem;
 PropertiesList propertyList;
 ConsoleLog consoleLog;
+CodeGenerator codeGenerator;
 
 
 int main(int argc, char *argv[])
@@ -35,6 +37,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("selectItem", &selectItem);
     engine.rootContext()->setContextProperty("propertyList", &propertyList);
     engine.rootContext()->setContextProperty("consoleLog", &consoleLog);
+    engine.rootContext()->setContextProperty("codeGenerator", &codeGenerator);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
