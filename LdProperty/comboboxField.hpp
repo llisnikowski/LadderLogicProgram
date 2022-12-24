@@ -20,6 +20,9 @@ public:
     void setModel(const QStringList &model);
     void setModel(const QStringList &&model);
 
+    void operator=(int value);
+    operator int();
+
 signals:
     void valueChanged();
     void modelChanged();

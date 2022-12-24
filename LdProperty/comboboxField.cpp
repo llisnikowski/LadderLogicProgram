@@ -29,6 +29,16 @@ int ComboboxField::getValue() const
     return value_;
 }
 
+void ComboboxField::operator=(int value)
+{
+    setValue(value);
+}
+
+ComboboxField::operator int()
+{
+    return getValue();
+}
+
 const QStringList &ComboboxField::getModel() const
 {
     return model_;

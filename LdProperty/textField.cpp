@@ -1,5 +1,6 @@
 #include "textField.hpp"
 #include <QQmlEngine>
+#include <QRegularExpression>
 
 namespace LdProperty {
 
@@ -29,6 +30,27 @@ QString TextField::getTextValue() const
 {
     return textValue_;
 }
+
+void TextField::operator=(QString value)
+{
+    setTextValue(value);
+}
+
+TextField::operator QString()
+{
+    return getTextValue();
+}
+
+void TextField::operator=(int value)
+{
+    setTextValue(QString::number(value));
+}
+
+TextField::operator int()
+{
+    return textValue_.remove(QRegularExpression{"[^\\d\\$]"}).toInt();
+}
+
 
 void TextField::setPlaceholder(const QString &textValue)
 {

@@ -17,28 +17,39 @@ DaysOfWeekField &DaysOfWeekField::operator=(const DaysOfWeekField &daysOfWeekFie
     return *this;
 }
 
-void DaysOfWeekField::setValue(int value)
+void DaysOfWeekField::setValue(uint8_t value)
 {
     value_ = value;
     emit valueChanged();
 }
 
-int DaysOfWeekField::getValue() const
+uint8_t DaysOfWeekField::getValue() const
 {
     return value_;
 }
 
-bool DaysOfWeekField::getDay(int day)
+void DaysOfWeekField::operator=(int value)
+{
+    setValue(value);
+}
+
+DaysOfWeekField::operator int()
+{
+    return getValue();
+}
+
+
+bool DaysOfWeekField::getDay(uint8_t day)
 {
     return value_ & (1 << day);
 }
 
-void DaysOfWeekField::setDay(int day)
+void DaysOfWeekField::setDay(uint8_t day)
 {
     value_ |= (1<<day);
 }
 
-void DaysOfWeekField::resetDay(int day)
+void DaysOfWeekField::resetDay(uint8_t day)
 {
     value_ &= ~(1<<day);
 }

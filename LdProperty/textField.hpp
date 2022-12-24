@@ -19,6 +19,11 @@ public:
 
     void setTextValue(QString textValue);
     QString getTextValue() const;
+    void operator=(QString value);
+    operator QString();
+    void operator=(int value);
+    operator int();
+
     void setPlaceholder(const QString &textValue);
     void setPlaceholder(QString &&textValue);
     QString getPlaceholder() const;
