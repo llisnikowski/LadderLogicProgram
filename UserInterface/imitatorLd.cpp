@@ -55,7 +55,7 @@ void ImitatorLd::setType(Ld::Type type)
 
 QByteArray ImitatorLd::getData() const
 {
-    Ld::Base *obj;
+    Ld::Base *obj{};
     if(type_ >= Ld::Type::Input){
         if(type_ == Ld::Type::Contact){
             obj = new Ld::Contact;
@@ -78,7 +78,10 @@ QByteArray ImitatorLd::getData() const
             obj = new Ld::Text;
         }
     }
-    QByteArray data = obj->getData();
+    QByteArray data;
+    if(obj){
+        data = obj->getData();
+    }
     if(obj) delete obj;
     return data;
 }

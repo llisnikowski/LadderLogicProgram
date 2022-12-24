@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23.2)
 
-project(PLC VERSION 0.1 LANGUAGES CXX)
+project(PLC VERSION 0.8 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -27,7 +27,7 @@ file(GLOB MAIN_FILE
     App/*.cpp
 )
 
-file(GLOB PROJECT_HEADERS  
+file(GLOB PROJECT_HEADERS
      Ld/*.hpp
      Network/*.hpp
      UserInterface/*.hpp
