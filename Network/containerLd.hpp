@@ -59,6 +59,7 @@ public:
     using ItArg = void(uint line, uint x, Ld::Base* obj);
     using ItArgConst = void(uint line, uint x, Ld::Base* obj);
     using ItEndLineArg = void(uint line);
+    using ItEndXArg = void(uint x);
 
     explicit ContainerLd(QQuickItem *parent = nullptr);
     virtual ~ContainerLd();
@@ -71,9 +72,12 @@ public:
 
     void iteratorLineX(ItType itType, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun = nullptr);
+    void iteratorXLine(ItType itType, std::function<ItArg> fun,
+                       std::function<ItEndXArg> endXFun = nullptr);
 
     void iteratorLine(uint line, ItType itType, std::function<ItArg> fun);
     void iteratorLine(uint line, ItType itType, std::function<ItArgConst> fun) const;
+    void iteratorX(uint x, ItType itType, std::function<ItArg> fun);
 
     QString getSchemat();
     int getId() const;

@@ -76,5 +76,10 @@ QByteArray Coil::getData() const
     return itemData;
 }
 
+LdProperty::TypeField &Coil::getPropertyType()
+{
+    return type_;
+}
+
 
 } //namespace Ld

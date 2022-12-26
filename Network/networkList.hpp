@@ -17,11 +17,16 @@ public:
     explicit NetworkList(QQuickItem *parent = nullptr);
     ~NetworkList();
 
-    void addNewNetwork();
-    void updateHeight(int nr, int height);
     void clearList();
 
+    Network *getNetwork(int i);
+    Network *operator[](int i);
+    int count() const;
+
 private:
+    void addNewNetwork();
+    void updateHeight(int nr, int height);
+
     QVector<Network*> networks_;
 };
 

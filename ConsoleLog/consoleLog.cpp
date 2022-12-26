@@ -34,7 +34,7 @@ ConsoleLog::~ConsoleLog()
 void ConsoleLog::addToLogs(QString message)
 {
     QString currentDateTime = QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss");
-    emit logTextChanged(currentDateTime + "\t" + message);
+    emit logTextChanged(currentDateTime + "\t" + message + "\n");
  }
 
 void ConsoleLog::createQQuickItem()

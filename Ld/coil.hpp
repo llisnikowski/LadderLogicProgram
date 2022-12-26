@@ -28,6 +28,8 @@ public:
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
+    LdProperty::TypeField &getPropertyType();
+
 protected:
     LdProperty::TypeField type_;
 };

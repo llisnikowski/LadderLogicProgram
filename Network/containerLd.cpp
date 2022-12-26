@@ -69,6 +69,16 @@ void ContainerLd::iteratorLineX(ItType itType, std::function<ItArg> fun,
     }
 }
 
+void ContainerLd::iteratorXLine(ItType itType, std::function<ItArg> fun,
+                                std::function<ItEndXArg> endXFun)
+{
+    if(!fun) return;
+    for(int x = 0; x < container_[0].count(); x++){
+        iteratorX(x, itType, fun);
+        if(endXFun) endXFun(x);
+    }
+}
+
 void ContainerLd::iteratorLine(uint line, ItType itType,
                                std::function<ItArg> fun)
 {
@@ -99,6 +109,29 @@ void ContainerLd::iteratorLine(uint line, ItType itType,
     if(line >= container_.count()) return;
     for(int x = 0; x < container_[line].count(); x++){
         Ld::Base *obj = container_[line][x];
+        if(!obj){
+            if(itType & ItNull) fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Input){
+            if(itType & ItIn)  fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Output){
+            if(itType & ItOut)  fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Line){
+            if(itType & ItLine)  fun(line, x, obj);
+        }
+        else if(obj->getType() >= Ld::Type::Node){
+            if(itType & ItNode)  fun(line, x, obj);
+        }
+    }
+}
+
+void ContainerLd::iteratorX(uint x, ItType itType, std::function<ItArg> fun)
+{
+    if(x >= container_[0].count()) return;
+    Ld::Base *obj{};
+    for(int line = 0; (obj = getItem(line,x)); x++){
         if(!obj){
             if(itType & ItNull) fun(line, x, obj);
         }

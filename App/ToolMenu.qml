@@ -17,8 +17,15 @@ Item {
             id: toolButton
             text: "\u2630"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
+        }
+        ToolButton {
+            id: checkButton
+            text: "\u2713" //"\u27A5"
+            font.pixelSize: Qt.application.font.pixelSize * 1.6
 
-
+            onClicked: {
+                codeGenerator.verify();
+            }
         }
     }
 }

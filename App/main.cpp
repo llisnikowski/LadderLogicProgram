@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
 #endif
 
     FactoryLd::setSelectItem(&selectItem);
+    codeGenerator.setNetworkList(&networkList);
+    codeGenerator.setConsoleLog(&consoleLog);
 
     QObject::connect(&selectItem, &SelectItem::changedSelectItem,
                      &propertyList, &PropertiesList::display);

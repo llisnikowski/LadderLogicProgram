@@ -59,3 +59,29 @@ void NetworkList::clearList()
     networks_.clear();
 }
 
+Network *NetworkList::getNetwork(int i)
+{
+    if(i >= networks_.count()) return nullptr;
+    return networks_[i];
+}
+
+Network *NetworkList::operator[](int i)
+{
+    return getNetwork(i);
+}
+
+int NetworkList::count() const
+{
+    return networks_.count();
+}
+
+
+
+
+
+
+
+
+
+
+

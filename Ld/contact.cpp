@@ -70,6 +70,11 @@ QByteArray Contact::getData() const
     return itemData;
 }
 
+LdProperty::TypeField &Contact::getPropertyType()
+{
+    return type_;
+}
+
 
 
 } //namespace Ld

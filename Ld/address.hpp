@@ -13,6 +13,7 @@ public:
     explicit Address(QQuickItem *parent = nullptr);
 
     Type getType() const override;
+    LdProperty::AddressField &getAddress();
 
 protected:
     LdProperty::AddressField address_;

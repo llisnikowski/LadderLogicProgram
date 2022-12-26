@@ -68,5 +68,10 @@ QByteArray Counter::getData() const
     return itemData;
 }
 
+LdProperty::TypeField &Counter::getPropertyType()
+{
+    return type_;
+}
+
 
 } //namespace Ld

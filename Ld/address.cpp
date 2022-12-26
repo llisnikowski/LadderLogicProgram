@@ -17,6 +17,11 @@ Type Address::getType() const
     return Type::Address;
 }
 
+LdProperty::AddressField &Address::getAddress()
+{
+    return address_;
+}
+
 
 
 } // namespace Ld
