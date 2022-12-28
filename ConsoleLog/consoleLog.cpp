@@ -4,7 +4,7 @@
 
 
 ConsoleLog::ConsoleLog(QQuickItem *parent)
-    :QQuickItem{parent}, qmlObject_{}
+    :QQuickItem{parent}, LogInterface{}, qmlObject_{}
 {
     if(parent){
         createQQuickItem();

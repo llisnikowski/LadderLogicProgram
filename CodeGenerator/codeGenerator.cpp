@@ -12,7 +12,7 @@
 
 
 CodeGenerator::CodeGenerator(QObject *parent)
-    : QObject{parent}, networkList_{}, consoleLog_{}, code_{},
+    : QObject{parent}, networkList_{}, logObject_{}, code_{},
     parametersArray_{this}
 {
 }
@@ -22,9 +22,9 @@ void CodeGenerator::setNetworkList(NetworkList *networkList)
     networkList_ = networkList;
 }
 
-void CodeGenerator::setConsoleLog(ConsoleLog *consoleLog)
+void CodeGenerator::setLogObject(ConsoleLog *logObject)
 {
-    consoleLog_ = consoleLog;
+    logObject_ = logObject;
 }
 
 bool CodeGenerator::verify()
@@ -45,8 +45,8 @@ bool CodeGenerator::startGenerating()
         code_ += ":END";
     }
     catch(const BadGenerated & badGenerated) {
-        if(consoleLog_){
-            consoleLog_->addToLogs(badGenerated.what());
+        if(logObject_){
+            logObject_->addToLogs(badGenerated.what());
         }
         return false;
     }

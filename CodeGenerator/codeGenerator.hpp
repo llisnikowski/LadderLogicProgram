@@ -5,6 +5,7 @@
 #include <QString>
 #include <exception>
 #include "parametersArray.hpp"
+#include "logInterface.hpp"
 
 class NetworkList;
 class Network;
@@ -25,7 +26,7 @@ public:
     explicit CodeGenerator(QObject *parent = nullptr);
 
     void setNetworkList(NetworkList *networkList);
-    void setConsoleLog(ConsoleLog *consoleLog);
+    void setLogObject(ConsoleLog *logObject);
 
 public slots:
     bool verify();
@@ -45,7 +46,7 @@ private:
     QChar getPrefix(Ld::Counter &obj);
 
     NetworkList *networkList_;
-    ConsoleLog *consoleLog_;
+    LogInterface *logObject_;
     QString code_;
     ParametersArray parametersArray_;
 };
