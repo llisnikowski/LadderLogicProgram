@@ -22,6 +22,7 @@ Row {
         text: rootModel.textValue
         placeholderText: rootModel.placeholder
         color: rootModel.textIsValid ? "white" : "red"
+        validator: rootModel.regExp
         selectByMouse: true
         clip: true
         width: 150

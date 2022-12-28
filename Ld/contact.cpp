@@ -25,11 +25,7 @@ Contact::Contact(QQuickItem *parent)
                      this, [this](bool focus){if(focus) emit clicked();});
 
     address_.setPlaceholder("I/Q/M/T/C/P[00-15]");
-    address_.setValidator([](QString &text)->bool{
-        text = text.toUpper();
-        QRegularExpression regExp{"^([iIqQtTcC]((0?\\d)|(1[0-5]))$|^([pP]0?[0-7]))$"};
-        return regExp.match(text).hasMatch();
-    });
+    address_.setRegExp("^([IiQqMmTtCc]((0?\\d)|(1[0-5]))$|^([pP]0?[0-7]))$");
 }
 
 Base *Contact::clone(QQuickItem *parent)

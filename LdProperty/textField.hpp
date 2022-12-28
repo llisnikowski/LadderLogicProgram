@@ -3,6 +3,7 @@
 
 #include "LdProperty/base.hpp"
 #include <functional>
+#include <QRegularExpressionValidator>
 
 namespace LdProperty {
 
@@ -13,6 +14,7 @@ class TextField : public Base
     Q_PROPERTY(bool textIsValid READ textIsValid NOTIFY textValueChanged)
     Q_PROPERTY(QString placeholder READ getPlaceholder WRITE setPlaceholder
                    NOTIFY placeholderChanged)
+    Q_PROPERTY(QObject *regExp READ getRegExp NOTIFY regExpChanged)
 public:
     TextField(QQuickItem *parent = nullptr);
     TextField &operator=(const TextField &textField);
@@ -31,15 +33,20 @@ public:
     void setValidator(std::function<bool(QString &text)>);
     bool textIsValid();
 
+    QObject *getRegExp();
+    void setRegExp(QString &&getRegExp);
+
 signals:
     void textValueChanged();
     void placeholderChanged();
+    void regExpChanged();
 
 protected:
     QString textValue_;
     QString placeholder_;
     std::function<bool(QString &text)> validFunction_;
     bool textIsValid_;
+    QRegularExpressionValidator regExpValidator_;
 };
 
 } // namespace LdProperty

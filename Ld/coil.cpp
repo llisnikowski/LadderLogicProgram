@@ -28,11 +28,7 @@ Coil::Coil(QQuickItem *parent)
                      this, [this](bool focus){if(focus) emit clicked();});
 
     address_.setPlaceholder("Q/M[00-15]");
-    address_.setValidator([](QString &text)->bool{
-        text = text.toUpper();
-        QRegularExpression regExp{"^[QM]((0?\\d)|(1[0-5]))$"};
-        return regExp.match(text).hasMatch();
-    });
+    address_.setRegExp("^[QqMm]((0?\\d)|(1[0-5]))$");
 }
 
 Base *Coil::clone(QQuickItem *parent)

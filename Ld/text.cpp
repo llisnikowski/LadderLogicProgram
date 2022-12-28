@@ -13,11 +13,7 @@ Text::Text(QQuickItem *parent)
     texts_.setPropertyName("Text");
 
     address_.setPlaceholder("X[00-15]");
-    address_.setValidator([](QString &text)->bool{
-        text = text.toUpper();
-        QRegularExpression regExp{"^[X]((0?\\d)|(1[0-5]))$"};
-        return regExp.match(text).hasMatch();
-    });
+    address_.setRegExp("^[X]((0?\\d)|(1[0-5]))$");
 }
 
 Base *Text::clone(QQuickItem *parent)

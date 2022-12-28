@@ -18,11 +18,7 @@ Timer::Timer(QQuickItem *parent)
     addProperty(&time_);
 
     address_.setPlaceholder("Txx");
-    address_.setValidator([](QString &text)->bool{
-        text = text.toUpper();
-        QRegularExpression regExp{"^[T]((0?\\d)|(1[0-5]))$"};
-        return regExp.match(text).hasMatch();
-    });
+    address_.setRegExp("^[T]((0?\\d)|(1[0-5]))$");
 
     time_.setPlaceholder("s:ms*10");
     connect(&time_, &LdProperty::TimeField::unitsChanged, this, [this](){

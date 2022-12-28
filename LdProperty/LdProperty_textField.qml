@@ -2,7 +2,6 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 
-
 Item{
     property var rootModel
     width: 64
@@ -25,6 +24,8 @@ Item{
         placeholderText: "..."
         color: rootModel.textIsValid ? "white" : "red"
         text: rootModel.textValue
+        font.capitalization: Font.AllUppercase
+        validator: rootModel.regExp
 
         onTextEdited: {
             if(textField.activeFocus){

@@ -14,35 +14,14 @@ Weektimer::Weektimer(QQuickItem *parent)
     timeOff_.setPropertyName("Czas wyłączenia");
     addProperty(&daysOfWeek_);
 
-    timeOn_.setPlaceholder("[0-23]:[00-59]");
-    timeOff_.setPlaceholder("[0-23]:[00-59]");
+    timeOn_.setPlaceholder("HH:MM");
+    timeOff_.setPlaceholder("HH:MM");
 
-    auto validTimeFun = [](QString &text)->bool{
-        QStringList textList = text.split(':');
-        if(textList.count() < 2){
-            text = text.remove(QRegularExpression{"[^\\d]"});
-            return false;
-        }
-        textList[0] = textList[0].remove(QRegularExpression{"[^\\d{0,2}]"});
-        textList[1] = textList[1].remove(QRegularExpression{"[^\\d{0,2}]"});
-        text = textList[0] + ":" + textList[1];
-        int textInt0 = textList[0].toInt();
-        int textInt1 = textList[1].toInt();
-        if(textInt0 < 0 || textInt0 >= 24) return false;
-        if(textInt1 < 0 || textInt1 >= 60) return false;
-        return true;
-    };
-
-    timeOn_.setValidator(validTimeFun);
-    timeOff_.setValidator(validTimeFun);
-
+    timeOn_.setRegExp("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
+    timeOff_.setRegExp("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
 
     address_.setPlaceholder("Z[00-15]");
-    address_.setValidator([](QString &text)->bool{
-        text = text.toUpper();
-        QRegularExpression regExp{"^[Z]((0?\\d)|(1[0-5]))$"};
-        return regExp.match(text).hasMatch();
-    });
+    address_.setRegExp("^[Z]((0?\\d)|(1[0-5]))$");
 }
 
 Base *Weektimer::clone(QQuickItem *parent)

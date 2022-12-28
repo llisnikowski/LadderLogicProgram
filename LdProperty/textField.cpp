@@ -5,7 +5,8 @@
 namespace LdProperty {
 
 TextField::TextField(QQuickItem *parent)
-    :Base{parent}, textValue_{}, validFunction_{}, textIsValid_{true}
+    :Base{parent}, textValue_{}, validFunction_{}, textIsValid_{true},
+    regExpValidator_{}
 {
 }
 
@@ -77,6 +78,17 @@ void TextField::setValidator(std::function<bool(QString &)> fun)
 bool TextField::textIsValid()
 {
     return textIsValid_;
+}
+
+QObject *TextField::getRegExp()
+{
+    return &regExpValidator_;
+}
+
+void TextField::setRegExp(QString &&getRegExp)
+{
+    regExpValidator_.setRegularExpression(QRegularExpression{getRegExp});
+    emit regExpChanged();
 }
 
 
