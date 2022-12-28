@@ -3,7 +3,7 @@
 
 #include "output.hpp"
 #include "typeField.hpp"
-#include "timeField.hpp"
+#include "textWithComboboxField.hpp"
 
 namespace Ld {
 
@@ -22,7 +22,7 @@ public:
 
 protected:
     LdProperty::TypeField type_;
-    LdProperty::TimeField time_;
+    LdProperty::TextWithComboboxField time_;
 };
 
 } //namespace Ld

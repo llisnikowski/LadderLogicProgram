@@ -20,6 +20,7 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
         text: rootModel.textValue;
         placeholderText: rootModel.placeholder
+        validator: rootModel.regExp
         color:  rootModel.textIsValid ? "white" : "red"
         selectByMouse: true
         clip: true

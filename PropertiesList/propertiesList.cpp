@@ -3,7 +3,7 @@
 #include "comboboxField.hpp"
 #include "multitextfield.hpp"
 #include "textField.hpp"
-#include "timeField.hpp"
+#include "textWithComboboxField.hpp"
 #include "daysOfWeekField.hpp"
 #include <QQmlEngine>
 
@@ -65,7 +65,13 @@ void PropertiesList::displayProperties()
 
     auto list = item_->getPropertiesList();
     for(auto property : list){
-        if(qobject_cast<LdProperty::TextField*>(property)){
+        if(qobject_cast<LdProperty::TextWithComboboxField*>(property)){
+            auto obj = createQQuickItem("qrc:/textWithComboboxFieldProperty.qml",
+                                        {{"rootModel", QVariant::fromValue(property)}});
+            propertiesList_.append(obj);
+            emit addPropertyItem(obj);
+        }
+        else if(qobject_cast<LdProperty::TextField*>(property)){
             auto obj = createQQuickItem("qrc:/textFieldProperty.qml",
                         {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
@@ -73,12 +79,6 @@ void PropertiesList::displayProperties()
         }
         else if(qobject_cast<LdProperty::ComboboxField*>(property)){
             auto obj = createQQuickItem("qrc:/comboboxProperty.qml",
-                                        {{"rootModel", QVariant::fromValue(property)}});
-            propertiesList_.append(obj);
-            emit addPropertyItem(obj);
-        }
-        else if(qobject_cast<LdProperty::TimeField*>(property)){
-            auto obj = createQQuickItem("qrc:/timeFieldProperty.qml",
                                         {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);

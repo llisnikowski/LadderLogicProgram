@@ -3,7 +3,7 @@
         <file>PropertyList.qml</file>
         <file>textFieldProperty.qml</file>
         <file>comboboxProperty.qml</file>
-        <file>timeFieldProperty.qml</file>
+        <file>textWithComboboxFieldProperty.qml</file>
         <file>daysOfWeekFieldProperty.qml</file>
         <file>multitextFieldProperty.qml</file>
     </qresource>
