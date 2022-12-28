@@ -13,7 +13,7 @@ Text::Text(QQuickItem *parent)
     texts_.setPropertyName("Text");
 
     address_.setPlaceholder("X[00-15]");
-    address_.setRegExp("^[X]((0?\\d)|(1[0-5]))$");
+    address_.setRegExp("^[Xx]((0?\\d)|(1[0-5]))$");
 }
 
 Base *Text::clone(QQuickItem *parent)

@@ -18,7 +18,7 @@ Timer::Timer(QQuickItem *parent)
     addProperty(&time_);
 
     address_.setPlaceholder("Txx");
-    address_.setRegExp("^[T]((0?\\d)|(1[0-5]))$");
+    address_.setRegExp("^[Tt]((0?\\d)|(1[0-5]))$");
 
     time_.setPropertyName("Czas");
     time_.setPlaceholder("1-10000");

@@ -2,7 +2,6 @@
 #define TEXTFIELD_HPP
 
 #include "LdProperty/base.hpp"
-#include <functional>
 #include <QRegularExpressionValidator>
 
 namespace LdProperty {
@@ -30,7 +29,6 @@ public:
     void setPlaceholder(QString &&textValue);
     QString getPlaceholder() const;
 
-    void setValidator(std::function<bool(QString &text)>);
     bool textIsValid();
 
     QObject *getRegExp();
@@ -44,7 +42,6 @@ signals:
 protected:
     QString textValue_;
     QString placeholder_;
-    std::function<bool(QString &text)> validFunction_;
     bool textIsValid_;
     QRegularExpressionValidator regExpValidator_;
 };
