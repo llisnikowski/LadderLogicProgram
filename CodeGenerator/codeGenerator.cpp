@@ -114,7 +114,7 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
                     parametersArray_.set(static_cast<Ld::Text&>(*obj));
                 }
             }
-            getAddress(static_cast<Ld::Address&>(*obj));
+            getAddress(static_cast<Ld::Address&>(*obj), networkCode);
     });
     if(!isInput && isOutput){
         throw BadGenerated{"Brak wejścia"};
@@ -129,7 +129,7 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
     }
 }
 
-void CodeGenerator::getAddress(Ld::Address &obj)
+void CodeGenerator::getAddress(Ld::Address &obj, QString &output)
 {
     LdProperty::AddressField & address = obj.getAddress();
     if(address.getTextValue() == "" || !address.textIsValid()){
@@ -156,7 +156,7 @@ void CodeGenerator::getAddress(Ld::Address &obj)
             addressText = "=" + addressText;
         }
     }
-    code_ += addressText;
+    output += addressText;
 }
 
 QChar CodeGenerator::getPrefix(Ld::Coil &obj)

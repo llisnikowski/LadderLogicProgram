@@ -13,6 +13,7 @@ public:
     virtual ~AddressField();
     AddressField &operator=(const AddressField &addressField);
 
+    using TextField::operator=;
 private:
     void display();
 

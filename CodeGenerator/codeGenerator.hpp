@@ -40,7 +40,7 @@ private:
     void addEnd();
     void addStructureNetwork(uint i, Network *network);
 
-    void getAddress(Ld::Address &obj);
+    void getAddress(Ld::Address &obj, QString &output);
 
     QChar getPrefix(Ld::Coil &obj);
     QChar getPrefix(Ld::Counter &obj);
