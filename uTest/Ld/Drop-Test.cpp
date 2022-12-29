@@ -12,14 +12,15 @@ using namespace testing;
 class MockDragAndDropData : public Ld::DragData
 {
 public:
-    MOCK_METHOD0(getData, QByteArray ());
-    MOCK_METHOD1(setData, bool(QByteArray data));
+    MOCK_CONST_METHOD0(getData, QByteArray ());
+    MOCK_METHOD1(setData, bool(const QByteArray &data));
 };
 
-class MockDropValidator : public Ld::DropValidator{
+class MockDropValidator : public Ld::DropValidator
+{
 public:
-    MOCK_METHOD2(valid, Qt::DropAction(const QByteArray & dropData,
-                                       const QByteArray & dragData));
+    MOCK_METHOD1(valid, Qt::DropAction(const QByteArray &dragArrayData));
+    MOCK_METHOD1(doAction, void(const QByteArray & dropData));
 };
 
 

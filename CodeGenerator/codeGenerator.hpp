@@ -26,7 +26,7 @@ public:
     explicit CodeGenerator(QObject *parent = nullptr);
 
     void setNetworkList(NetworkList *networkList);
-    void setLogObject(ConsoleLog *logObject);
+    void setLogObject(LogInterface *logObject);
 
 public slots:
     bool verify();

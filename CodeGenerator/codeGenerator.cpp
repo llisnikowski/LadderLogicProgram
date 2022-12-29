@@ -22,7 +22,7 @@ void CodeGenerator::setNetworkList(NetworkList *networkList)
     networkList_ = networkList;
 }
 
-void CodeGenerator::setLogObject(ConsoleLog *logObject)
+void CodeGenerator::setLogObject(LogInterface *logObject)
 {
     logObject_ = logObject;
 }
