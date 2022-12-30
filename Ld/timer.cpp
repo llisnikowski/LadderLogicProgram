@@ -96,5 +96,15 @@ QByteArray Timer::getData() const
     return itemData;
 }
 
+LdProperty::TypeField &Timer::getPropertyType()
+{
+    return type_;
+}
+
+LdProperty::TextWithComboboxField &Timer::getTime()
+{
+    return time_;
+}
+
 
 } //namespace Ld

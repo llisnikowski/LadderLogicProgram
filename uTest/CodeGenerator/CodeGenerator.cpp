@@ -8,6 +8,7 @@
 #include "codeGenerator.hpp"
 #include <QString>
 #include "addressField.hpp"
+#include "timer.hpp"
 
 class LogMock : public QObject, public LogInterface
 {
@@ -215,6 +216,33 @@ TEST_F(CodeGenetor_Test, CoilReset)
                               ":N00 I00|I01|i12&I02&i03=Q00\r\n"
                               ":N01 I05SQ01\r\n"
                               ":N02 i06RQ01\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}
+
+TEST_F(CodeGenetor_Test, TimerOutput)
+{
+    ContainerLd &container = networkList_.getNetwork(3)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "I07";
+    contact.getPropertyType() = 1;
+    container.add(&contact, 0, 1);
+
+    Ld::Timer timer;
+    timer.getAddress() = "T02";
+    timer.getPropertyType() = 2;
+    timer.getTime() = 1234;
+    timer.getTime().setUnits(0);
+    container.add(&timer, 0, 3);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01|i12&I02&i03=Q00\r\n"
+                              ":N01 I05SQ01\r\n"
+                              ":N02 i06RQ01\r\n"
+                              ":N03 i07=T02\r\n"
+                              ":T02 s1234m2\r\n"
                               ":END"
                           })).Times(1);
     EXPECT_TRUE(codeGenerator_.startGenerating());

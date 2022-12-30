@@ -53,6 +53,7 @@ bool CodeGenerator::startGenerating()
         for(uint i = 0; i < networkList_->count(); i++){
             addStructureNetwork(i, networkList_->getNetwork(i));
         }
+        parametersArray_.get(code_);
         code_ += ":END";
     }
     catch(const BadGenerated & badGenerated) {

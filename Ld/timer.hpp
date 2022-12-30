@@ -20,6 +20,9 @@ public:
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
+    LdProperty::TypeField &getPropertyType();
+    LdProperty::TextWithComboboxField &getTime();
+
 protected:
     LdProperty::TypeField type_;
     LdProperty::TextWithComboboxField time_;

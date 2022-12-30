@@ -15,6 +15,8 @@ public:
     TextWithComboboxField(QQuickItem *parent = nullptr);
     TextWithComboboxField &operator=(const TextWithComboboxField &obj);
 
+    using TextField::operator=;
+
     void setUnits(int units);
     int getUnits() const;
     const QStringList &getModel() const;

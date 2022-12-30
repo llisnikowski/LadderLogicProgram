@@ -50,7 +50,7 @@ class ParametersArray : public QObject
 public:
     ParametersArray(QObject *parent = nullptr);
 
-    bool get(QString &out);
+    void get(QString &out);
 
     ParametrStatus set(Ld::Timer &obj);
     ParametrStatus set(Ld::Counter &obj);
@@ -58,6 +58,8 @@ public:
     ParametrStatus set(Ld::Text &obj);
 
 private:
+    void get(uint nr, TimersParameter &timer, QString &out);
+
     TimersParameter timersParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
     CountersParameter countersParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
     WeektimesParameter weekTimesParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
