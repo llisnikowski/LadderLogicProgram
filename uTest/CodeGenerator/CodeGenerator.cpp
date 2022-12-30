@@ -143,3 +143,79 @@ TEST_F(CodeGenetor_Test, And)
                           })).Times(1);
     EXPECT_TRUE(codeGenerator_.startGenerating());
 }
+
+TEST_F(CodeGenetor_Test, NegativeContact)
+{
+    ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "I3";
+    contact.getPropertyType() = 1;
+    container.add(&contact, 0, 7);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01&I02&i03=Q00\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}
+
+TEST_F(CodeGenetor_Test, FullNetwork)
+{
+    ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "I12";
+    contact.getPropertyType() = 1;
+    container.add(&contact, 2, 1);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01|i12&I02&i03=Q00\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}
+
+TEST_F(CodeGenetor_Test, CoilSet)
+{
+    ContainerLd &container = networkList_.getNetwork(1)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "I05";
+    container.add(&contact, 0, 1);
+
+    Ld::Coil coil;
+    coil.getAddress() = "Q01";
+    coil.getPropertyType() = 1;
+    container.add(&coil, 0, 3);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01|i12&I02&i03=Q00\r\n"
+                              ":N01 I05SQ01\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}
+
+TEST_F(CodeGenetor_Test, CoilReset)
+{
+    ContainerLd &container = networkList_.getNetwork(2)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "I06";
+    contact.getPropertyType() = 1;
+    container.add(&contact, 0, 1);
+
+    Ld::Coil coil;
+    coil.getAddress() = "Q01";
+    coil.getPropertyType() = 2;
+    container.add(&coil, 0, 3);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01|i12&I02&i03=Q00\r\n"
+                              ":N01 I05SQ01\r\n"
+                              ":N02 i06RQ01\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}

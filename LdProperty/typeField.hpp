@@ -13,6 +13,8 @@ public:
     virtual ~TypeField();
     TypeField &operator=(const TypeField &typeField);
 
+    using ComboboxField::operator=;
+
 private:
     void display();
 
