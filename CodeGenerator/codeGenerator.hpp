@@ -40,10 +40,8 @@ private:
     void addEnd();
     void addStructureNetwork(uint i, Network *network);
 
-    void getAddress(Ld::Address &obj, QString &output);
-
-    QChar getPrefix(Ld::Coil &obj);
-    QChar getPrefix(Ld::Counter &obj);
+    template <typename T>
+    void getAddress(T &obj, QString &output);
 
     NetworkList *networkList_;
     LogInterface *logObject_;

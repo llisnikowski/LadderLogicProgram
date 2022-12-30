@@ -14,6 +14,10 @@ public:
     AddressField &operator=(const AddressField &addressField);
 
     using TextField::operator=;
+
+    QString getAddressType();
+    QString getAddressNr();
+    QString getFullAddress();
 private:
     void display();
 

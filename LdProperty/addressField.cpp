@@ -25,6 +25,30 @@ AddressField &AddressField::operator=(const AddressField &addressField)
     return *this;
 }
 
+QString AddressField::getAddressType()
+{
+    if(textValue_.length() >= 1){
+        return textValue_[0].toUpper();
+    }
+    return "";
+}
+
+QString AddressField::getAddressNr()
+{
+    if(textValue_.length() <= 1){
+        return "00";
+    }
+    if(textValue_.length() == 2){
+        return QString("0") + textValue_[1];
+    }
+    return QString(textValue_[1]) + textValue_[2];
+}
+
+QString AddressField::getFullAddress()
+{
+    return getAddressType() + getAddressNr();
+}
+
 void AddressField::display()
 {
     if(qmlObject_){

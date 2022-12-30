@@ -113,3 +113,33 @@ TEST_F(CodeGenetor_Test, contactAndCoil)
                           })).Times(1);
     EXPECT_TRUE(codeGenerator_.startGenerating());
 }
+
+TEST_F(CodeGenetor_Test, Or)
+{
+    ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "i01";
+    container.add(&contact, 1, 1);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01=Q00\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}
+
+TEST_F(CodeGenetor_Test, And)
+{
+    ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
+    Ld::Contact contact;
+    contact.getAddress() = "i2";
+    container.add(&contact, 0, 5);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01&I02=Q00\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}

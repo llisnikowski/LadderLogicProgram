@@ -9,6 +9,17 @@
 #include "counter.hpp"
 #include "weektimer.hpp"
 #include "text.hpp"
+#include <type_traits>
+
+using InputType = std::false_type;
+using OutputType = std::true_type;
+
+template <typename T>
+OutputType isOutputType;
+template <>
+InputType isOutputType<Ld::Contact>;
+template <>
+InputType isOutputType<Ld::Weektimer>;
 
 
 CodeGenerator::CodeGenerator(QObject *parent)
@@ -98,23 +109,32 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
                 else{
                     networkCode += "|";
                 }
-                if(type == Ld::Type::Weektimer){
+                if(type == Ld::Type::Contact){
+                    getAddress(static_cast<Ld::Contact&>(*obj), networkCode);
+                }
+                else if(type == Ld::Type::Weektimer){
+                    getAddress(static_cast<Ld::Weektimer&>(*obj), networkCode);
                     parametersArray_.set(static_cast<Ld::Weektimer&>(*obj));
                 }
             }
             else if(obj->getType() >= Ld::Type::Output){
                 isOutput = true;
-                if(type == Ld::Type::Timer){
+                if(type == Ld::Type::Coil){
+                    getAddress(static_cast<Ld::Coil&>(*obj), networkCode);
+                }
+                else if(type == Ld::Type::Timer){
+                    getAddress(static_cast<Ld::Timer&>(*obj), networkCode);
                     parametersArray_.set(static_cast<Ld::Timer&>(*obj));
                 }
                 else if(type == Ld::Type::Counter){
+                    getAddress(static_cast<Ld::Counter&>(*obj),networkCode);
                     parametersArray_.set(static_cast<Ld::Counter&>(*obj));
                 }
                 else if(type == Ld::Type::Text){
+                    getAddress(static_cast<Ld::Text&>(*obj), networkCode);
                     parametersArray_.set(static_cast<Ld::Text&>(*obj));
                 }
             }
-            getAddress(static_cast<Ld::Address&>(*obj), networkCode);
     });
     if(!isInput && isOutput){
         throw BadGenerated{"Brak wejścia"};
@@ -129,61 +149,60 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
     }
 }
 
-void CodeGenerator::getAddress(Ld::Address &obj, QString &output)
+template <typename T>
+void CodeGenerator::getAddress(T &obj, QString &output)
 {
     LdProperty::AddressField & address = obj.getAddress();
     if(address.getTextValue() == "" || !address.textIsValid()){
         throw BadGenerated{"Niepoprawny adress obiektu"};
     }
-    QString addressText = obj.getAddress().getTextValue().toUpper();
-    if(obj.getType() >= Ld::Type::Input){
-        if(obj.getType() == Ld::Type::Contact
-                && static_cast<Ld::Contact&>(obj)
-                       .getPropertyType().getValue() == 1){
-            addressText = addressText.toLower();
+    QString addressText{};
+    if constexpr(!isOutputType<T>){
+        if constexpr(std::is_same<T, Ld::Contact>::value){
+            addressText = address.getAddressType();
+            if(obj.getPropertyType().getValue())
+                addressText = addressText.toLower();
+            addressText += address.getAddressNr();
+        }
+        else{
+            addressText = address.getFullAddress();
         }
     }
-    else if(obj.getType() >= Ld::Type::Output){
-        if(obj.getType() == Ld::Type::Coil){
-            addressText = getPrefix(static_cast<Ld::Coil&>(obj))
-                          + addressText;
+    else{
+        if constexpr(std::is_same<T, Ld::Coil>::value){
+            switch(obj.getPropertyType().getValue()){
+            case 1:
+                addressText += 'S';
+                break;
+            case 2:
+                addressText += 'R';
+                break;
+            default:
+                addressText += '=';
+                break;
+            }
+            addressText += address.getFullAddress();;
         }
-        else if(obj.getType() == Ld::Type::Counter){
-            addressText = getPrefix(static_cast<Ld::Counter&>(obj))
-                          + addressText;
+        else if constexpr(std::is_same<T, Ld::Counter>::value){
+            switch(obj.getPropertyType().getValue()){
+            case 1:
+                addressText += "=D" + address.getAddressNr();
+                break;
+            case 2:
+                addressText += 'R' + address.getFullAddress();
+                break;
+            default:
+                addressText += '=' + address.getFullAddress();
+                break;
+            }
         }
         else {
-            addressText = "=" + addressText;
+            addressText = "=" + address.getFullAddress();
         }
     }
+
     output += addressText;
 }
-
-QChar CodeGenerator::getPrefix(Ld::Coil &obj)
-{
-    switch(obj.getPropertyType().getValue()){
-    case 1:
-        return 'S';
-    case 2:
-        return 'R';
-    default:
-        return '=';
-    }
-}
-
-QChar CodeGenerator::getPrefix(Ld::Counter &obj)
-{
-    switch(obj.getPropertyType().getValue()){
-    case 1:
-        return 'D';
-    case 2:
-        return 'R';
-    default:
-        return '=';
-    }
-}
-
-
 
 
 
