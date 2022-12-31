@@ -46,6 +46,7 @@ bool CodeGenerator::verify()
 bool CodeGenerator::startGenerating()
 {
     qDebug() << "Start generating";
+    parametersArray_.clear();
     try {
         if(!networkList_) return false;
         code_.clear();
@@ -115,7 +116,6 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
                 }
                 else if(type == Ld::Type::Weektimer){
                     getAddress(static_cast<Ld::Weektimer&>(*obj), networkCode);
-                    parametersArray_.set(static_cast<Ld::Weektimer&>(*obj));
                 }
             }
             else if(obj->getType() >= Ld::Type::Output){
@@ -125,15 +125,12 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
                 }
                 else if(type == Ld::Type::Timer){
                     getAddress(static_cast<Ld::Timer&>(*obj), networkCode);
-                    parametersArray_.set(static_cast<Ld::Timer&>(*obj));
                 }
                 else if(type == Ld::Type::Counter){
                     getAddress(static_cast<Ld::Counter&>(*obj),networkCode);
-                    parametersArray_.set(static_cast<Ld::Counter&>(*obj));
                 }
                 else if(type == Ld::Type::Text){
                     getAddress(static_cast<Ld::Text&>(*obj), networkCode);
-                    parametersArray_.set(static_cast<Ld::Text&>(*obj));
                 }
             }
     });
@@ -167,6 +164,7 @@ void CodeGenerator::getAddress(T &obj, QString &output)
         }
         else{
             addressText = address.getFullAddress();
+            parametersArray_.set(obj);
         }
     }
     else{
@@ -194,11 +192,13 @@ void CodeGenerator::getAddress(T &obj, QString &output)
                 break;
             default:
                 addressText += '=' + address.getFullAddress();
+                parametersArray_.set(obj);
                 break;
             }
         }
         else {
             addressText = "=" + address.getFullAddress();
+            parametersArray_.set(obj);
         }
     }
 

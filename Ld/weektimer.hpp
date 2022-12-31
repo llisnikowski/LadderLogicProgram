@@ -20,6 +20,10 @@ public:
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
+    LdProperty::TextField &getTimeOn();
+    LdProperty::TextField &getTimeOff();
+    LdProperty::DaysOfWeekField &getDaysOfWeek();
+
 protected:
     LdProperty::TextField timeOn_;
     LdProperty::TextField timeOff_;

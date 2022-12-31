@@ -61,5 +61,22 @@ QByteArray Weektimer::getData() const
     return itemData;
 }
 
+LdProperty::TextField &Weektimer::getTimeOn()
+{
+    return timeOn_;
+}
+
+LdProperty::TextField &Weektimer::getTimeOff()
+{
+    return timeOff_;
+}
+
+LdProperty::DaysOfWeekField &Weektimer::getDaysOfWeek()
+{
+    return daysOfWeek_;
+}
+
+
+
 
 } //namespace Ld

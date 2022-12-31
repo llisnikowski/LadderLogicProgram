@@ -1,5 +1,7 @@
 #include "parametersArray.hpp"
+#include "counter.hpp"
 #include "timer.hpp"
+#include "weektimer.hpp"
 
 ParametersArray::ParametersArray(QObject *parent)
     :QObject{parent}, timersParametrs_{}, countersParametrs_{},
@@ -12,6 +14,25 @@ void ParametersArray::get(QString &out)
 {
     for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
         get(i, timersParametrs_[i], out);
+    }
+    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+        get(i, countersParametrs_[i], out);
+    }
+    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+        get(i, weekTimesParametrs_[i], out);
+    }
+}
+
+void ParametersArray::clear()
+{
+    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+        timersParametrs_[i].used = 0;
+    }
+    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+        countersParametrs_[i].used = 0;
+    }
+    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+        weekTimesParametrs_[i].used = 0;
     }
 }
 
@@ -35,7 +56,7 @@ ParametrStatus ParametersArray::set(Ld::Timer &obj)
 
     if(unit == 0){  // ms
         if(timeValue <= 9999){
-            timersParametrs_[addressNr].time = time;   //accuracy = 10ms
+            timersParametrs_[addressNr].time = time;
             timersParametrs_[addressNr].timeUnit = 's';   //ssmm
         }
         else{
@@ -78,11 +99,39 @@ ParametrStatus ParametersArray::set(Ld::Timer &obj)
 
 ParametrStatus ParametersArray::set(Ld::Counter &obj)
 {
+    auto &address = obj.getAddress();
+    if(!address.textIsValid()) return ParametrStatus::incorrectValue;
+    QString addressText = address.getAddressNr();
+    uint addressNr = addressText.toUInt();
+    if(addressNr >= SINGLE_TYPE_PARAMETER_COUNT) return ParametrStatus::incorrectValue;
+    if(countersParametrs_[addressNr].used == 1) return ParametrStatus::repeatedAddress;
+    countersParametrs_[addressNr].used = 1;
+
+    auto &counter = obj.getCounter();
+    countersParametrs_[addressNr].count = counter.getTextValue().toUInt() % 10'000;
+
     return ParametrStatus::correctValue;
 }
 
 ParametrStatus ParametersArray::set(Ld::Weektimer &obj)
 {
+    auto &address = obj.getAddress();
+    if(!address.textIsValid()) return ParametrStatus::incorrectValue;
+    QString addressText = address.getAddressNr();
+    uint addressNr = addressText.toUInt();
+    if(addressNr >= SINGLE_TYPE_PARAMETER_COUNT) return ParametrStatus::incorrectValue;
+    if(weekTimesParametrs_[addressNr].used == 1) return ParametrStatus::repeatedAddress;
+    weekTimesParametrs_[addressNr].used = 1;
+
+    QString timeOnText = obj.getTimeOn().getTextValue();
+    erase(timeOnText,':');
+    weekTimesParametrs_[addressNr].timeOn = timeOnText.toShort() % 10000;
+
+    QString timeOffText = obj.getTimeOff().getTextValue();
+    erase(timeOffText,':');
+    weekTimesParametrs_[addressNr].timeOff = timeOffText.toShort() % 10000;
+
+    weekTimesParametrs_[addressNr].days = obj.getDaysOfWeek().getValue();
     return ParametrStatus::correctValue;
 }
 
@@ -105,3 +154,32 @@ void ParametersArray::get(uint nr, TimersParameter &timer, QString &out)
     parametrCode += "\r\n";
     out += parametrCode;
 }
+
+void ParametersArray::get(uint nr, CountersParameter &counter, QString &out)
+{
+    if(!counter.used) return;
+    QString parametrCode = QString(":C") + (nr < 10 ? "0" : "") +
+                           QString::number(nr%100) + " ";
+    parametrCode += QString("%1").arg(counter.count, 4, 10, QChar('0'));
+    parametrCode += "\r\n";
+    out += parametrCode;
+}
+
+void ParametersArray::get(uint nr, WeektimesParameter &weektimer, QString &out)
+{
+    if(!weektimer.used) return;
+    QString parametrCode = QString(":Z") + (nr < 10 ? "0" : "") +
+                           QString::number(nr%100) + " ";
+    parametrCode += QString("%1 ").arg(weektimer.timeOn, 4, 10, QChar('0'));
+    parametrCode += QString("%1 ").arg(weektimer.timeOff, 4, 10, QChar('0'));
+    parametrCode += QString("%1").arg(weektimer.days, 8, 2, QChar('0'));
+    parametrCode += "\r\n";
+    out += parametrCode;
+}
+
+
+
+
+
+
+

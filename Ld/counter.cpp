@@ -64,5 +64,10 @@ LdProperty::TypeField &Counter::getPropertyType()
     return type_;
 }
 
+LdProperty::TextField &Counter::getCounter()
+{
+    return counter_;
+}
+
 
 } //namespace Ld

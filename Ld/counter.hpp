@@ -21,6 +21,7 @@ public:
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
     LdProperty::TypeField &getPropertyType();
+    LdProperty::TextField &getCounter();
 
 protected:
     LdProperty::TypeField type_;
