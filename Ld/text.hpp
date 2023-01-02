@@ -18,6 +18,7 @@ public:
     Type getType() const override;
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
+    LdProperty::MultitextField &getTexts();
 
 protected:
     LdProperty::MultitextField texts_;

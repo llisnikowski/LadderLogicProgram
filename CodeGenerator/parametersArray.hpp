@@ -62,6 +62,7 @@ private:
     void get(uint nr, TimersParameter &timer, QString &out);
     void get(uint nr, CountersParameter &counter, QString &out);
     void get(uint nr, WeektimesParameter &weektimer, QString &out);
+    void get(uint nr, TextParameter &text, QString &out);
 
     TimersParameter timersParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
     CountersParameter countersParametrs_[SINGLE_TYPE_PARAMETER_COUNT];

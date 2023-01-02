@@ -50,5 +50,10 @@ QByteArray Text::getData() const
     return itemData;
 }
 
+LdProperty::MultitextField &Text::getTexts()
+{
+    return texts_;
+}
+
 
 } //namespace Ld

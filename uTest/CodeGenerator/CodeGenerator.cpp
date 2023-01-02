@@ -9,6 +9,7 @@
 #include "codeGenerator.hpp"
 #include <QString>
 #include "addressField.hpp"
+#include "text.hpp"
 #include "timer.hpp"
 #include "weektimer.hpp"
 
@@ -360,6 +361,38 @@ TEST_F(CodeGenetor_Test, Weektimer)
                               ":T02 s1234m2\r\n"
                               ":C04 0064\r\n"
                               ":Z00 1143 1345 01101100\r\n"
+                              ":END"
+                          })).Times(1);
+    EXPECT_TRUE(codeGenerator_.startGenerating());
+}
+
+TEST_F(CodeGenetor_Test, Text)
+{
+    ContainerLd &container = networkList_.getNetwork(8)->getContainerLd();
+    Ld::Text text;
+    Ld::Contact contact;
+    contact.getAddress() = "I10";
+    container.add(&contact, 0, 1);
+
+    text.getAddress() = "X02";
+    text.getTexts().setTextsList({"Text1", "Text2", "Text3", "Text4"});
+    container.add(&text, 0, 3);
+
+    EXPECT_CALL(logCode_, addToLogs(QString{
+                              ":START\r\n"
+                              ":N00 I00|I01|i12&I02&i03=Q00\r\n"
+                              ":N01 I05SQ01\r\n"
+                              ":N02 i06RQ01\r\n"
+                              ":N03 i07=T02\r\n"
+                              ":N04 I07=C04\r\n"
+                              ":N05 I08RC04\r\n"
+                              ":N06 I09=D04\r\n"
+                              ":N07 Z00=Q05\r\n"
+                              ":N08 I10=X02\r\n"
+                              ":T02 s1234m2\r\n"
+                              ":C04 0064\r\n"
+                              ":Z00 1143 1345 01101100\r\n"
+                              ":X02 Text1 Text2 Text3 Text4\r\n"
                               ":END"
                           })).Times(1);
     EXPECT_TRUE(codeGenerator_.startGenerating());

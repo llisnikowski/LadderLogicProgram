@@ -1,5 +1,6 @@
 #include "parametersArray.hpp"
 #include "counter.hpp"
+#include "text.hpp"
 #include "timer.hpp"
 #include "weektimer.hpp"
 
@@ -21,18 +22,18 @@ void ParametersArray::get(QString &out)
     for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
         get(i, weekTimesParametrs_[i], out);
     }
+    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+        get(i, textParameters_[i], out);
+    }
 }
 
 void ParametersArray::clear()
 {
     for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
         timersParametrs_[i].used = 0;
-    }
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
         countersParametrs_[i].used = 0;
-    }
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
         weekTimesParametrs_[i].used = 0;
+        textParameters_[i].used = 0;
     }
 }
 
@@ -137,6 +138,19 @@ ParametrStatus ParametersArray::set(Ld::Weektimer &obj)
 
 ParametrStatus ParametersArray::set(Ld::Text &obj)
 {
+    auto &address = obj.getAddress();
+    if(!address.textIsValid()) return ParametrStatus::incorrectValue;
+    QString addressText = address.getAddressNr();
+    uint addressNr = addressText.toUInt();
+    if(addressNr >= SINGLE_TYPE_PARAMETER_COUNT) return ParametrStatus::incorrectValue;
+    if(textParameters_[addressNr].used == 1) return ParametrStatus::repeatedAddress;
+    textParameters_[addressNr].used = 1;
+
+    auto &textList = obj.getTexts().getTextsList();
+    for(int i = 0; i < 4; i++){
+        textParameters_[addressNr].text[i] = textList[i];
+    }
+
     return ParametrStatus::correctValue;
 }
 
@@ -173,6 +187,19 @@ void ParametersArray::get(uint nr, WeektimesParameter &weektimer, QString &out)
     parametrCode += QString("%1 ").arg(weektimer.timeOn, 4, 10, QChar('0'));
     parametrCode += QString("%1 ").arg(weektimer.timeOff, 4, 10, QChar('0'));
     parametrCode += QString("%1").arg(weektimer.days, 8, 2, QChar('0'));
+    parametrCode += "\r\n";
+    out += parametrCode;
+}
+
+void ParametersArray::get(uint nr, TextParameter &text, QString &out)
+{
+    if(!text.used) return;
+    QString parametrCode = QString(":X") + (nr < 10 ? "0" : "") +
+                           QString::number(nr%100);
+
+    for(int i = 0; i < 4; i++){
+        parametrCode += QString(" ") + text.text[i];
+    }
     parametrCode += "\r\n";
     out += parametrCode;
 }
