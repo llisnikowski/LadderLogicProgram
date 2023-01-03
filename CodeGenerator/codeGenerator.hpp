@@ -7,6 +7,8 @@
 #include "parametersArray.hpp"
 #include "logInterface.hpp"
 
+#define DISPLAY_CODE 0
+
 class NetworkList;
 class Network;
 class ConsoleLog;
@@ -22,6 +24,7 @@ using BadGenerated = std::logic_error;
 class CodeGenerator : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString code READ getCode NOTIFY codeReady)
 public:
     explicit CodeGenerator(QObject *parent = nullptr);
 
@@ -31,6 +34,7 @@ public:
 public slots:
     bool verify();
     bool startGenerating();
+    const QString &getCode() const;
 
 signals:
     void codeReady(const QString &);
@@ -47,6 +51,7 @@ private:
     LogInterface *logObject_;
     QString code_;
     ParametersArray parametersArray_;
+    int lastNetwork_;
 };
 
 #endif // CODEGENERATOR_HPP

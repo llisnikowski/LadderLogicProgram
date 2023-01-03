@@ -15,9 +15,9 @@ Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 SelectItem selectItem;
 PropertiesList propertyList;
-ConsoleLog consoleLog;
 CodeGenerator codeGenerator;
 SerialPort serialPort;
+ConsoleLog consoleLog;
 
 
 int main(int argc, char *argv[])
@@ -25,6 +25,10 @@ int main(int argc, char *argv[])
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
+
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+
 
     FactoryLd::setSelectItem(&selectItem);
     codeGenerator.setNetworkList(&networkList);
@@ -34,8 +38,6 @@ int main(int argc, char *argv[])
     QObject::connect(&selectItem, &SelectItem::changedSelectItem,
                      &propertyList, &PropertiesList::display);
 
-    QGuiApplication app(argc, argv);
-    QQmlApplicationEngine engine;
 
     engine.rootContext()->setContextProperty("networkList", &networkList);
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);

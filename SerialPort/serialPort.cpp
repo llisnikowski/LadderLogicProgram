@@ -8,6 +8,7 @@ SerialPort::SerialPort(QObject *parent)
 
 SerialPort::~SerialPort()
 {
+    logObject_ = nullptr;
     disconnect();
 }
 
@@ -68,12 +69,14 @@ void SerialPort::disconnect()
     }
 }
 
-bool SerialPort::send(QString message)
+bool SerialPort::send(const QString &message)
 {
     if(serialPort_.isOpen() && serialPort_.isWritable()) {
         serialPort_.write(message.toStdString().c_str());
         return true;
     }
+    if(logObject_)
+        logObject_->addToLogs("Brak połączenia ze sterownikiem");
     return false;
 }
 
@@ -81,8 +84,7 @@ void SerialPort::read()
 {
     while(serialPort_.canReadLine()) {
         QString line = serialPort_.readLine();
-        QString terminator = "\r";
-        int pos = line.lastIndexOf(terminator);
+        int pos = line.lastIndexOf("\n");
         if(logObject_)
             logObject_->addToLogs(line.left(pos));
     }

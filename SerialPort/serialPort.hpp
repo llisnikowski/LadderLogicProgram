@@ -23,10 +23,10 @@ public slots:
     void connect();
     void disconnect();
 
-public:
-    bool send(QString message);
-    void read();
+    bool send(const QString &message);
 
+public:
+    void read();
 
     void setLogObject(LogInterface *logObject);
 

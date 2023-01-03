@@ -11,6 +11,8 @@ class ConsoleLog : public QQuickItem, public LogInterface
 public:
     explicit ConsoleLog(QQuickItem *parent = nullptr);
     ~ConsoleLog();
+
+public slots:
     void addToLogs(QString message) override;
 
 signals:

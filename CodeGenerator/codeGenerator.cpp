@@ -45,7 +45,6 @@ bool CodeGenerator::verify()
 
 bool CodeGenerator::startGenerating()
 {
-    qDebug() << "Start generating";
     parametersArray_.clear();
     try {
         if(!networkList_) return false;
@@ -68,12 +67,19 @@ bool CodeGenerator::startGenerating()
 
     emit codeReady(code_);
 
+#if(DISPLAY_CODE)
     qDebug()<<"---| KOD |---";
     qDebug() << code_;
     qDebug()<<"------";
     qDebug().noquote() << code_;
+#endif
 
     return true;
+}
+
+const QString &CodeGenerator::getCode() const
+{
+    return code_;
 }
 
 void CodeGenerator::addHeader(uint i)
@@ -95,6 +101,7 @@ void CodeGenerator::addEnd()
 void CodeGenerator::addStructureNetwork(uint i, Network *network)
 {
     ContainerLd &containerLd = network->getContainerLd();
+    lastNetwork_ = network->getNr();
     bool isInput = false;
     bool isOutput = false;
     QString networkCode{};
@@ -135,10 +142,12 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
             }
     });
     if(!isInput && isOutput){
-        throw BadGenerated{"Brak wejścia"};
+        throw BadGenerated{"Brak wejścia w networku nr: "
+                           + std::to_string(lastNetwork_)};
     }
     else if(!isOutput && isInput){
-        throw BadGenerated{"Brak wyjścia"};
+        throw BadGenerated{"Brak wyjścia w networku nr: "
+                           + std::to_string(lastNetwork_)};
     }
     else if(isInput && isOutput){
         addHeader(i);
@@ -152,7 +161,8 @@ void CodeGenerator::getAddress(T &obj, QString &output)
 {
     LdProperty::AddressField & address = obj.getAddress();
     if(address.getTextValue() == "" || !address.textIsValid()){
-        throw BadGenerated{"Niepoprawny adress obiektu"};
+        throw BadGenerated{"Niepoprawny adress obiektu w networku nr: "
+                           + std::to_string(lastNetwork_)};
     }
     QString addressText{};
     if constexpr(!isOutputType<T>){

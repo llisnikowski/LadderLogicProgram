@@ -8,7 +8,7 @@ Item {
         anchors.centerIn: parent
     }
     Label {
-        text: "version 0.7"
+        text: "version 0.8"
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
     }
@@ -38,11 +38,45 @@ Item {
         }
         ToolButton {
             id: checkButton
-            text: "\u2713" //"\u27A5"
+            text: "\u2713"
             font.pixelSize: Qt.application.font.pixelSize * 1.6
 
             onClicked: {
-                codeGenerator.verify();
+                consoleLog.addToLogs("Sprawdzanie programu...");
+                if(codeGenerator.verify()){
+                    consoleLog.addToLogs("Program poprawny");
+                }
+                else{
+                    consoleLog.addToLogs("Program niepoprawny");
+                }
+            }
+        }
+        ToolButton {
+            id: uploadButton
+            text: "\u2B72"
+            font.pixelSize: Qt.application.font.pixelSize * 1.6
+
+            onClicked: {
+                if(codeGenerator.verify()){
+                    consoleLog.addToLogs("Wysyłanie programu...");
+                    serialPort.send(codeGenerator.code);
+                }
+            }
+        }
+        ToolButton {
+            id: plcModeButton
+            text: "Start"
+            font.pixelSize: Qt.application.font.pixelSize * 1
+
+            onClicked: {
+            }
+        }
+        ToolButton {
+            id: setTimeButton
+            text: "Ustaw czas"
+            font.pixelSize: Qt.application.font.pixelSize * 1
+
+            onClicked: {
             }
         }
     }
