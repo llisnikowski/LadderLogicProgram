@@ -10,8 +10,19 @@ Item {
         }
     }
 
-    Component.onCompleted: {
-//        networkList.joinToParent(this);
-        networkList.parent = this;
+    ScrollView {
+        anchors.fill: parent
+        Flickable{
+            contentHeight: networkList.height+300
+            anchors.fill: parent
+            Item{
+                width: parent.width;
+                height: networkList.height
+                Component.onCompleted: {
+                    networkList.parent = this;
+                }
+            }
+
+        }
     }
 }

@@ -1,5 +1,6 @@
 #include "networkList.hpp"
 #include "containerLd.hpp"
+#include <QDebug>
 
 NetworkList::NetworkList(QQuickItem *parent)
     :QQuickItem{parent}, networks_{}
@@ -39,6 +40,7 @@ void NetworkList::addNewNetwork()
             this, &NetworkList::addNewNetwork);
     connect(network, &Network::changedHeight,
             this, &NetworkList::updateHeight);
+    setHeight(positionY + network->height());
 }
 
 void NetworkList::updateHeight(int nr, int height)
@@ -49,6 +51,7 @@ void NetworkList::updateHeight(int nr, int height)
         networks_[i]->setY(y);
         y += networks_[i]->height();
     }
+    setHeight(y);
 }
 
 void NetworkList::clearList()
