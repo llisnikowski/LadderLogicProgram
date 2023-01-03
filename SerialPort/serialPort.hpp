@@ -16,6 +16,7 @@ class SerialPort : public QObject
     Q_PROPERTY(bool deviceConnected READ getDeviceConnected WRITE setDeviceConnected NOTIFY deviceConnectedChanged)
 public:
     explicit SerialPort(QObject *parent = nullptr);
+    ~SerialPort();
 
 public slots:
     void searchDevices();
@@ -23,6 +24,10 @@ public slots:
     void disconnect();
 
 public:
+    bool send(QString message);
+    void read();
+
+
     void setLogObject(LogInterface *logObject);
 
     bool getDeviceConnected() const;

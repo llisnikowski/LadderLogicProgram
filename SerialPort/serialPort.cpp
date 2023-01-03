@@ -6,6 +6,11 @@ SerialPort::SerialPort(QObject *parent)
 {
 }
 
+SerialPort::~SerialPort()
+{
+    disconnect();
+}
+
 void SerialPort::searchDevices()
 {
     if(logObject_)
@@ -39,7 +44,8 @@ void SerialPort::connect()
         serialPort_.setParity(QSerialPort::NoParity);
         serialPort_.setStopBits(QSerialPort::OneStop);
         serialPort_.setFlowControl(QSerialPort::NoFlowControl);
-//        connect(&serialPort_, SIGNAL(readyRead()), this, SLOT(readFromPort()));
+        QObject::connect(&serialPort_, &QSerialPort::readyRead,
+                         this, &SerialPort::read);
         if(logObject_)
             logObject_->addToLogs("Otwarto port szeregowy.");
         setDeviceConnected(true);
@@ -62,10 +68,31 @@ void SerialPort::disconnect()
     }
 }
 
+bool SerialPort::send(QString message)
+{
+    if(serialPort_.isOpen() && serialPort_.isWritable()) {
+        serialPort_.write(message.toStdString().c_str());
+        return true;
+    }
+    return false;
+}
+
+void SerialPort::read()
+{
+    while(serialPort_.canReadLine()) {
+        QString line = serialPort_.readLine();
+        QString terminator = "\r";
+        int pos = line.lastIndexOf(terminator);
+        if(logObject_)
+            logObject_->addToLogs(line.left(pos));
+    }
+}
+
 void SerialPort::setLogObject(LogInterface *logObject)
 {
     logObject_ = logObject;
 }
+
 
 
 
