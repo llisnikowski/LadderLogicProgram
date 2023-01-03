@@ -13,7 +13,7 @@ Network::Network(QQuickItem *parent, int nr)
                 });
         setWidth(parent->width());
     }
-    containerLd_.setY(24);
+    containerLd_.setY(40);
     connect(&containerLd_, &QQuickItem::heightChanged,
             this, &Network::updateHeight);
     updateHeight();
@@ -30,7 +30,7 @@ Network::Network(int nr)
 
 void Network::updateHeight()
 {
-    setHeight(containerLd_.height() + 32);
+    setHeight(containerLd_.height() + 64);
     emit changedHeight(nr_, this->height());
 }
 
