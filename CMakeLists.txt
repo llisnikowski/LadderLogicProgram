@@ -17,8 +17,8 @@ add_compile_options(
     -Wno-unused-parameter -Wno-sign-compare
 )
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick Gui)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Gui)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick Gui SerialPort)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Gui SerialPort)
 
 qt_standard_project_setup()
 
@@ -37,6 +37,7 @@ file(GLOB PROJECT_HEADERS
      PropertiesList/*.hpp
      ConsoleLog/*.hpp
      CodeGenerator/*.hpp
+     SerialPort/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
@@ -49,6 +50,7 @@ file(GLOB PROJECT_SOURCES
     PropertiesList/*.cpp
     ConsoleLog/*.cpp
     CodeGenerator/*.cpp
+    SerialPort/*.cpp
 )
 
 set(PROJECT_RESOURSES
@@ -100,6 +102,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/PropertiesList
   ${CMAKE_SOURCE_DIR}/ConsoleLog
   ${CMAKE_SOURCE_DIR}/CodeGenerator
+  ${CMAKE_SOURCE_DIR}/SerialPort
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -107,6 +110,7 @@ target_link_libraries(${PROJECT_NAME}
   Qt${QT_VERSION_MAJOR}::Core
   Qt${QT_VERSION_MAJOR}::Quick
   Qt${QT_VERSION_MAJOR}::Gui
+  Qt${QT_VERSION_MAJOR}::SerialPort
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -146,6 +150,7 @@ file(GLOB UTEST_SOURCES
     uTest/PropertiesList/*.cpp
     uTest/ConsoleLog/*.cpp
     uTest/CodeGenerator/*.cpp
+    uTest/SerialPort/*.cpp
 )
 
 
@@ -173,7 +178,7 @@ target_link_libraries(
     PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Quick
-    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::SerialPort
 )
 
 
@@ -193,6 +198,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/PropertiesList
   ${CMAKE_SOURCE_DIR}/ConsoleLog
   ${CMAKE_SOURCE_DIR}/CodeGenerator
+  ${CMAKE_SOURCE_DIR}/SerialPort
 )
 
 
