@@ -6,7 +6,7 @@ SerialPort::SerialPort(QObject *parent)
 {
 }
 
-void SerialPort::searchDeviecs()
+void SerialPort::searchDevices()
 {
     if(logObject_)
         logObject_->addToLogs("Szukam urządzeń...");
@@ -60,6 +60,11 @@ void SerialPort::disconnect()
         if(logObject_)
             logObject_->addToLogs("Port nie jest otwarty!");
     }
+}
+
+void SerialPort::setLogObject(LogInterface *logObject)
+{
+    logObject_ = logObject;
 }
 
 

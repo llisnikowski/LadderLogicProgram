@@ -17,9 +17,13 @@ class SerialPort : public QObject
 public:
     explicit SerialPort(QObject *parent = nullptr);
 
-    void searchDeviecs();
+public slots:
+    void searchDevices();
     void connect();
     void disconnect();
+
+public:
+    void setLogObject(LogInterface *logObject);
 
     bool getDeviceConnected() const;
     void setDeviceConnected(bool connected);

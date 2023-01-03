@@ -59,6 +59,7 @@ set(PROJECT_RESOURSES
     LdProperty/qml.qrc
     PropertiesList/qml.qrc
     ConsoleLog/qml.qrc
+    SerialPort/qml.qrc
 )
 
 file(GLOB OTHER_FILES
