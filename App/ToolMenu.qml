@@ -20,8 +20,10 @@ Item {
         }
         ToolButton {
             id: connectButton
-            text: serialPort.deviceConnected ? "\u2666" : "\u2662"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
+//            text: serialPort.deviceConnected ? "\u2666" : "\u2662"
+            text: serialPort.deviceConnected ? "Połącz" : "Rozłącz"
+//            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            font.pixelSize: Qt.application.font.pixelSize * 1
 
             property ApplicationWindow connectWindow;
             onClicked: {
@@ -38,8 +40,9 @@ Item {
         }
         ToolButton {
             id: checkButton
-            text: "\u2713"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            text: "Sprawdź"
+//            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
                 consoleLog.addToLogs("Sprawdzanie programu...");
@@ -53,8 +56,9 @@ Item {
         }
         ToolButton {
             id: uploadButton
-            text: "\u2B72"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            text: "Prześlij"
+//            font.pixelSize: Qt.application.font.pixelSize * 1.6
+            font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
                 if(codeGenerator.verify()){
@@ -65,7 +69,7 @@ Item {
         }
         ToolButton {
             id: plcModeButton
-            text: "Start"
+            text: " Start "
             font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
