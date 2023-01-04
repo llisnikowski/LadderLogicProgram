@@ -19,6 +19,9 @@ Ld::Type EmptyDrop::getType() const
     return Type::EmptyDrop;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void EmptyDrop::paint(QPainter *)
 {
 }

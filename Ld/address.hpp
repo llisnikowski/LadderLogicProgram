@@ -6,6 +6,12 @@
 
 namespace Ld {
 
+/*!
+ * \brief Address jest klasą udostępniającą właściwość adress
+ * za pomocą obiektu LdProperty::AddressField
+ *
+ * Klasa dziedziczy z klasy Drag udostępniając mechanizm przenoszenia.
+ */
 class Address : public Drag
 {
     Q_OBJECT

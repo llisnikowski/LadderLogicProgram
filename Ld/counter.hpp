@@ -7,6 +7,9 @@
 
 namespace Ld {
 
+/*!
+ * \brief Klasa Counter udostępnia symbol licznika z języka LD.
+ */
 class Counter : public Output
 {
     Q_OBJECT

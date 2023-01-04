@@ -5,6 +5,11 @@
 
 namespace Ld {
 
+/*!
+ * \brief Klasa EmptyDrop udostępniająca pusty obszar przeciągania dla mechnizmu
+ * <a href="https://doc.qt.io/qt-6/dnd.html">
+ *  Drag and Drop</a>.
+ */
 class EmptyDrop : public Drop
 {
 public:

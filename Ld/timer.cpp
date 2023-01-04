@@ -69,6 +69,9 @@ Base *Timer::clone(QQuickItem *parent)
     return copyObject;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Timer::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

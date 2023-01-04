@@ -10,11 +10,7 @@
 
 namespace Ld {
 
-/*!
- * \brief Konstructor klasy Drop. Inicjalizuje mechanizm
- * <a href="https://doc.qt.io/qt-6/dnd.html"> Drag and Drop</a>.
- * \param parent: rodzic/element nadrzędny.
- */
+
 Drop::Drop(QQuickItem *parent)
     :Base{parent}, droppingItem_{}, dropValidator_{}, dragAction_{}
 {
@@ -31,6 +27,11 @@ Type Drop::getType() const
     return Type::Drop;
 }
 
+/*!
+ * \brief Ustawia obiekt sprawdzający rezultat przenoszenia obiektu dla mechanizmu
+ * <a href="https://doc.qt.io/qt-6/dnd.html">
+ *  Drag and Drop</a>.
+ */
 void Drop::setDropValidator(DropValidator *validator)
 {
     if(dropValidator_) delete dropValidator_;

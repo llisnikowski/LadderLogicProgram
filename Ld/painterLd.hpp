@@ -38,7 +38,7 @@ class QPainter;
 namespace Ld {
 
 /*!
- * \brief LdPainter jest klasą odpowiedzialną za rysowanie symboli Ld.
+ * \brief PainterLd jest klasą odpowiedzialną za rysowanie symboli Ld.
  */
 class PainterLd : public QObject
 {

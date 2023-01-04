@@ -32,6 +32,9 @@ Base *Counter::clone(QQuickItem *parent)
     return copyObject;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Counter::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

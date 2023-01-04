@@ -7,6 +7,9 @@
 
 namespace Ld {
 
+/*!
+ * \brief Klasa Timer udostępnia symbol timera z języka LD.
+ */
 class Timer : public Output
 {
     Q_OBJECT

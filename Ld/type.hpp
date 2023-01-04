@@ -4,6 +4,9 @@
 
 namespace Ld {
 
+/*!
+ * \brief Enum przechowujący typy obiektów Ld
+ */
 enum class Type : int {
     None =      0x0000,
     Base =      0x0001,

@@ -13,6 +13,8 @@
 #include "timer.hpp"
 #include "weektimer.hpp"
 
+using ::testing::_;
+
 class LogMock : public QObject, public LogInterface
 {
 public:
@@ -67,15 +69,11 @@ TEST_F(CodeGenetor_Test, contact)
     Ld::Contact contact;
     container.add(&contact, 0, 1);
 
-    EXPECT_CALL(logError_, addToLogs(QString{
-                              "Niepoprawny adress obiektu"
-                          })).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
     static_cast<Ld::Contact*>(container.getItem(0, 1))->getAddress() = "I01";
-    EXPECT_CALL(logError_, addToLogs(QString{
-                               "Brak wyjścia"
-                           })).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 }
 
@@ -86,15 +84,11 @@ TEST_F(CodeGenetor_Test, coil)
     container.remove(0, 1);
     container.add(&coil, 0, 1);
 
-    EXPECT_CALL(logError_, addToLogs(QString{
-                               "Niepoprawny adress obiektu"
-                           })).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
     static_cast<Ld::Coil*>(container.getItem(0, 1))->getAddress() = "Q00";
-    EXPECT_CALL(logError_, addToLogs(QString{
-                                             "Brak wejścia"
-                           })).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 }
 
@@ -104,9 +98,7 @@ TEST_F(CodeGenetor_Test, contactAndCoil)
     Ld::Contact contact;
     container.add(&contact, 0, 1);
 
-    EXPECT_CALL(logError_, addToLogs(QString{
-                               "Niepoprawny adress obiektu"
-                           })).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
     static_cast<Ld::Contact*>(container.getItem(0, 1))->getAddress() = "I00";

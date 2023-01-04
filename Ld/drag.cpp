@@ -14,10 +14,7 @@
 
 namespace Ld{
 
-/*!
- * \brief Konstructor klasy Drag.
- * \param parent: rodzic/element nadrzędny.
- */
+
 Drag::Drag(QQuickItem *parent)
     :Base{parent}, dragData_{}
 {
@@ -33,6 +30,11 @@ Type Drag::getType() const
     return Type::Drag;
 }
 
+/*!
+ * \brief Ustawia obiekt przechowujący dane dla mechanizmu
+ * <a href="https://doc.qt.io/qt-6/dnd.html">
+ *  Drag and Drop</a>.
+ */
 void Drag::setDragData(DragData *data)
 {
     if(dragData_) delete dragData_;
@@ -117,7 +119,7 @@ QMimeData *Drag::createDragData(QMouseEvent &)
 
 /*!
  * \brief Tworzy ikonę przeciągania.
- * \return Obraz
+ * \return Utworzona ikona
  * <a href="https://doc.qt.io/qt-6/qpixmap.html">QPixmap</a>.
  */
 QPixmap Drag::createDragPixmap()

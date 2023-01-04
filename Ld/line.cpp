@@ -30,6 +30,9 @@ Type Line::getType() const
     return Type::Line;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Line::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

@@ -41,7 +41,9 @@ Type Contact::getType() const
     return Type::Contact;
 }
 
-
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Contact::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

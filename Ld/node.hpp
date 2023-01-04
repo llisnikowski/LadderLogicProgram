@@ -13,7 +13,7 @@
 namespace Ld {
 
 /*!
- * \brief Klasa Coil udostępnia symbol węzła z języka LD.
+ * \brief Klasa Node udostępnia symbol węzła z języka LD.
  */
 class Node : public Base
 {

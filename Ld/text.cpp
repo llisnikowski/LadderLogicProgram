@@ -24,6 +24,9 @@ Base *Text::clone(QQuickItem *parent)
     return copyObject;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Text::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

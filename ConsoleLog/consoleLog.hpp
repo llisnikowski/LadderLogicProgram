@@ -5,6 +5,9 @@
 #include <QString>
 #include "logInterface.hpp"
 
+/*!
+ * \brief ConsoleLog jest klasą udostępniającą okno konsoli.
+ */
 class ConsoleLog : public QQuickItem, public LogInterface
 {
     Q_OBJECT
@@ -19,9 +22,12 @@ signals:
     void logTextChanged(QString text);
 
 private:
-    void Parent();
     void createQQuickItem();
 
+    /*!
+     * \brief qmlObject_ jest wskaźnikiem przechowującym graficzny
+     * obiekt konsoli.
+     */
     QQuickItem *qmlObject_;
 };
 

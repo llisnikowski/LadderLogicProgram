@@ -12,7 +12,7 @@
 namespace Ld {
 
 /*!
- * \brief Klasa Coil udostępnia symbol styku z języka LD.
+ * \brief Klasa Contact udostępnia symbol styku z języka LD.
  */
 class Contact : public Input
 {

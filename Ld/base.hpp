@@ -1,9 +1,3 @@
-/*!
- * \file componentLd.hpp
- * \brief
- * \author Łukasz Liśnikowski
-*/
-
 #ifndef COMPONENTLD_HPP
 #define COMPONENTLD_HPP
 
@@ -14,7 +8,7 @@
 namespace Ld{
 
 /*!
- * \brief ComponentLd jest klasą bazową dla klas symboli z języka LD takich
+ * \brief Base jest klasą bazową dla klas symboli z języka LD takich
  *  jak Coil, Contact, Line, Timer itp..
  *
  *  Dziedzyczy po klacie
@@ -29,11 +23,22 @@ class Base : public QQuickPaintedItem
 public:
     explicit Base(QQuickItem *parent = nullptr);
 
+    /*!
+     * \brief Funkcja wirtualna zwracająca kopie obiektu.
+     * \param parent: rodzic dla nowopowstałego obiektu
+     */
     virtual Base *clone(QQuickItem *parent = nullptr) = 0;
 
     virtual Type getType() const;
 
+    /*!
+     * \brief Zwraca dane obieku w postaci tablicy bajtów
+     * <a href="https://doc.qt.io/qt-6/qbytearray.html">QByteArray</a>.
+     */
     virtual QByteArray getData() const = 0;
+
+    void paint(QPainter *painter) override = 0;
+
     void addProperty(LdProperty::Base* property);
     QVector<LdProperty::Base*> &getPropertiesList();
 

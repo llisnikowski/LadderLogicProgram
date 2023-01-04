@@ -6,6 +6,11 @@
 
 namespace Ld {
 
+/*!
+ * \brief Klasa Text udostępnia symbol tekstu.
+ *
+ * Przechowuje tekst wyświetlany na wyświetlaczu sterownika.
+ */
 class Text : public Output
 {
     Q_OBJECT

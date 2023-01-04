@@ -30,13 +30,19 @@ ConsoleLog::~ConsoleLog()
     }
 }
 
-
+/*!
+ * \brief Metoda dodająca tekst do konsoli.
+ * \param message: nowododany tekst.
+ */
 void ConsoleLog::addToLogs(QString message)
 {
     QString currentDateTime = QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss");
     emit logTextChanged(currentDateTime + "\t" + message);
  }
 
+/*!
+ * \brief Funkcja tworząca graficzny obiekt konsoli.
+ */
 void ConsoleLog::createQQuickItem()
 {
     if(QCoreApplication::startingUp()) return;

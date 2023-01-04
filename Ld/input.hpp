@@ -13,9 +13,10 @@
 namespace Ld{
 
 /*!
- * \brief Klasa Coil ustawia zachowanie symbolu jako element wejściowy.
+ * \brief Klasa Input ustawia zachowanie symbolu jako element wejściowy.
  *
- * Klasa dziedziczy z klasy Drag udostępniając mechanizm przenoszenia.
+ * Klasa dziedziczy pośrednio z klasy Drag udostępniając mechanizm przenoszenia
+ * oraz z klasy Address udostępniając adres obiektu.
  * \see Output
  */
 class Input : public Address

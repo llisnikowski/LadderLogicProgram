@@ -10,10 +10,6 @@
 
 namespace Ld {
 
-/*!
- * \brief Konstructor klasy Node
- * \param parent: rodzic/element nadrzędny
- */
 Node::Node(QQuickItem *parent)
     :Base(parent)
 {
@@ -25,6 +21,9 @@ Base *Node::clone(QQuickItem *parent)
     return copyObject;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Node::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
@@ -50,6 +49,9 @@ QByteArray Node::getData() const
     return itemData;
 }
 
+/*!
+ * \brief Funkcja ustawiająca wyświetlane linie podczas rysowania
+ */
 void Node::displayLine(bool right, bool top, bool bottom)
 {
     isNextLine = right;

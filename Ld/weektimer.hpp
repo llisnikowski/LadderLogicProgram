@@ -7,6 +7,11 @@
 
 namespace Ld {
 
+/*!
+ * \brief Klasa Coil udostępnia symbol zegara tygodniowego.
+ *
+ * Przechowuje dni tygodnia oraz godziny włączenia i wyłączenia zegara
+ */
 class Weektimer : public Input
 {
     Q_OBJECT

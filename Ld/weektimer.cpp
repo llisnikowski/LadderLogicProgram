@@ -34,6 +34,9 @@ Base *Weektimer::clone(QQuickItem *parent)
     return copyObject;
 }
 
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Weektimer::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

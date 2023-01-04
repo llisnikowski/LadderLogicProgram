@@ -44,7 +44,9 @@ Type Coil::getType() const
     return Type::Coil;
 }
 
-
+/*!
+ * \brief Funkcja rysująca obiekt na ekranie
+ */
 void Coil::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};

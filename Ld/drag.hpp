@@ -38,7 +38,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     virtual void paintDrag(QPainter &painter);
 
-
 signals:
     void dragged();
 
