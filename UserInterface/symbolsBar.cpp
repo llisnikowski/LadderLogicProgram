@@ -49,7 +49,7 @@ void SymbolsBar::setNewParentItem(QQuickItem *parentItem)
     for(auto type : {Ld::Type::Contact, Ld::Type::Coil, Ld::Type::Timer,
                       Ld::Type::Counter, Ld::Type::Weektimer, Ld::Type::Text})
     {
-        FactoryLd::create<ImitatorLd>(this, [this, type, &i](ImitatorLd *obj){
+        FactoryLd::create<ImitatorLd>(this, [type, &i](ImitatorLd *obj){
             obj->setType(type);
             obj->setSize({64, 64});
             obj->setY(64 * i++);

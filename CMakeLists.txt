@@ -38,6 +38,7 @@ file(GLOB PROJECT_HEADERS
      ConsoleLog/*.hpp
      CodeGenerator/*.hpp
      SerialPort/*.hpp
+     Saver/*.hpp
 )
 
 file(GLOB PROJECT_SOURCES
@@ -51,6 +52,7 @@ file(GLOB PROJECT_SOURCES
     ConsoleLog/*.cpp
     CodeGenerator/*.cpp
     SerialPort/*.cpp
+    Saver/*.cpp
 )
 
 set(PROJECT_RESOURSES
@@ -104,6 +106,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/ConsoleLog
   ${CMAKE_SOURCE_DIR}/CodeGenerator
   ${CMAKE_SOURCE_DIR}/SerialPort
+  ${CMAKE_SOURCE_DIR}/Saver
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -152,6 +155,7 @@ file(GLOB UTEST_SOURCES
     uTest/ConsoleLog/*.cpp
     uTest/CodeGenerator/*.cpp
     uTest/SerialPort/*.cpp
+    uTest/Saver/*.cpp
 )
 
 
@@ -200,6 +204,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/ConsoleLog
   ${CMAKE_SOURCE_DIR}/CodeGenerator
   ${CMAKE_SOURCE_DIR}/SerialPort
+  ${CMAKE_SOURCE_DIR}/Saver
 )
 
 
