@@ -1,5 +1,6 @@
 #include "containerLd.hpp"
 #include "base.hpp"
+#include "drag.hpp"
 #include "dropNetworkValidator.hpp"
 #include "dragNetworkData.hpp"
 #include "input.hpp"
@@ -553,7 +554,41 @@ void ContainerLd::updateNodeDisplay()
 
 
 
+QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
+{
+    int count = 0;
+    containerLd.iteratorLineX(
+        ContainerLd::ItInOut, [&count](uint line, uint x, Ld::Base* obj){
+            count++;
+        });
+    stream << count;
+    containerLd.iteratorLineX(
+        ContainerLd::ItInOut, [&stream](uint line, uint x, Ld::Base* obj){
+            stream << line << x << obj->getData();
+        });
+    return stream;
+}
 
+
+QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
+{
+    int count;
+    stream >> count;
+    uint line, x;
+    QByteArray ldByteArray;
+    for(int i = 0; i < count; i++){
+        stream >> line >> x >> ldByteArray;
+        Ld::Base *newObj = getLdObject(ldByteArray);
+        if(!newObj) return stream;
+        if(!(newObj->getType() >= Ld::Type::Drag)){
+            delete newObj;
+            return stream;
+        }
+        containerLd.add(static_cast<Ld::Drag*>(newObj), line, x);
+        delete newObj;
+    }
+    return stream;
+}
 
 
 

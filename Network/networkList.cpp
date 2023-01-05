@@ -80,6 +80,37 @@ int NetworkList::count() const
 
 
 
+QDataStream &operator<<(QDataStream &stream, NetworkList &networkList)
+{
+    int networkCount = networkList.count();
+    stream << networkCount;
+    for(int i = 0; i < networkCount; i++){
+        Network *network = networkList.networks_[i];
+        stream << *network;
+    }
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, NetworkList &networkList)
+{
+    networkList.clearList();
+    int networkCount;
+    stream >> networkCount;
+    for(int i = 0; i < networkCount; i++){
+        networkList.addNewNetwork();
+        Network *network = networkList.networks_.last();
+        stream >> *network;
+    }
+    return stream;
+}
+
+
+
+
+
+
+
+
 
 
 

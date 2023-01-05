@@ -19,6 +19,9 @@ public:
     ContainerLd &getContainerLd(){return containerLd_;}
     void updateHeight();
 
+    friend QDataStream &operator<<(QDataStream &stream, Network &network);
+    friend QDataStream &operator>>(QDataStream &stream, Network &network);
+
 signals:
     void changedHeight(int nr, int height);
     void nrChanged();
@@ -28,7 +31,10 @@ private:
 
     int nr_;
     ContainerLd containerLd_;
-    QQuickItem *label{};
+    QQuickItem *label_;
 };
+
+QDataStream &operator<<(QDataStream &stream, Network &network);
+QDataStream &operator>>(QDataStream &stream, Network &network);
 
 #endif // NETWORK_HPP

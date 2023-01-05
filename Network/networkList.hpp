@@ -23,11 +23,18 @@ public:
     Network *operator[](int i);
     int count() const;
 
+    friend QDataStream &operator<<(QDataStream &stream, NetworkList &networkList);
+    friend QDataStream &operator>>(QDataStream &stream, NetworkList &networkList);
+
 private:
     void addNewNetwork();
     void updateHeight(int nr, int height);
 
     QVector<Network*> networks_;
 };
+
+
+QDataStream &operator<<(QDataStream &stream, NetworkList &networkList);
+QDataStream &operator>>(QDataStream &stream, NetworkList &networkList);
 
 #endif // NETWORKLIST_HPP

@@ -4,7 +4,8 @@
 #include <functional>
 
 Network::Network(QQuickItem *parent, int nr)
-    : QQuickItem{parent}, nr_{nr}, containerLd_{this}
+    : QQuickItem{parent}, nr_{nr}, containerLd_{this},
+    label_{}
 {
     if(parent){
         connect(parent, &QQuickItem::widthChanged,
@@ -36,7 +37,7 @@ void Network::updateHeight()
 
 void Network::createLabel()
 {
-    if(label) delete label;
+    if(label_) delete label_;
 
     if(QCoreApplication::startingUp()) return;
 
@@ -47,10 +48,27 @@ void Network::createLabel()
     QVariantMap qvMap{{"network", QVariant::fromValue(this)},
                       {"parent", QVariant::fromValue(this)}};
     QObject* qobj = component.createWithInitialProperties(qvMap);
-    label = qobject_cast<QQuickItem *>(qobj);
-    engine->setObjectOwnership(label,QQmlEngine::JavaScriptOwnership);
-    if(label){
-        label->setParentItem(this);
+    label_ = qobject_cast<QQuickItem *>(qobj);
+    engine->setObjectOwnership(label_,QQmlEngine::JavaScriptOwnership);
+    if(label_){
+        label_->setParentItem(this);
     }
 }
+
+
+
+QDataStream &operator<<(QDataStream &stream, Network &network)
+{
+    stream << network.containerLd_;
+    return stream;
+}
+
+QDataStream &operator>>(QDataStream &stream, Network &network)
+{
+    stream >> network.containerLd_;
+    return stream;
+}
+
+
+
 

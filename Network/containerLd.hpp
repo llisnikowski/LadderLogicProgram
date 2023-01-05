@@ -83,6 +83,9 @@ public:
     int getId() const;
     void setId(int id){id_ = id;}
 
+    friend QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd);
+    friend QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd);
+
 signals:
     void addLdObject(ContainerLd*);
 
@@ -115,5 +118,9 @@ private:
     int id_;
     Array container_;
 };
+
+
+QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd);
+QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd);
 
 #endif // CONTAINERLD_HPP
