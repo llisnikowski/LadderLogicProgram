@@ -9,6 +9,7 @@ ApplicationWindow {
     visible: true
     title: qsTr("PLC")
 
+
     header: ToolBar {
         id: toolBar
         ToolMenu {

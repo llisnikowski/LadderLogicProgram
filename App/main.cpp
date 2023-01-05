@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "config.hpp"
+#include "interfaceButtons.hpp"
 #include "factoryLd.hpp"
 #include "networkList.hpp"
 #include "serialPort.hpp"
@@ -18,6 +18,8 @@ PropertiesList propertyList;
 CodeGenerator codeGenerator;
 SerialPort serialPort;
 ConsoleLog consoleLog;
+Saver saver;
+InterfaceButtons interfaceButtons;
 
 
 int main(int argc, char *argv[])
@@ -34,6 +36,13 @@ int main(int argc, char *argv[])
     codeGenerator.setNetworkList(&networkList);
     codeGenerator.setLogObject(&consoleLog);
     serialPort.setLogObject(&consoleLog);
+    saver.setNetworkList(&networkList);
+
+    interfaceButtons.setLogObject(&consoleLog);
+    interfaceButtons.setSerialPort(&serialPort);
+    interfaceButtons.setSaver(&saver);
+    interfaceButtons.setCodeGenerator(&codeGenerator);
+    interfaceButtons.setNetworkList(&networkList);
 
     QObject::connect(&selectItem, &SelectItem::changedSelectItem,
                      &propertyList, &PropertiesList::display);
@@ -46,6 +55,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("consoleLog", &consoleLog);
     engine.rootContext()->setContextProperty("codeGenerator", &codeGenerator);
     engine.rootContext()->setContextProperty("serialPort", &serialPort);
+    engine.rootContext()->setContextProperty("interfaceButtons", &interfaceButtons);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

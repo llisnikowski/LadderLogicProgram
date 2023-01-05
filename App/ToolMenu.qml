@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Dialogs
 
 Item {
     Label {
@@ -13,11 +14,9 @@ Item {
         anchors.right: parent.right
     }
     RowLayout {
-        ToolButton {
-            id: toolButton
-            text: "\u2630"
-            font.pixelSize: Qt.application.font.pixelSize * 1.6
+        FileButton{
         }
+
         ToolButton {
             id: connectButton
 //            text: serialPort.deviceConnected ? "\u2666" : "\u2662"
@@ -39,19 +38,13 @@ Item {
             }
         }
         ToolButton {
-            id: checkButton
+            id: verifyButton
             text: "Sprawdź"
 //            font.pixelSize: Qt.application.font.pixelSize * 1.6
             font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
-                consoleLog.addToLogs("Sprawdzanie programu...");
-                if(codeGenerator.verify()){
-                    consoleLog.addToLogs("Program poprawny");
-                }
-                else{
-                    consoleLog.addToLogs("Program niepoprawny");
-                }
+                interfaceButtons.verify();
             }
         }
         ToolButton {
@@ -61,10 +54,7 @@ Item {
             font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
-                if(codeGenerator.verify()){
-                    consoleLog.addToLogs("Wysyłanie programu...");
-                    serialPort.send(codeGenerator.code);
-                }
+                interfaceButtons.upload();
             }
         }
         ToolButton {
@@ -73,6 +63,7 @@ Item {
             font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
+                interfaceButtons.plcMode();
             }
         }
         ToolButton {
@@ -81,6 +72,7 @@ Item {
             font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
+                interfaceButtons.setCurrentTime();
             }
         }
     }
