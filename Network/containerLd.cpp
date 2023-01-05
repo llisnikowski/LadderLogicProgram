@@ -562,7 +562,7 @@ QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
             count++;
         });
     stream << count;
-    containerLd.iteratorLineX(
+    containerLd.iteratorXLine(
         ContainerLd::ItInOut, [&stream](uint line, uint x, Ld::Base* obj){
             stream << line << x << obj->getData();
         });

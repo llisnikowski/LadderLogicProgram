@@ -28,7 +28,7 @@ public:
 
 private:
     void addNewNetwork();
-    void updateHeight(int nr, int height);
+    void updateHeight(int nr);
 
     QVector<Network*> networks_;
 };

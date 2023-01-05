@@ -43,7 +43,7 @@ void NetworkList::addNewNetwork()
     setHeight(positionY + network->height());
 }
 
-void NetworkList::updateHeight(int nr, int height)
+void NetworkList::updateHeight(int nr)
 {
     if(nr >= networks_.count()) return;
     int y = networks_[nr]->y() + networks_[nr]->height();
@@ -97,10 +97,17 @@ QDataStream &operator>>(QDataStream &stream, NetworkList &networkList)
     int networkCount;
     stream >> networkCount;
     for(int i = 0; i < networkCount; i++){
-        networkList.addNewNetwork();
-        Network *network = networkList.networks_.last();
+        auto network = new Network{&networkList};
+        network->setNr(i);
+        networkList.networks_.append(network);
+        QObject::connect(network, &Network::changedHeight,
+                &networkList, &NetworkList::updateHeight);
         stream >> *network;
     }
+    networkList.updateHeight(0);
+    Network *network = networkList.networks_.last();
+    QObject::connect(&network->getContainerLd(), &ContainerLd::addLdObject,
+            &networkList, &NetworkList::addNewNetwork);
     return stream;
 }
 
