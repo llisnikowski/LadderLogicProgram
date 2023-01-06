@@ -19,10 +19,7 @@ Item {
 
         ToolButton {
             id: connectButton
-//            text: serialPort.deviceConnected ? "\u2666" : "\u2662"
-            text: serialPort.deviceConnected ? "Połącz" : "Rozłącz"
-//            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            font.pixelSize: Qt.application.font.pixelSize * 1
+            text: serialPort.deviceConnected ? "Rozłącz" : "Połącz"
 
             property ApplicationWindow connectWindow;
             onClicked: {
@@ -40,8 +37,6 @@ Item {
         ToolButton {
             id: verifyButton
             text: "Sprawdź"
-//            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
                 interfaceButtons.verify();
@@ -49,9 +44,7 @@ Item {
         }
         ToolButton {
             id: uploadButton
-            text: "Prześlij"
-//            font.pixelSize: Qt.application.font.pixelSize * 1.6
-            font.pixelSize: Qt.application.font.pixelSize * 1
+            text: "Wgraj"
 
             onClicked: {
                 interfaceButtons.upload();
@@ -60,7 +53,6 @@ Item {
         ToolButton {
             id: plcModeButton
             text: " Start "
-            font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
                 interfaceButtons.plcMode();
@@ -69,7 +61,6 @@ Item {
         ToolButton {
             id: setTimeButton
             text: "Ustaw czas"
-            font.pixelSize: Qt.application.font.pixelSize * 1
 
             onClicked: {
                 interfaceButtons.setCurrentTime();

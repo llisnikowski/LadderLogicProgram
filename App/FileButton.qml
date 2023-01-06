@@ -4,8 +4,7 @@ import QtQuick.Dialogs
 
 ToolButton {
     id: toolButton
-    text: "\u2630"
-    font.pixelSize: Qt.application.font.pixelSize * 1.6
+    text: "  Plik  "
 
     onClicked: {
         if(!fileMenu.visible)
@@ -18,25 +17,25 @@ ToolButton {
         id: fileMenu
         y: toolButton.height
         MenuItem {
-            text: "New..."
+            text: "Nowy projekt"
             onClicked: {
                 interfaceButtons.newProject();
             }
         }
         MenuItem {
-            text: "Open..."
+            text: "Otwórz Projekt"
             onClicked: {
                 openFileDialog.open();
             }
         }
         MenuItem {
-            text: "Save"
+            text: "Zapisz Projekt"
             onClicked: {
                 saveFileDialog.open();
             }
         }
         MenuItem {
-            text: "Exit"
+            text: "Zamknij"
             onClicked: {
                 Qt.quit();
             }
