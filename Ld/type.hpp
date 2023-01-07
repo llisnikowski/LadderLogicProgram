@@ -14,16 +14,16 @@ enum class Type : int {
     Drag =      0x0004 | Base,
     Node =      0x0008 | Base,
     Line =      0x0010 | Drop,
-    Address =   0x0010 | Drag,
-    EmptyDrop = 0x0020 | Drop,
-    Input =     0x0020 | Address,
-    Output =    0x0040 | Address,
-    Contact =   0x0100 | Input,
-    Weektimer = 0x0200 | Input,
-    Coil =      0x0100 | Output,
-    Timer =     0x0200 | Output,
-    Counter =   0x0400 | Output,
-    Text =      0x0800 | Output
+    Address =   0x0020 | Drag,
+    EmptyDrop = 0x0040 | Drop,
+    Input =     0x0080 | Address,
+    Output =    0x0100 | Address,
+    Contact =   0x0200 | Input,
+    Weektimer = 0x0400 | Input,
+    Coil =      0x0800 | Output,
+    Timer =     0x1000 | Output,
+    Counter =   0x2000 | Output,
+    Text =      0x4000 | Output
 };
 
 inline bool operator >=(Type derivative, Type base){

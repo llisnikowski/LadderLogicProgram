@@ -31,7 +31,7 @@ TEST_P(TypeConditional, comparisonOperator) {
 
 }
 
-INSTANTIATE_TEST_SUITE_P(TestKit, TypeConditional,
+INSTANTIATE_TEST_SUITE_P(BasicTest, TypeConditional,
                         ::testing::Values
 (
     TypeTestParameters{Ld::Type::None, {Ld::Type::None}},
@@ -62,3 +62,4 @@ INSTANTIATE_TEST_SUITE_P(TestKit, TypeConditional,
     TypeTestParameters{Ld::Type::Text, {Ld::Type::None, Ld::Type::Base,
                             Ld::Type::Drag, Ld::Type::Address, Ld::Type::Output, Ld::Type::Text}}
 ));
+
