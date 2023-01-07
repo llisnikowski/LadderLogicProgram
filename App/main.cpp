@@ -14,7 +14,7 @@
 Ld::SymbolsBar ldSymbolsBar;
 NetworkList networkList;
 SelectItem selectItem;
-PropertiesList propertyList;
+PropertiesList propertiesList;
 CodeGenerator codeGenerator;
 SerialPort serialPort;
 ConsoleLog consoleLog;
@@ -26,10 +26,6 @@ void configureQmlObjects(QQmlApplicationEngine &engine);
 
 int main(int argc, char *argv[])
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
@@ -37,11 +33,6 @@ int main(int argc, char *argv[])
     configureQmlObjects(engine);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
     engine.load(url);
 
     return app.exec();
@@ -62,7 +53,7 @@ void settingUpObjects()
     interfaceButtons.setNetworkList(&networkList);
 
     QObject::connect(&selectItem, &SelectItem::changedSelectItem,
-                     &propertyList, &PropertiesList::display);
+                     &propertiesList, &PropertiesList::display);
 }
 
 void configureQmlObjects(QQmlApplicationEngine &engine)
@@ -70,7 +61,7 @@ void configureQmlObjects(QQmlApplicationEngine &engine)
     engine.rootContext()->setContextProperty("networkList", &networkList);
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);
     engine.rootContext()->setContextProperty("selectItem", &selectItem);
-    engine.rootContext()->setContextProperty("propertyList", &propertyList);
+    engine.rootContext()->setContextProperty("propertiesList", &propertiesList);
     engine.rootContext()->setContextProperty("consoleLog", &consoleLog);
     engine.rootContext()->setContextProperty("codeGenerator", &codeGenerator);
     engine.rootContext()->setContextProperty("serialPort", &serialPort);

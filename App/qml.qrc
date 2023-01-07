@@ -6,5 +6,6 @@
         <file>LdSymbolsBar.qml</file>
         <file>ProgramView.qml</file>
         <file>FileButton.qml</file>
+        <file>Content.qml</file>
     </qresource>
 </RCC>

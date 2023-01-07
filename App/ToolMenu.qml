@@ -8,11 +8,6 @@ Item {
         text: "PLC"
         anchors.centerIn: parent
     }
-    Label {
-        text: "version 0.8"
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.right: parent.right
-    }
     RowLayout {
         FileButton{
         }
@@ -20,7 +15,6 @@ Item {
         ToolButton {
             id: connectButton
             text: serialPort.deviceConnected ? "Rozłącz" : "Połącz"
-
             property ApplicationWindow connectWindow;
             onClicked: {
                 if(!connectWindow){
@@ -37,7 +31,6 @@ Item {
         ToolButton {
             id: verifyButton
             text: "Sprawdź"
-
             onClicked: {
                 interfaceButtons.verify();
             }
@@ -45,7 +38,6 @@ Item {
         ToolButton {
             id: uploadButton
             text: "Wgraj"
-
             onClicked: {
                 interfaceButtons.upload();
             }
@@ -53,7 +45,6 @@ Item {
         ToolButton {
             id: plcModeButton
             text: " Start "
-
             onClicked: {
                 interfaceButtons.plcMode();
             }
@@ -61,7 +52,6 @@ Item {
         ToolButton {
             id: setTimeButton
             text: "Ustaw czas"
-
             onClicked: {
                 interfaceButtons.setCurrentTime();
             }

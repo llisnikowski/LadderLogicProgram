@@ -22,7 +22,6 @@ Item {
                     networkList.parent = this;
                 }
             }
-
         }
     }
 }
