@@ -35,6 +35,17 @@ void Network::updateHeight()
     emit changedHeight(nr_, this->height());
 }
 
+const QString &Network::getDesctiption() const
+{
+    return description_;
+}
+
+void Network::setDesctiption(const QString desc)
+{
+    description_ = desc;
+    emit desctiptionChanged();
+}
+
 void Network::triggerDeletion()
 {
     emit deletionTriggering();
@@ -64,13 +75,15 @@ void Network::createLabel()
 
 QDataStream &operator<<(QDataStream &stream, Network &network)
 {
-    stream << network.containerLd_;
+    stream << network.description_ << network.containerLd_;
     return stream;
 }
 
 QDataStream &operator>>(QDataStream &stream, Network &network)
 {
-    stream >> network.containerLd_;
+    QString desc;
+    stream >> desc >> network.containerLd_;
+    network.setDesctiption(desc);
     return stream;
 }
 

@@ -40,6 +40,21 @@ TEST_F(Saver_Test, emptyNetwork)
     EXPECT_EQ(networkList_.getNetwork(0)->getContainerLd().getSchemat(), "-;");
 }
 
+
+TEST_F(Saver_Test, description)
+{
+    networkList_.getNetwork(0)->setDesctiption("opis1");
+    EXPECT_EQ(networkList_.count(), 1);
+    saver_.save();
+    networkList_.clearList();
+    saver_.load();
+
+    EXPECT_EQ(networkList_.count(), 1);
+    EXPECT_EQ(networkList_.getNetwork(0)->getDesctiption(), "opis1");
+    auto &containerLd = networkList_.getNetwork(0)->getContainerLd();
+    EXPECT_EQ(containerLd.getSchemat(), "-;");
+}
+
 TEST_F(Saver_Test, saveContact)
 {
     {

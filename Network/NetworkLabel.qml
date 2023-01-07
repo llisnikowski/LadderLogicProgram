@@ -45,6 +45,7 @@ Rectangle{
         anchors.margins: 2;
     }
     TextField{
+        id: description
         anchors.verticalCenter: label.verticalCenter;
         anchors.left: networkText.right;
         anchors.right: label.right;
@@ -53,7 +54,13 @@ Rectangle{
         font.pointSize: 8
         anchors.verticalCenterOffset: 4
         anchors.rightMargin: 0
-        placeholderText: "Comment"
+        placeholderText: "Opis.."
         background: null
+        text: network.desctiption
+        onTextEdited: {
+            if(description.activeFocus){
+                network.desctiption = description.text
+            }
+        }
     }
 }
