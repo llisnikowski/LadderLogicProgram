@@ -1,8 +1,19 @@
 #include "interfaceButtons.hpp"
 
 InterfaceButtons::InterfaceButtons(QObject *parent)
-    : QObject{parent}, logObject_{}, serialPort_{}, saver_{}
+    : QObject{parent}, logObject_{}, serialPort_{}, saver_{}, lastSavePath_{}
 {
+}
+
+const QString &InterfaceButtons::getSavePath() const
+{
+    return lastSavePath_;
+}
+
+void InterfaceButtons::setSavePath(const QString path)
+{
+    lastSavePath_ = path;
+    emit savePathChanged();
 }
 
 void InterfaceButtons::newProject()
@@ -12,17 +23,19 @@ void InterfaceButtons::newProject()
     networkList_->addNewNetwork();
 }
 
-void InterfaceButtons::open(QString filename)
+void InterfaceButtons::open()
 {
     if(!saver_) return;
-    saver_->setFile(filename);
+    if(lastSavePath_ == "") return;
+    saver_->setFile(lastSavePath_);
     saver_->load();
 }
 
-void InterfaceButtons::save(QString filename)
+void InterfaceButtons::save()
 {
     if(!saver_) return;
-    saver_->setFile(filename);
+    if(lastSavePath_ == "") return;
+    saver_->setFile(lastSavePath_);
     saver_->save();
 }
 

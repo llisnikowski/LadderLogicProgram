@@ -123,6 +123,8 @@ QDataStream &operator>>(QDataStream &stream, NetworkList &networkList)
         networkList.networks_.append(network);
         QObject::connect(network, &Network::changedHeight,
                 &networkList, &NetworkList::updateHeight);
+        QObject::connect(network, &Network::deletionTriggering, &networkList,
+                std::bind(&NetworkList::remove, &networkList, i));
         stream >> *network;
     }
     networkList.updateHeight(0);

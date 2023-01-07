@@ -17,19 +17,31 @@ ToolButton {
         id: fileMenu
         y: toolButton.height
         MenuItem {
-            text: "Nowy projekt"
+            text: "Nowy projekt..."
             onClicked: {
+                interfaceButtons.savePath = "";
                 interfaceButtons.newProject();
             }
         }
         MenuItem {
-            text: "Otwórz Projekt"
+            text: "Otwórz Projekt..."
             onClicked: {
                 openFileDialog.open();
             }
         }
         MenuItem {
-            text: "Zapisz Projekt"
+            text: "Zapisz Projekt..."
+            onClicked: {
+                if(interfaceButtons.savePath === ""){
+                    saveFileDialog.open();
+                }
+                else{
+                    interfaceButtons.save();
+                }
+            }
+        }
+        MenuItem {
+            text: "Zapisz Projekt jako..."
             onClicked: {
                 saveFileDialog.open();
             }
@@ -49,8 +61,8 @@ ToolButton {
         fileMode: FileDialog.OpenFile
         onAccepted: {
             var path = selectedFile.toString();
-            path = path.replace(/^(file:\/{3})/,"");
-            interfaceButtons.open(path);
+            interfaceButtons.savePath = path.replace(/^(file:\/{3})/,"");
+            interfaceButtons.open();
         }
     }
     FileDialog {
@@ -61,8 +73,8 @@ ToolButton {
         fileMode: FileDialog.SaveFile
         onAccepted: {
             var path = selectedFile.toString();
-            path = path.replace(/^(file:\/{3})/,"");
-            interfaceButtons.save(path);
+            interfaceButtons.savePath = path.replace(/^(file:\/{3})/,"");
+            interfaceButtons.save();
         }
     }
 }

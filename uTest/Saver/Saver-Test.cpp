@@ -11,7 +11,7 @@ class Saver_Test : public ::testing::Test
 {
 public:
     Saver_Test(){
-        saver_.setFile("SaverTestFile");
+        saver_.setFile("SaverTestFile.plc");
         saver_.setNetworkList(&networkList_);
     }
 

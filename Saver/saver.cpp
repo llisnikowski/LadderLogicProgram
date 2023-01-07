@@ -32,7 +32,6 @@ bool Saver::load()
         return false;
     }
     QFile file(fileName_);
-    qDebug() << fileName_;
     if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
