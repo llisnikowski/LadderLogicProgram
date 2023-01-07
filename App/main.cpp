@@ -21,6 +21,8 @@ ConsoleLog consoleLog;
 Saver saver;
 InterfaceButtons interfaceButtons;
 
+void settingUpObjects();
+void configureQmlObjects(QQmlApplicationEngine &engine);
 
 int main(int argc, char *argv[])
 {
@@ -31,7 +33,22 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
+    settingUpObjects();
+    configureQmlObjects(engine);
 
+    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
+                     &app, [url](QObject *obj, const QUrl &objUrl) {
+        if (!obj && url == objUrl)
+            QCoreApplication::exit(-1);
+    }, Qt::QueuedConnection);
+    engine.load(url);
+
+    return app.exec();
+}
+
+void settingUpObjects()
+{
     FactoryLd::setSelectItem(&selectItem);
     codeGenerator.setNetworkList(&networkList);
     codeGenerator.setLogObject(&consoleLog);
@@ -46,8 +63,10 @@ int main(int argc, char *argv[])
 
     QObject::connect(&selectItem, &SelectItem::changedSelectItem,
                      &propertyList, &PropertiesList::display);
+}
 
-
+void configureQmlObjects(QQmlApplicationEngine &engine)
+{
     engine.rootContext()->setContextProperty("networkList", &networkList);
     engine.rootContext()->setContextProperty("ldSymbolsBar", &ldSymbolsBar);
     engine.rootContext()->setContextProperty("selectItem", &selectItem);
@@ -56,14 +75,6 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("codeGenerator", &codeGenerator);
     engine.rootContext()->setContextProperty("serialPort", &serialPort);
     engine.rootContext()->setContextProperty("interfaceButtons", &interfaceButtons);
-
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-    engine.load(url);
-
-    return app.exec();
 }
+
+
