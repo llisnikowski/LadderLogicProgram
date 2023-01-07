@@ -4,6 +4,7 @@
 #include <QQuickItem>
 #include <QVector>
 #include <cstddef>
+#include "address.hpp"
 #include "drag.hpp"
 #include "input.hpp"
 #include "output.hpp"
@@ -41,6 +42,9 @@ class ContainerLd : public QQuickItem
 {
     Q_OBJECT
 public:
+    explicit ContainerLd(QQuickItem *parent = nullptr);
+    virtual ~ContainerLd();
+
     using Item = Ld::Base*;
     using Line = QVector<Item>;
     using Array = QVector<Line>;
@@ -61,23 +65,19 @@ public:
     using ItEndLineArg = void(uint line);
     using ItEndXArg = void(uint x);
 
-    explicit ContainerLd(QQuickItem *parent = nullptr);
-    virtual ~ContainerLd();
-
-    const Array & getArray() const {return container_;}
-    Ld::Base* getItem(uint line, uint x);
-    const Ld::Base *getItem(uint line, uint x) const;
-    Ld::Drag *getDragItem(uint line, uint x);
-    const Ld::Drag *getDragItem(uint line, uint x) const;
-
     void iteratorLineX(ItType itType, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun = nullptr);
     void iteratorXLine(ItType itType, std::function<ItArg> fun,
                        std::function<ItEndXArg> endXFun = nullptr);
-
     void iteratorLine(uint line, ItType itType, std::function<ItArg> fun);
     void iteratorLine(uint line, ItType itType, std::function<ItArgConst> fun) const;
     void iteratorX(uint x, ItType itType, std::function<ItArg> fun);
+
+    const Array & getArray() const {return container_;}
+    Ld::Base* getItem(uint line, uint x);
+    const Ld::Base *getItem(uint line, uint x) const;
+    Ld::Address *getAddressItem(uint line, uint x);
+    const Ld::Address *getAddressItem(uint line, uint x) const;
 
     QString getSchemat();
     int getId() const;

@@ -90,7 +90,7 @@ TEST_F(Saver_Test, saveCoilWithAddress)
     EXPECT_EQ(networkList_.count(), 2);
     auto &containerLd = networkList_.getNetwork(0)->getContainerLd();
     EXPECT_EQ(containerLd.getSchemat(), "-I-O-;-;");
-    auto coil =static_cast<Ld::Address*>(containerLd.getDragItem(0,3));
+    auto coil = containerLd.getAddressItem(0,3);
     EXPECT_EQ(coil->getAddress().getTextValue(), "Q00");
 }
 
@@ -110,9 +110,9 @@ TEST_F(Saver_Test, saveNode)
     EXPECT_EQ(networkList_.count(), 2);
     auto &containerLd = networkList_.getNetwork(0)->getContainerLd();
     EXPECT_EQ(containerLd.getSchemat(), "-I-+-O-;-I-+;-;");
-    EXPECT_EQ(static_cast<Ld::Address*>(containerLd.getDragItem(0,5))->
+    EXPECT_EQ(containerLd.getAddressItem(0,5)->
               getAddress().getTextValue(), "Q00");
-    EXPECT_EQ(static_cast<Ld::Address*>(containerLd.getDragItem(1,1))->
+    EXPECT_EQ(containerLd.getAddressItem(1,1)->
               getAddress().getTextValue(), "qwerty");
 }
 
@@ -133,15 +133,15 @@ TEST_F(Saver_Test, multinetwork)
     {
         auto &containerLd = networkList_.getNetwork(0)->getContainerLd();
         EXPECT_EQ(containerLd.getSchemat(), "-I-+-O-;-I-+;-;");
-        EXPECT_EQ(static_cast<Ld::Address*>(containerLd.getDragItem(0,5))->
+        EXPECT_EQ(containerLd.getAddressItem(0,5)->
                   getAddress().getTextValue(), "Q00");
-        EXPECT_EQ(static_cast<Ld::Address*>(containerLd.getDragItem(1,1))->
+        EXPECT_EQ(containerLd.getAddressItem(1,1)->
                   getAddress().getTextValue(), "qwerty");
     }
     {
         auto &containerLd = networkList_.getNetwork(1)->getContainerLd();
         EXPECT_EQ(containerLd.getSchemat(), "-I-;-;");
-        EXPECT_EQ(static_cast<Ld::Address*>(containerLd.getDragItem(0,1))->
+        EXPECT_EQ(containerLd.getAddressItem(0,1)->
                   getAddress().getTextValue(), "contact");
     }
 }

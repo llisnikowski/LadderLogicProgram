@@ -40,22 +40,22 @@ const Ld::Base *ContainerLd::getItem(uint line, uint x) const
 }
 
 
-Ld::Drag *ContainerLd::getDragItem(uint line, uint x)
+Ld::Address *ContainerLd::getAddressItem(uint line, uint x)
 {
     auto obj = getItem(line, x);
     if(!obj) return nullptr;
-    if(obj->getType() >= Ld::Type::Drag){
-        return static_cast<Ld::Drag*>(obj);
+    if(obj->getType() >= Ld::Type::Address){
+        return static_cast<Ld::Address*>(obj);
     }
     return nullptr;
 }
 
-const Ld::Drag *ContainerLd::getDragItem(uint line, uint x) const
+const Ld::Address *ContainerLd::getAddressItem(uint line, uint x) const
 {
     auto obj = getItem(line, x);
     if(!obj) return nullptr;
-    if(obj->getType() >= Ld::Type::Drag){
-        return static_cast<const Ld::Drag*>(obj);
+    if(obj->getType() >= Ld::Type::Address){
+        return static_cast<const Ld::Address*>(obj);
     }
     return nullptr;
 }
@@ -255,7 +255,7 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
         toX -= 2;
     }
 
-    Ld::Drag *moveObj = getDragItem(fromLine, fromX);
+    Ld::Drag *moveObj = getAddressItem(fromLine, fromX);
     Ld::Base *moveNextObj = getItem(fromLine, fromX + 1);
     container_[fromLine][fromX] = nullptr;
     container_[fromLine][fromX+1] = nullptr;
@@ -340,7 +340,7 @@ bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uin
     Ld::Base *nextObj = container_[fromLine][fromX];
     if(!nextObj) return false;
 
-    const Ld::Drag *moveObj = getDragItem(fromLine, fromX);
+    const Ld::Drag *moveObj = getAddressItem(fromLine, fromX);
     if(!moveObj) return false;
     if(moveObj->getType() >= Ld::Type::Input){
         if(toLine >= container_.count()) return false;
