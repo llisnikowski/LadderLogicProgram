@@ -24,12 +24,13 @@ public:
     int count() const;
 
     void addNewNetwork();
+    void remove(uint i);
 
     friend QDataStream &operator<<(QDataStream &stream, NetworkList &networkList);
     friend QDataStream &operator>>(QDataStream &stream, NetworkList &networkList);
 
 private:
-    void updateHeight(int nr);
+    void updateHeight(uint nr);
 
     QVector<Network*> networks_;
 };

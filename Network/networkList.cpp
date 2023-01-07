@@ -1,6 +1,7 @@
 #include "networkList.hpp"
 #include "containerLd.hpp"
 #include <QDebug>
+#include <functional>
 
 NetworkList::NetworkList(QQuickItem *parent)
     :QQuickItem{parent}, networks_{}
@@ -40,14 +41,34 @@ void NetworkList::addNewNetwork()
             this, &NetworkList::addNewNetwork);
     connect(network, &Network::changedHeight,
             this, &NetworkList::updateHeight);
+    connect(network, &Network::deletionTriggering, this,
+            std::bind(&NetworkList::remove, this, networks_.count()-1));
     setHeight(positionY + network->height());
 }
 
-void NetworkList::updateHeight(int nr)
+void NetworkList::remove(uint nr)
+{
+    if(nr >= networks_.count() - 1) return;
+    networks_[nr]->deleteLater();
+    networks_.removeAt(nr);
+    for(int i = nr; i < networks_.count(); i++){
+        Network *network = networks_[i];
+        network->setNr(i);
+        disconnect(network, &Network::deletionTriggering, this, nullptr);
+        connect(network, &Network::deletionTriggering, this,
+                std::bind(&NetworkList::remove, this, i));
+    }
+    updateHeight(nr);
+}
+
+void NetworkList::updateHeight(uint nr)
 {
     if(nr >= networks_.count()) return;
-    int y = networks_[nr]->y() + networks_[nr]->height();
-    for(int i = nr + 1; i < networks_.count(); i++){
+    int y = 0;
+    if(nr > 0){
+        y = networks_[nr-1]->y() + networks_[nr-1]->height();
+    }
+    for(int i = nr; i < networks_.count(); i++){
         networks_[i]->setY(y);
         y += networks_[i]->height();
     }

@@ -22,9 +22,13 @@ public:
     friend QDataStream &operator<<(QDataStream &stream, Network &network);
     friend QDataStream &operator>>(QDataStream &stream, Network &network);
 
+public slots:
+    void triggerDeletion();
+
 signals:
     void changedHeight(int nr, int height);
     void nrChanged();
+    void deletionTriggering();
 
 private:
     void createLabel();

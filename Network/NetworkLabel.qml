@@ -6,9 +6,36 @@ Rectangle{
     property var network
 
     id:label
-    width: network.width*0.8
+    width: network.width
     color: "Gray";
     height: 24
+
+    MouseArea{
+        id: mouseArea
+        anchors.fill: parent
+        acceptedButtons: Qt.RightButton
+        onClicked: {
+            if(!labelContext.visible)
+                labelContext.open();
+            else
+                labelContext.close();
+        }
+    }
+
+    Menu {
+        id: labelContext
+        x: mouseArea.mouseX
+        y: mouseArea.mouseY
+        MenuItem {
+            height: 30
+            font.pixelSize: 12
+            text: "Usuń Networka"
+            onClicked: {
+                network.triggerDeletion();
+            }
+        }
+
+    }
 
     Label {
         id: networkText

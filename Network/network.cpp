@@ -35,6 +35,11 @@ void Network::updateHeight()
     emit changedHeight(nr_, this->height());
 }
 
+void Network::triggerDeletion()
+{
+    emit deletionTriggering();
+}
+
 void Network::createLabel()
 {
     if(label_) delete label_;
