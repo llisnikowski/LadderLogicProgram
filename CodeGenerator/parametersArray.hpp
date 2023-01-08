@@ -4,7 +4,7 @@
 #include <QObject>
 #include <stdint.h>
 
-constexpr uint SINGLE_TYPE_PARAMETER_COUNT {16};
+
 
 namespace Ld{
 class Timer;
@@ -45,12 +45,14 @@ enum class ParametrStatus{
     incorrectValue
 };
 
+constexpr uint SINGLE_TYPE_PARAMETER_COUNT {16};
+
 class ParametersArray : public QObject
 {
 public:
     ParametersArray(QObject *parent = nullptr);
 
-    void get(QString &out);
+    void getCode(QString &out);
     void clear();
 
     ParametrStatus set(Ld::Timer &obj);

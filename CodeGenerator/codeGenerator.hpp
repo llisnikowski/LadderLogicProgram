@@ -31,11 +31,8 @@ public:
     void setNetworkList(NetworkList *networkList);
     void setLogObject(LogInterface *logObject);
 
-public slots:
-    bool verify();
     bool startGenerating();
     const QString &getCode() const;
-
 signals:
     void codeReady(const QString &);
 

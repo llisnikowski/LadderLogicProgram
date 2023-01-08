@@ -48,7 +48,7 @@ void InterfaceButtons::verify()
 {
     if(!codeGenerator_) return;
     if(logObject_) logObject_->addToLogs("Sprawdzanie programu...");
-    if(codeGenerator_->verify()){
+    if(codeGenerator_->startGenerating()){
         if(logObject_) logObject_->addToLogs("Program poprawny");
     }
     else{
@@ -60,7 +60,7 @@ void InterfaceButtons::upload()
 {
     if(!codeGenerator_) return;
     if(!serialPort_) return;
-    if(codeGenerator_->verify()){
+    if(codeGenerator_->startGenerating()){
         if(logObject_){
             logObject_->addToLogs("Wysyłanie programu...");
         }

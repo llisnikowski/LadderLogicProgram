@@ -8,12 +8,16 @@
 #include <QDateTime>
 #include <QSerialPort>
 
+
 class SerialPort : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QStringList foundDevices READ getFoundDevices NOTIFY foundDevicesChanged)
-    Q_PROPERTY(int selectDevice READ getSelectDevice WRITE setSelectDevice NOTIFY selectDeviceChanged)
-    Q_PROPERTY(bool deviceConnected READ getDeviceConnected WRITE setDeviceConnected NOTIFY deviceConnectedChanged)
+    Q_PROPERTY(QStringList foundDevices READ getFoundDevices
+                   NOTIFY foundDevicesChanged)
+    Q_PROPERTY(int selectDevice READ getSelectDevice WRITE setSelectDevice
+                   NOTIFY selectDeviceChanged)
+    Q_PROPERTY(bool deviceConnected READ getDeviceConnected
+                   WRITE setDeviceConnected NOTIFY deviceConnectedChanged)
 public:
     explicit SerialPort(QObject *parent = nullptr);
     ~SerialPort();
@@ -23,9 +27,8 @@ public slots:
     void connect();
     void disconnect();
 
-    bool send(const QString &message);
-
 public:
+    bool send(const QString &message);
     void read();
 
     void setLogObject(LogInterface *logObject);

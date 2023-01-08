@@ -11,7 +11,7 @@ ParametersArray::ParametersArray(QObject *parent)
 
 }
 
-void ParametersArray::get(QString &out)
+void ParametersArray::getCode(QString &out)
 {
     for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
         get(i, timersParametrs_[i], out);

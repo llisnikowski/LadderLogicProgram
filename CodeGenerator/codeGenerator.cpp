@@ -38,11 +38,6 @@ void CodeGenerator::setLogObject(LogInterface *logObject)
     logObject_ = logObject;
 }
 
-bool CodeGenerator::verify()
-{
-    return startGenerating();
-}
-
 bool CodeGenerator::startGenerating()
 {
     parametersArray_.clear();
@@ -53,7 +48,7 @@ bool CodeGenerator::startGenerating()
         for(uint i = 0; i < networkList_->count(); i++){
             addStructureNetwork(i, networkList_->getNetwork(i));
         }
-        parametersArray_.get(code_);
+        parametersArray_.getCode(code_);
         code_ += ":END";
     }
     catch(const BadGenerated & badGenerated) {
