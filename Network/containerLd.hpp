@@ -49,29 +49,18 @@ public:
     using Line = QVector<Item>;
     using Array = QVector<Line>;
 
-    enum ItType{
-        ItIn = 0x01,
-        ItOut = 0x02,
-        ItLine = 0x04,
-        ItNode = 0x08,
-        ItNull = 0x10,
-        ItInOut = ItIn | ItOut,
-        ItDropDrag = ItInOut | ItLine,
-        ItFilled = ItInOut | ItLine | ItNode,
-        ItAll = ItNull | ItFilled
-    };
+
     using ItArg = void(uint line, uint x, Ld::Base* obj);
     using ItArgConst = void(uint line, uint x, Ld::Base* obj);
     using ItEndLineArg = void(uint line);
     using ItEndXArg = void(uint x);
-
-    void iteratorLineX(ItType itType, std::function<ItArg> fun,
+    void iteratorLineX(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun = nullptr);
-    void iteratorXLine(ItType itType, std::function<ItArg> fun,
+    void iteratorXLine(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndXArg> endXFun = nullptr);
-    void iteratorLine(uint line, ItType itType, std::function<ItArg> fun);
-    void iteratorLine(uint line, ItType itType, std::function<ItArgConst> fun) const;
-    void iteratorX(uint x, ItType itType, std::function<ItArg> fun);
+    void iteratorLine(uint line, QVector<Ld::Type> types, std::function<ItArg> fun);
+    void iteratorLine(uint line, QVector<Ld::Type> types, std::function<ItArgConst> fun) const;
+    void iteratorX(uint x, QVector<Ld::Type> types, std::function<ItArg> fun);
 
     const Array & getArray() const {return container_;}
     Ld::Base* getItem(uint line, uint x);

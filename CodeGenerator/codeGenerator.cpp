@@ -100,7 +100,7 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
     bool isInput = false;
     bool isOutput = false;
     QString networkCode{};
-    containerLd.iteratorXLine(ContainerLd::ItInOut,
+    containerLd.iteratorXLine({Ld::Type::Address},
         [this, &isInput, &isOutput, &networkCode](uint line, uint x, Ld::Base* obj){
             Ld::Type type = obj->getType();
             if(type >= Ld::Type::Input){

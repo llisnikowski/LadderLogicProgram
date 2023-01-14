@@ -61,93 +61,69 @@ const Ld::Address *ContainerLd::getAddressItem(uint line, uint x) const
     return nullptr;
 }
 
-void ContainerLd::iteratorLineX(ItType itType, std::function<ItArg> fun,
+void ContainerLd::iteratorLineX(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun)
 {
     if(!fun) return;
     for(int line = 0; line < container_.count(); line++){
-        iteratorLine(line, itType,fun);
+        iteratorLine(line, types, fun);
         if(endLineFun) endLineFun(line);
     }
 }
 
-void ContainerLd::iteratorXLine(ItType itType, std::function<ItArg> fun,
+void ContainerLd::iteratorXLine(QVector<Ld::Type> types, std::function<ItArg> fun,
                                 std::function<ItEndXArg> endXFun)
 {
     if(!fun) return;
     for(int x = 0; x < container_[0].count(); x++){
-        iteratorX(x, itType, fun);
+        iteratorX(x, types, fun);
         if(endXFun) endXFun(x);
     }
 }
 
-void ContainerLd::iteratorLine(uint line, ItType itType,
+void ContainerLd::iteratorLine(uint line, QVector<Ld::Type> types,
                                std::function<ItArg> fun)
 {
     if(line >= container_.count()) return;
     for(int x = 0; x < container_[line].count(); x++){
         Ld::Base *obj = container_[line][x];
-        if(!obj){
-            if(itType & ItNull) fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Input){
-            if(itType & ItIn)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Output){
-            if(itType & ItOut)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Line){
-            if(itType & ItLine)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Node){
-            if(itType & ItNode)  fun(line, x, obj);
+        if(!obj) continue;
+        for(auto type :types){
+            if(obj->getType() >= type){
+                fun(line, x, obj);
+                break;
+            }
         }
     }
 }
 
-void ContainerLd::iteratorLine(uint line, ItType itType,
+void ContainerLd::iteratorLine(uint line, QVector<Ld::Type> types,
                                std::function<ItArgConst> fun) const
 {
     if(line >= container_.count()) return;
     for(int x = 0; x < container_[line].count(); x++){
         Ld::Base *obj = container_[line][x];
-        if(!obj){
-            if(itType & ItNull) fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Input){
-            if(itType & ItIn)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Output){
-            if(itType & ItOut)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Line){
-            if(itType & ItLine)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Node){
-            if(itType & ItNode)  fun(line, x, obj);
+        if(!obj) continue;
+        for(auto type :types){
+            if(obj->getType() >= type){
+                fun(line, x, obj);
+                break;
+            }
         }
     }
 }
 
-void ContainerLd::iteratorX(uint x, ItType itType, std::function<ItArg> fun)
+void ContainerLd::iteratorX(uint x, QVector<Ld::Type> types, std::function<ItArg> fun)
 {
     if(x >= container_[0].count()) return;
     Ld::Base *obj{};
     for(int line = 0; (obj = getItem(line, x)); line++){
-        if(!obj){
-            if(itType & ItNull) fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Input){
-            if(itType & ItIn)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Output){
-            if(itType & ItOut)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Line){
-            if(itType & ItLine)  fun(line, x, obj);
-        }
-        else if(obj->getType() >= Ld::Type::Node){
-            if(itType & ItNode)  fun(line, x, obj);
+        if(!obj) continue;
+        for(auto type :types){
+            if(obj->getType() >= type){
+                fun(line, x, obj);
+                break;
+            }
         }
     }
 }
@@ -155,7 +131,7 @@ void ContainerLd::iteratorX(uint x, ItType itType, std::function<ItArg> fun)
 QString ContainerLd::getSchemat()
 {
     QString schemat;
-    iteratorLineX(ItAll,
+    iteratorLineX({Ld::Type::Base},
         [&schemat](uint line, uint x, Ld::Base* obj){
             if(!obj){
                 schemat += '.';
@@ -394,7 +370,7 @@ int ContainerLd::find(uint line, Ld::Type type) const
 int ContainerLd::getNumberObjectInLine(uint line, Ld::Type type) const
 {
     int numberObject = 0;
-    iteratorLine(line, ItAll, [type, &numberObject](uint line, uint x, Ld::Base* obj){
+    iteratorLine(line, {Ld::Type::Base}, [type, &numberObject](uint line, uint x, Ld::Base* obj){
         if(!obj){
             if(type == Ld::Type::None) numberObject++;
         }
@@ -490,7 +466,7 @@ void ContainerLd::updateSize()
 {
     int curX = 0;
     qreal curY = 0;
-    iteratorLineX(ItAll, [this, &curX, &curY](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Base}, [this, &curX, &curY](uint line, uint x, Ld::Base* obj){
         qreal width = 0;
         qreal height = LD_H;
         if(!obj) return;
@@ -541,7 +517,7 @@ void ContainerLd::updateSize()
 
 void ContainerLd::updateLdObjectData()
 {
-    iteratorLineX(ItDropDrag, [this](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Drop, Ld::Type::Drag}, [this](uint line, uint x, Ld::Base* obj){
         if(obj->getType() >= Ld::Type::Drag){
             static_cast<Ld::Drag*>(obj)->setDragData(new DragNetworkData(obj,
                         obj->getData(), this, QPoint{(int)line, (int)x}));
@@ -556,7 +532,7 @@ void ContainerLd::updateLdObjectData()
 
 void ContainerLd::updateLineDisplay()
 {
-    iteratorLineX(ItLine, [this](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Line}, [this](uint line, uint x, Ld::Base* obj){
         auto lineLd = static_cast<Ld::Line*>(obj);
         if(x == 0){
             if(x == container_[line].count() - 1){
@@ -582,7 +558,7 @@ void ContainerLd::updateLineDisplay()
 
 void ContainerLd::updateNodeDisplay()
 {
-    iteratorLineX(ItNode, [this](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Node}, [this](uint line, uint x, Ld::Base* obj){
         Ld::Node* node = static_cast<Ld::Node*>(obj);
         node->displayLine(getItem(line, x+1), getItem(line-1, x), getItem(line+1, x));
     });
@@ -599,12 +575,12 @@ QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
 {
     int count = 0;
     containerLd.iteratorLineX(
-        ContainerLd::ItInOut, [&count](uint line, uint x, Ld::Base* obj){
+        {Ld::Type::Address}, [&count](uint line, uint x, Ld::Base* obj){
             count++;
         });
     stream << count;
     containerLd.iteratorXLine(
-        ContainerLd::ItInOut, [&stream](uint line, uint x, Ld::Base* obj){
+        {Ld::Type::Address}, [&stream](uint line, uint x, Ld::Base* obj){
             stream << line << x << obj->getData();
         });
     return stream;
