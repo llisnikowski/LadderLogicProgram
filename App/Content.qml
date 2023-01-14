@@ -38,7 +38,7 @@ SplitView{
             SplitView.minimumHeight: 100
             SplitView.fillHeight: true
             Component.onCompleted: {
-                propertiesList.parent = this
+                propertiesList.setContainerParent(this)
             }
         }
         Item{

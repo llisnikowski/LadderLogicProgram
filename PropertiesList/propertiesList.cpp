@@ -8,14 +8,8 @@
 #include <QQmlEngine>
 
 PropertiesList::PropertiesList(QQuickItem *parent)
-    : QQuickItem{parent}, item_{}, qmlObject_{}, propertiesList_{}
+    : QQuickItem{parent}, item_{}, container_{}, propertiesList_{}
 {
-     QObject::connect(this, &QQuickItem::parentChanged, this, [this](QQuickItem *parent){
-        if(!parent) return;
-        setParentItem(parent);
-        setSize(parent->size());
-        createQmlObject();
-     });
 }
 
 PropertiesList::~PropertiesList()
@@ -23,22 +17,9 @@ PropertiesList::~PropertiesList()
     clearPropertiesList();
 }
 
-
-void PropertiesList::createQmlObject()
-{
-    if(qmlObject_){
-        delete qmlObject_;
-        qmlObject_ = nullptr;
-    }
-    qmlObject_ = createQQuickItem("qrc:/PropertyList.qml");
-    if(qmlObject_){
-        qmlObject_->setParentItem(this);
-    }
-}
-
 void PropertiesList::display(Ld::Base *item)
 {
-    if(!qmlObject_) return;
+    if(!container_) return;
     clear();
     if(item){
         item_ = item;
@@ -57,17 +38,30 @@ void PropertiesList::clear()
     }
 }
 
+void PropertiesList::setContainerParent(QQuickItem *parent)
+{
+    if(container_){
+        delete container_;
+        container_ = nullptr;
+    }
+    container_ = createQQuickItem("qrc:/PropertiesList.qml",
+                                  {{"rootModel", QVariant::fromValue(this)}});
+    if(container_){
+        container_->setParentItem(parent);
+    }
+}
+
 
 void PropertiesList::displayProperties()
 {
-    if(!qmlObject_) return;
+    if(!container_) return;
     clearPropertiesList();
 
     auto list = item_->getPropertiesList();
     for(auto property : list){
         if(qobject_cast<LdProperty::TextWithComboboxField*>(property)){
             auto obj = createQQuickItem("qrc:/textWithComboboxFieldProperty.qml",
-                                        {{"rootModel", QVariant::fromValue(property)}});
+                        {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);
         }
@@ -79,19 +73,19 @@ void PropertiesList::displayProperties()
         }
         else if(qobject_cast<LdProperty::ComboboxField*>(property)){
             auto obj = createQQuickItem("qrc:/comboboxProperty.qml",
-                                        {{"rootModel", QVariant::fromValue(property)}});
+                        {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);
         }
         else if(qobject_cast<LdProperty::DaysOfWeekField*>(property)){
             auto obj = createQQuickItem("qrc:/daysOfWeekFieldProperty.qml",
-                                        {{"rootModel", QVariant::fromValue(property)}});
+                        {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);
         }
         else if(qobject_cast<LdProperty::MultitextField*>(property)){
             auto obj = createQQuickItem("qrc:/multitextFieldProperty.qml",
-                                        {{"rootModel", QVariant::fromValue(property)}});
+                        {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);
         }
@@ -118,7 +112,7 @@ QQuickItem *PropertiesList::createQQuickItem(const QString &name,
     QQuickItem *qmlObject = qobject_cast<QQuickItem *>
                     (component.createWithInitialProperties(initProperties));
     if(qmlObject){
-        qmlObject->setParentItem(this);
+        qmlObject->setParentItem(container_);
     }
     return qmlObject;
 }

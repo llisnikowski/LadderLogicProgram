@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>PropertyList.qml</file>
+        <file>PropertiesList.qml</file>
         <file>textFieldProperty.qml</file>
         <file>comboboxProperty.qml</file>
         <file>textWithComboboxFieldProperty.qml</file>

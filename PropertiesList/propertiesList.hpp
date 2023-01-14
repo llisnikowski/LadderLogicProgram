@@ -16,10 +16,11 @@ public:
     explicit PropertiesList(QQuickItem *parent = nullptr);
     ~PropertiesList();
 
-    void createQmlObject();
-
     void display(Ld::Base *item);
     void clear();
+
+public slots:
+    void setContainerParent(QQuickItem *parent);
 
 private:
     void displayProperties();
@@ -33,7 +34,7 @@ signals:
 
 private:
     Ld::Base *item_;
-    QQuickItem *qmlObject_;
+    QQuickItem *container_;
     QVector<QQuickItem*> propertiesList_;
 };
 

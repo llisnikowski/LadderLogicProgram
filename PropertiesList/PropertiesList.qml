@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Item {
+    property var rootModel
     anchors.fill: parent
 
     MouseArea {
@@ -14,16 +15,10 @@ Item {
     Column{
         id: container;
         anchors.fill: parent
-//        Label{
-//            padding: 5
-////            anchors.horizontalCenter: parent.horizontalCenter
-////            text: selectedComponent.mainLabel
-//            font.pixelSize: 20;
-//        }
     }
 
     Connections {
-        target: parent
+        target: rootModel
         function onAddPropertyItem(item) {
             item.parent = container;
         }

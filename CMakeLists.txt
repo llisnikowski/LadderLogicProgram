@@ -32,7 +32,7 @@ file(GLOB PROJECT_HEADERS
      Network/*.hpp
      UserInterface/*.hpp
      LdProperty/*.hpp
-     LdFactory/*.hpp
+     FactoryLd/*.hpp
      SelectItem/*.hpp
      PropertiesList/*.hpp
      ConsoleLog/*.hpp
@@ -46,7 +46,7 @@ file(GLOB PROJECT_SOURCES
     Network/*.cpp
     UserInterface/*.cpp
     LdProperty/*.cpp
-    LdFactory/*.cpp
+    FactoryLd/*.cpp
     SelectItem/*.cpp
     PropertiesList/*.cpp
     ConsoleLog/*.cpp
@@ -101,7 +101,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
   ${CMAKE_SOURCE_DIR}/UserInterface
   ${CMAKE_SOURCE_DIR}/LdProperty
   ${CMAKE_SOURCE_DIR}/SelectItem
-  ${CMAKE_SOURCE_DIR}/LdFactory
+  ${CMAKE_SOURCE_DIR}/FactoryLd
   ${CMAKE_SOURCE_DIR}/PropertiesList
   ${CMAKE_SOURCE_DIR}/ConsoleLog
   ${CMAKE_SOURCE_DIR}/CodeGenerator
@@ -149,7 +149,7 @@ file(GLOB UTEST_SOURCES
     uTest/Network/*.cpp
     uTest/UserInterface/*.cpp
     uTest/LdProperty/*.cpp
-    uTest/LdFactory/*.cpp
+    uTest/FactoryLd/*.cpp
     uTest/SelectItem/*.cpp
     uTest/PropertiesList/*.cpp
     uTest/ConsoleLog/*.cpp
@@ -198,7 +198,7 @@ target_include_directories(${PROJECT_NAME}-ut PRIVATE
   ${CMAKE_SOURCE_DIR}/Network
   ${CMAKE_SOURCE_DIR}/UserInterface
   ${CMAKE_SOURCE_DIR}/LdProperty
-  ${CMAKE_SOURCE_DIR}/LdFactory
+  ${CMAKE_SOURCE_DIR}/FactoryLd
   ${CMAKE_SOURCE_DIR}/SelectItem
   ${CMAKE_SOURCE_DIR}/PropertiesList
   ${CMAKE_SOURCE_DIR}/ConsoleLog
