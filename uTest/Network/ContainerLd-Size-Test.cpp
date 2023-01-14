@@ -72,7 +72,7 @@ TEST_F(ContainterLd_Size, onlyContact)
     EXPECT_TRUE(testSizeAndPos(container_.getItem(0, 2), LD_W* 2, 0,
                          MAX_LENGTH_LINE - 2 * LD_W, LD_H));
     EXPECT_TRUE(testSizeAndPos(container_.getItem(1, 0), 0, LD_H,
-                         MAX_LENGTH_LINE, LD_H));
+                         MAX_LENGTH_LINE, LD_H/2));
 }
 
 TEST_F(ContainterLd_Size, onlyCoil)
@@ -111,7 +111,7 @@ TEST_F(ContainterLd_Size, contactAndCoil)
     EXPECT_TRUE(testSizeAndPos(container_.getItem(0, 6),
                                MAX_LENGTH_LINE - LD_W, 0, LD_W, LD_H));
     EXPECT_TRUE(testSizeAndPos(container_.getItem(1, 0),
-                               0, LD_H, MAX_LENGTH_LINE, LD_H));
+                               0, LD_H, MAX_LENGTH_LINE, LD_H/2));
 }
 
 TEST_F(ContainterLd_Size, node)
@@ -144,5 +144,5 @@ TEST_F(ContainterLd_Size, node)
     EXPECT_TRUE(testSize(container_.getItem(1, 3), NODE_W, LD_H));
 
     EXPECT_TRUE(testSize(container_.getItem(2, 0),
-                         2 * LD_W + LINE_BESIDE_NODE + NODE_W, LD_H));
+                         2 * LD_W + LINE_BESIDE_NODE + NODE_W, LD_H/2));
 }

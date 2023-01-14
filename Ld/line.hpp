@@ -19,14 +19,25 @@ class Line : public Drop
 {
     Q_OBJECT
 public:
+    enum DisplayType{
+        normal,
+        invisible,
+        fromLeft,
+        toRight,
+        fromLeftToRigth
+    };
     explicit Line(QQuickItem *parent = nullptr);
 
     Base *clone(QQuickItem *parent = nullptr) override;
 
-    Type getType() const override;
-
     void paint(QPainter *painter) override;
+    void setDisplayType(DisplayType displayType);
+
+    Type getType() const override;
     QByteArray getData() const override;
+
+private:
+    DisplayType displayType_;
 };
 
 

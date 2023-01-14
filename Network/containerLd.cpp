@@ -16,6 +16,7 @@ ContainerLd::ContainerLd(QQuickItem *parent)
     id_{currentId++}, container_{}
 {
     addLineIfLineIsEmpty(0);
+    updateLineDisplay();
     updateSize();
     updateLdObjectData();
     setHeight(container_.count() * LD_H);
@@ -209,6 +210,7 @@ bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
 
     insertNode();
     addLineIfLineIsEmpty(line + 1);
+    updateLineDisplay();
     updateSize();
     updateLdObjectData();
     emit addLdObject(this);
@@ -223,6 +225,7 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     container_[line].insert(x, FactoryLd::initObject(obj->clone(this)));
     container_[line].insert(x+1, FactoryLd::create<Ld::Line>(this));
 
+    updateLineDisplay();
     updateSize();
     updateLdObjectData();
     emit addLdObject(this);
@@ -240,6 +243,7 @@ bool ContainerLd::remove(uint line, uint x)
     shiftUp();
     removeUnnecesseryNode();
     removeEmptyLine();
+    updateLineDisplay();
     updateSize();
     updateLdObjectData();
     return true;
@@ -268,6 +272,7 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
     addLineIfLineIsEmpty((fromLine > toLine ? fromLine : toLine) + 1);
     removeUnnecesseryNode();
     removeEmptyLine();
+    updateLineDisplay();
     updateSize();
     updateLdObjectData();
     return true;
@@ -484,9 +489,18 @@ void ContainerLd::shiftUp()
 void ContainerLd::updateSize()
 {
     int curX = 0;
-    iteratorLineX(ItAll, [this, &curX](uint line, uint x, Ld::Base* obj){
-        int width = 0;
+    qreal curY = 0;
+    iteratorLineX(ItAll, [this, &curX, &curY](uint line, uint x, Ld::Base* obj){
+        qreal width = 0;
+        qreal height = LD_H;
         if(!obj) return;
+        if(x == 0){
+            if(x == container_[line].count() - 1
+                && line >= 1){
+                height = LD_H/2;
+            }
+            curY += height;
+        }
         if(obj->getType() >= Ld::Type::Drag) width = LD_W;
         else if(obj->getType() >= Ld::Type::Node) width = NODE_W;
         else if(x == container_[line].count() - 1) {
@@ -514,7 +528,7 @@ void ContainerLd::updateSize()
         }
         else width = LD_W;
 
-        obj->setSize({static_cast<qreal>(width), LD_H});
+        obj->setSize({static_cast<qreal>(width), height});
         obj->setX(curX);
         obj->setY(line * LD_H);
         curX += width;
@@ -522,6 +536,7 @@ void ContainerLd::updateSize()
     [&curX](uint line){
         curX = 0;
         });
+    setHeight(curY);
 }
 
 void ContainerLd::updateLdObjectData()
@@ -535,6 +550,32 @@ void ContainerLd::updateLdObjectData()
             static_cast<Ld::Drop*>(obj)->setDropValidator(
                 new DropNetworkValidator(obj, this,
                                          QPoint{(int)line, (int)x}));
+        }
+    });
+}
+
+void ContainerLd::updateLineDisplay()
+{
+    iteratorLineX(ItLine, [this](uint line, uint x, Ld::Base* obj){
+        auto lineLd = static_cast<Ld::Line*>(obj);
+        if(x == 0){
+            if(x == container_[line].count() - 1){
+                if(line == 0){
+                    lineLd->setDisplayType(Ld::Line::DisplayType::fromLeftToRigth);
+                }
+                else{
+                    lineLd->setDisplayType(Ld::Line::DisplayType::invisible);
+                }
+            }
+            else{
+                lineLd->setDisplayType(Ld::Line::DisplayType::fromLeft);
+            }
+        }
+        else if(x==container_[line].count()-1){
+            lineLd->setDisplayType(Ld::Line::DisplayType::toRight);
+        }
+        else{
+            lineLd->setDisplayType(Ld::Line::DisplayType::normal);
         }
     });
 }

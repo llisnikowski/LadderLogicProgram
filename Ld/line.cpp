@@ -15,7 +15,7 @@ namespace Ld {
  * \param parent: rodzic/element nadrzędny
  */
 Line::Line(QQuickItem *parent)
-    :Drop(parent)
+    :Drop(parent), displayType_{}
 {
 }
 
@@ -36,17 +36,33 @@ Type Line::getType() const
 void Line::paint(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
+    if(droppingItem_){
+        painterLd.fillColor();
+    }
+    if(displayType_ == invisible) return;
+
     painter->setPen(QPen(Qt::white, 2));
     painterLd.drawLine();
 
-    if(droppingItem_){
-        painterLd.fillColor();
+    if(displayType_ == fromLeft
+        || displayType_ == fromLeftToRigth){
+        painterLd.drawLineStart();
+    }
+    if(displayType_ == toRight
+        || displayType_ == fromLeftToRigth){
+        painterLd.drawLineEnd();
     }
 
     if(selected_){
         painter->setPen(QPen(Qt::black, 2));
         painterLd.drawFrame();
     }
+}
+
+void Line::setDisplayType(DisplayType displayType)
+{
+    displayType_ = displayType;
+    update();
 }
 
 QByteArray Line::getData() const

@@ -50,9 +50,11 @@ public:
     void drawContactSlash();
     void drawCoil();
     void drawLine();
+    void drawLineStart();
+    void drawLineEnd();
     void drawNode(bool left, bool right, bool top, bool bottom);
 
-    void fillColor(QColor color = {0,0,0,20});
+    void fillColor(QColor color = {0,0,0,40});
     void drawFrame(qreal frameWidth = 2);
     void printCenterLetter(QChar letter);
 

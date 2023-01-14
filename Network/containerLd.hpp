@@ -112,6 +112,7 @@ private:
     void shiftUp();
     void updateSize();
     void updateLdObjectData();
+    void updateLineDisplay();
     void updateNodeDisplay();
 
     static int currentId;

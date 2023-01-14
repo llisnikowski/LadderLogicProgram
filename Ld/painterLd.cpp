@@ -62,6 +62,16 @@ void PainterLd::drawLine()
     drawHoryzontalLine();
 }
 
+void PainterLd::drawLineStart()
+{
+    drawVerticalLine(painter_->pen().width()/2, 16);
+}
+
+void PainterLd::drawLineEnd()
+{
+    drawVerticalLine(objectSize_.width() - painter_->pen().width()/2, 16);
+}
+
 void PainterLd::drawNode(bool left, bool right, bool top, bool bottom)
 {
     if(left){
