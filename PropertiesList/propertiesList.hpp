@@ -9,11 +9,11 @@ class Base;
 } // namespace Ld
 
 
-class PropertiesList : public QQuickItem
+class PropertiesList : public QObject
 {
     Q_OBJECT
 public:
-    explicit PropertiesList(QQuickItem *parent = nullptr);
+    explicit PropertiesList(QObject *parent = nullptr);
     ~PropertiesList();
 
     void display(Ld::Base *item);

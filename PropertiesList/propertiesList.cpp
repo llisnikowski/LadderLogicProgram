@@ -7,8 +7,8 @@
 #include "daysOfWeekField.hpp"
 #include <QQmlEngine>
 
-PropertiesList::PropertiesList(QQuickItem *parent)
-    : QQuickItem{parent}, item_{}, container_{}, propertiesList_{}
+PropertiesList::PropertiesList(QObject *parent)
+    : QObject{parent}, item_{}, container_{}, propertiesList_{}
 {
 }
 
