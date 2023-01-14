@@ -25,9 +25,9 @@ Qt::DropAction DropNetworkValidator::valid(const QByteArray &dragArrayData)
         return Qt::DropAction::IgnoreAction;
     }
     if(containerLd_->getId() == dragNetworkData.getId()){
-        if(containerLd_->checkMoveCondition(dragNetworkData.getPosition().x(),
-                                        dragNetworkData.getPosition().x(),
-                                             position_.x(), position_.y())){
+        if(containerLd_->checkMoveCondition({dragNetworkData.getPosition().x(),
+                                        dragNetworkData.getPosition().x()},
+                                             {position_.x(), position_.y()})){
 
             return Qt::DropAction::CopyAction;
         }
@@ -37,7 +37,7 @@ Qt::DropAction DropNetworkValidator::valid(const QByteArray &dragArrayData)
         if(!dragObj) return Qt::DropAction::IgnoreAction;
         if(dragObj->getType() >= Ld::Type::Drag){
             if(containerLd_->checkAddCondition(static_cast<Ld::Drag*>(dragObj),
-                                                position_.x(), position_.y())){
+                                                {position_.x(), position_.y()})){
                 delete dragObj;
                 return Qt::DropAction::MoveAction;
             }
@@ -57,9 +57,9 @@ void DropNetworkValidator::doAction(const QByteArray &dragArrayData)
     if(!dragNetworkData.setData(dragArrayData))return;
 
     if(containerLd_->getId() == dragNetworkData.getId()){
-        if(containerLd_->move(dragNetworkData.getPosition().x(),
-                               dragNetworkData.getPosition().y(),
-                               position_.x(), position_.y())){
+        if(containerLd_->move({dragNetworkData.getPosition().x(),
+                                dragNetworkData.getPosition().y()},
+                               {position_.x(), position_.y()})){
 
             return;
         }
@@ -69,7 +69,7 @@ void DropNetworkValidator::doAction(const QByteArray &dragArrayData)
         if(!dragObj) return;
         if(dragObj->getType() >= Ld::Type::Drag){
             if(containerLd_->add(static_cast<Ld::Drag*>(dragObj),
-                                  position_.x(), position_.y())){
+                                  {position_.x(), position_.y()})){
                 delete dragObj;
                 return;
             }

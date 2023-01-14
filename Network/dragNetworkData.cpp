@@ -27,7 +27,7 @@ void DragNetworkData::doAction(Qt::DropAction action)
 {
     if(action != Qt::MoveAction) return;
     if(!containerLd_) return;
-    containerLd_->remove(position_.x(), position_.y());
+    containerLd_->remove({position_.x(), position_.y()});
 }
 
 QByteArray DragNetworkData::getData() const

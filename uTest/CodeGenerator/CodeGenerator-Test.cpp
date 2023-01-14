@@ -67,12 +67,12 @@ TEST_F(CodeGenetor_Test, contact)
 {
     ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
     Ld::Contact contact;
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
-    static_cast<Ld::Contact*>(container.getItem(0, 1))->getAddress() = "I01";
+    static_cast<Ld::Contact*>(container.getItem({0, 1}))->getAddress() = "I01";
     EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 }
@@ -81,13 +81,13 @@ TEST_F(CodeGenetor_Test, coil)
 {
     ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
     Ld::Coil coil;
-    container.remove(0, 1);
-    container.add(&coil, 0, 1);
+    container.remove({0, 1});
+    container.add(&coil, {0, 1});
 
     EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
-    static_cast<Ld::Coil*>(container.getItem(0, 1))->getAddress() = "Q00";
+    static_cast<Ld::Coil*>(container.getItem({0, 1}))->getAddress() = "Q00";
     EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 }
@@ -96,12 +96,12 @@ TEST_F(CodeGenetor_Test, contactAndCoil)
 {
     ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
     Ld::Contact contact;
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     EXPECT_CALL(logError_, addToLogs(_)).Times(1);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
-    static_cast<Ld::Contact*>(container.getItem(0, 1))->getAddress() = "I00";
+    static_cast<Ld::Contact*>(container.getItem({0, 1}))->getAddress() = "I00";
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
                               ":N00 I00=Q00\r\n"
@@ -115,7 +115,7 @@ TEST_F(CodeGenetor_Test, Or)
     ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
     Ld::Contact contact;
     contact.getAddress() = "i01";
-    container.add(&contact, 1, 1);
+    container.add(&contact, {1, 1});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -130,7 +130,7 @@ TEST_F(CodeGenetor_Test, And)
     ContainerLd &container = networkList_.getNetwork(0)->getContainerLd();
     Ld::Contact contact;
     contact.getAddress() = "i2";
-    container.add(&contact, 0, 5);
+    container.add(&contact, {0, 5});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -146,7 +146,7 @@ TEST_F(CodeGenetor_Test, NegativeContact)
     Ld::Contact contact;
     contact.getAddress() = "I3";
     contact.getPropertyType() = 1;
-    container.add(&contact, 0, 7);
+    container.add(&contact, {0, 7});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -162,7 +162,7 @@ TEST_F(CodeGenetor_Test, FullNetwork)
     Ld::Contact contact;
     contact.getAddress() = "I12";
     contact.getPropertyType() = 1;
-    container.add(&contact, 2, 1);
+    container.add(&contact, {2, 1});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -177,12 +177,12 @@ TEST_F(CodeGenetor_Test, CoilSet)
     ContainerLd &container = networkList_.getNetwork(1)->getContainerLd();
     Ld::Contact contact;
     contact.getAddress() = "I05";
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     Ld::Coil coil;
     coil.getAddress() = "Q01";
     coil.getPropertyType() = 1;
-    container.add(&coil, 0, 3);
+    container.add(&coil, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -199,12 +199,12 @@ TEST_F(CodeGenetor_Test, CoilReset)
     Ld::Contact contact;
     contact.getAddress() = "I06";
     contact.getPropertyType() = 1;
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     Ld::Coil coil;
     coil.getAddress() = "Q01";
     coil.getPropertyType() = 2;
-    container.add(&coil, 0, 3);
+    container.add(&coil, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -222,14 +222,14 @@ TEST_F(CodeGenetor_Test, Timer)
     Ld::Contact contact;
     contact.getAddress() = "I07";
     contact.getPropertyType() = 1;
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     Ld::Timer timer;
     timer.getAddress() = "T02";
     timer.getPropertyType() = 2;
     timer.getTime() = 1234;
     timer.getTime().setUnits(0);
-    container.add(&timer, 0, 3);
+    container.add(&timer, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -248,12 +248,12 @@ TEST_F(CodeGenetor_Test, CounterAdd)
     ContainerLd &container = networkList_.getNetwork(4)->getContainerLd();
     Ld::Contact contact;
     contact.getAddress() = "I07";
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     Ld::Counter counter;
     counter.getAddress() = "C04";
     counter.getCounter() = 64;
-    container.add(&counter, 0, 3);
+    container.add(&counter, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -274,13 +274,13 @@ TEST_F(CodeGenetor_Test, CounterReset)
     ContainerLd &container = networkList_.getNetwork(5)->getContainerLd();
     Ld::Contact contact;
     contact.getAddress() = "I08";
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     Ld::Counter counter;
     counter.getAddress() = "C04";
     counter.getPropertyType() = 2;
     counter.getCounter() = 11;
-    container.add(&counter, 0, 3);
+    container.add(&counter, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -302,13 +302,13 @@ TEST_F(CodeGenetor_Test, CounterDir)
     ContainerLd &container = networkList_.getNetwork(6)->getContainerLd();
     Ld::Contact contact;
     contact.getAddress() = "I09";
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     Ld::Counter counter;
     counter.getAddress() = "C04";
     counter.getPropertyType() = 1;
     counter.getCounter() = 12;
-    container.add(&counter, 0, 3);
+    container.add(&counter, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -334,11 +334,11 @@ TEST_F(CodeGenetor_Test, Weektimer)
     weektimer.getTimeOn() = "11:43";
     weektimer.getTimeOff() = "13:45";
     weektimer.getDaysOfWeek().setValue(0b0110'1100);
-    container.add(&weektimer, 0, 1);
+    container.add(&weektimer, {0, 1});
 
     Ld::Coil coil;
     coil.getAddress() = "Q05";
-    container.add(&coil, 0, 3);
+    container.add(&coil, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"
@@ -364,11 +364,11 @@ TEST_F(CodeGenetor_Test, Text)
     Ld::Text text;
     Ld::Contact contact;
     contact.getAddress() = "I10";
-    container.add(&contact, 0, 1);
+    container.add(&contact, {0, 1});
 
     text.getAddress() = "X02";
     text.getTexts().setTextsList({"Text1", "Text2", "Text3", "Text4"});
-    container.add(&text, 0, 3);
+    container.add(&text, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
                               ":START\r\n"

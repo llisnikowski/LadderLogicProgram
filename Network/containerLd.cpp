@@ -26,24 +26,28 @@ ContainerLd::~ContainerLd()
 {
 }
 
-Ld::Base *ContainerLd::getItem(uint line, uint x)
+Ld::Base *ContainerLd::getItem(Position poz)
 {
-    if(line >= container_.count()) return nullptr;
-    if(x >= container_[line].count()) return nullptr;
-    return container_.at(line).at(x);
+    if(poz.line < 0) return nullptr;
+    if(poz.line >= container_.count()) return nullptr;
+    if(poz.x < 0) return nullptr;
+    if(poz.x >= container_[poz.line].count()) return nullptr;
+    return container_.at(poz.line).at(poz.x);
 }
 
-const Ld::Base *ContainerLd::getItem(uint line, uint x) const
+const Ld::Base *ContainerLd::getItem(Position poz) const
 {
-    if(line >= container_.count()) return nullptr;
-    if(x >= container_[line].count()) return nullptr;
-    return container_.at(line).at(x);
+    if(poz.line < 0) return nullptr;
+    if(poz.line >= container_.count()) return nullptr;
+    if(poz.x < 0) return nullptr;
+    if(poz.x >= container_[poz.line].count()) return nullptr;
+    return container_.at(poz.line).at(poz.x);
 }
 
 
-Ld::Address *ContainerLd::getAddressItem(uint line, uint x)
+Ld::Address *ContainerLd::getAddressItem(Position poz)
 {
-    auto obj = getItem(line, x);
+    auto obj = getItem(poz);
     if(!obj) return nullptr;
     if(obj->getType() >= Ld::Type::Address){
         return static_cast<Ld::Address*>(obj);
@@ -51,9 +55,9 @@ Ld::Address *ContainerLd::getAddressItem(uint line, uint x)
     return nullptr;
 }
 
-const Ld::Address *ContainerLd::getAddressItem(uint line, uint x) const
+const Ld::Address *ContainerLd::getAddressItem(Position poz) const
 {
-    auto obj = getItem(line, x);
+    auto obj = getItem(poz);
     if(!obj) return nullptr;
     if(obj->getType() >= Ld::Type::Address){
         return static_cast<const Ld::Address*>(obj);
@@ -81,47 +85,49 @@ void ContainerLd::iteratorXLine(QVector<Ld::Type> types, std::function<ItArg> fu
     }
 }
 
-void ContainerLd::iteratorLine(uint line, QVector<Ld::Type> types,
+void ContainerLd::iteratorLine(int line, QVector<Ld::Type> types,
                                std::function<ItArg> fun)
 {
+    if(line < 0) return;
     if(line >= container_.count()) return;
     for(int x = 0; x < container_[line].count(); x++){
         Ld::Base *obj = container_[line][x];
         if(!obj) continue;
         for(auto type :types){
             if(obj->getType() >= type){
-                fun(line, x, obj);
+                fun({line, x}, obj);
                 break;
             }
         }
     }
 }
 
-void ContainerLd::iteratorLine(uint line, QVector<Ld::Type> types,
+void ContainerLd::iteratorLine(int line, QVector<Ld::Type> types,
                                std::function<ItArgConst> fun) const
 {
+    if(line < 0) return;
     if(line >= container_.count()) return;
     for(int x = 0; x < container_[line].count(); x++){
         Ld::Base *obj = container_[line][x];
         if(!obj) continue;
         for(auto type :types){
             if(obj->getType() >= type){
-                fun(line, x, obj);
+                fun({line, x}, obj);
                 break;
             }
         }
     }
 }
 
-void ContainerLd::iteratorX(uint x, QVector<Ld::Type> types, std::function<ItArg> fun)
+void ContainerLd::iteratorX(int x, QVector<Ld::Type> types, std::function<ItArg> fun)
 {
     if(x >= container_[0].count()) return;
     Ld::Base *obj{};
-    for(int line = 0; (obj = getItem(line, x)); line++){
+    for(int line = 0; (obj = getItem({line, x})); line++){
         if(!obj) continue;
         for(auto type :types){
             if(obj->getType() >= type){
-                fun(line, x, obj);
+                fun({line, x}, obj);
                 break;
             }
         }
@@ -132,7 +138,7 @@ QString ContainerLd::getSchemat()
 {
     QString schemat;
     iteratorLineX({Ld::Type::Base},
-        [&schemat](uint line, uint x, Ld::Base* obj){
+        [&schemat](Position poz, Ld::Base* obj){
             if(!obj){
                 schemat += '.';
             }
@@ -163,29 +169,29 @@ int ContainerLd::getId() const
 }
 
 
-bool ContainerLd::add(Ld::Drag *obj, uint line, uint x)
+bool ContainerLd::add(Ld::Drag *obj, Position poz)
 {
     if(!obj) return false;
     if(obj->getType() >= Ld::Type::Input){
-        return addInput(static_cast<Ld::Input*>(obj), line, x);
+        return addInput(static_cast<Ld::Input*>(obj), poz);
     }
     else if(obj->getType() >= Ld::Type::Output){
-        if(addOuput(static_cast<Ld::Output*>(obj), line, x)) return false;
+        if(addOuput(static_cast<Ld::Output*>(obj), poz)) return false;
     }
 
     return true;
 }
 
-bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
+bool ContainerLd::addInput(Ld::Input *obj, Position poz)
 {
-    x = x % 2 ? x : x+1;
-    if(!checkAddInputCondition(obj, line, x)) return false;
+    if(!setToNearestAddresItem(poz)) return false;
+    if(!checkAddInputCondition(obj, poz)) return false;
 
-    container_[line].insert(x, FactoryLd::initObject(obj->clone(this)));
-    container_[line].insert(x + 1, FactoryLd::create<Ld::Line>(this));
+    container_[poz.line].insert(poz.x, FactoryLd::initObject(obj->clone(this)));
+    container_[poz.line].insert(poz.x + 1, FactoryLd::create<Ld::Line>(this));
 
     insertNode();
-    addLineIfLineIsEmpty(line + 1);
+    addLineIfLineIsEmpty(poz.line + 1);
     updateLineDisplay();
     updateSize();
     updateLdObjectData();
@@ -193,13 +199,13 @@ bool ContainerLd::addInput(Ld::Input *obj, uint line, uint x)
     return true;
 }
 
-bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
+bool ContainerLd::addOuput(Ld::Output *obj, Position poz)
 {
-    x = x % 2 ? x : x+1;
-    if(!checkAddOutputCondition(obj, line, x)) return false;
+    if(!setToNearestAddresItem(poz, true)) return false;
+    if(!checkAddOutputCondition(obj, poz)) return false;
 
-    container_[line].insert(x, FactoryLd::initObject(obj->clone(this)));
-    container_[line].insert(x+1, FactoryLd::create<Ld::Line>(this));
+    container_[poz.line].insert(poz.x, FactoryLd::initObject(obj->clone(this)));
+    container_[poz.line].insert(poz.x+1, FactoryLd::create<Ld::Line>(this));
 
     updateLineDisplay();
     updateSize();
@@ -208,13 +214,14 @@ bool ContainerLd::addOuput(Ld::Output *obj, uint line, uint x)
     return true;
 }
 
-bool ContainerLd::remove(uint line, uint x)
+bool ContainerLd::remove(Position poz)
 {
-    if(!checkRemoveCondition(line, x)) return false;
+    if(!setToNearestAddresItem(poz, false)) return false;
+    if(!checkRemoveCondition(poz)) return false;
 
-    container_[line][x+1]->deleteLater();
-    container_[line][x]->deleteLater();
-    container_[line].remove(x, 2);
+    container_[poz.line][poz.x+1]->deleteLater();
+    container_[poz.line][poz.x]->deleteLater();
+    container_[poz.line].remove(poz.x, 2);
 
     shiftUp();
     removeUnnecesseryNode();
@@ -225,27 +232,27 @@ bool ContainerLd::remove(uint line, uint x)
     return true;
 }
 
-bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
+bool ContainerLd::move(Position fromPoz, Position toPoz)
 {
-    toX = (toX / 2) * 2 + 1;
-    fromX = (fromX / 2) * 2 + 1;
-    if(!checkMoveCondition(fromLine, fromX, toLine, toX)) return false;
+    if(!setToNearestAddresItem(fromPoz)) return false;
+    if(!setToNearestAddresItem(toPoz)) return false;
+    if(!checkMoveCondition(fromPoz, toPoz)) return false;
 
-    if(fromLine == toLine && toX > fromX){
-        toX -= 2;
+    if(fromPoz.line == toPoz.line && toPoz.x > fromPoz.x){
+        toPoz.x -= 2;
     }
 
-    Ld::Drag *moveObj = getAddressItem(fromLine, fromX);
-    Ld::Base *moveNextObj = getItem(fromLine, fromX + 1);
-    container_[fromLine][fromX] = nullptr;
-    container_[fromLine][fromX+1] = nullptr;
-    container_[fromLine].remove(fromX, 2);
-    container_[toLine].insert(toX, moveObj);
-    container_[toLine].insert(toX+1, moveNextObj);
+    Ld::Drag *moveObj = getAddressItem(fromPoz);
+    Ld::Base *moveNextObj = getItem(fromPoz + Position{0, 1});
+    container_[fromPoz.line][fromPoz.x] = nullptr;
+    container_[fromPoz.line][fromPoz.x+1] = nullptr;
+    container_[fromPoz.line].remove(fromPoz.x, 2);
+    container_[toPoz.line].insert(toPoz.x, moveObj);
+    container_[toPoz.line].insert(toPoz.x+1, moveNextObj);
 
     insertNode();
     shiftUp();
-    addLineIfLineIsEmpty((fromLine > toLine ? fromLine : toLine) + 1);
+    addLineIfLineIsEmpty((fromPoz.line > toPoz.line ? fromPoz.line : toPoz.line) + 1);
     removeUnnecesseryNode();
     removeEmptyLine();
     updateLineDisplay();
@@ -254,107 +261,100 @@ bool ContainerLd::move(uint fromLine, uint fromX, uint toLine, uint toX)
     return true;
 }
 
-bool ContainerLd::checkAddCondition(const Ld::Drag *obj, uint line, uint x) const
+bool ContainerLd::checkAddCondition(const Ld::Drag *obj, Position poz) const
 {
-    x = x % 2 ? x : x+1;
+    if(!setToNearestAddresItem(poz)) return false;
     if(!obj) return false;
     if(obj->getType() >= Ld::Type::Input){
-        return checkAddInputCondition(static_cast<const Ld::Input*>(obj), line, x);
+        return checkAddInputCondition(static_cast<const Ld::Input*>(obj), poz);
     }
     else if(obj->getType() >= Ld::Type::Output){
-        return checkAddOutputCondition(static_cast<const Ld::Output*>(obj), line, x);
+        return checkAddOutputCondition(static_cast<const Ld::Output*>(obj), poz);
     }
     return false;
 }
 
-bool ContainerLd::checkAddInputCondition(const Ld::Input *obj, uint line, uint x) const
+bool ContainerLd::checkAddInputCondition(const Ld::Input *obj, Position poz) const
 {
-    x = x % 2 ? x : x+1;
     if(!obj) return false;
-    if(line >= container_.count()) return false;
-    if(getNumberObjectInLine(line, Ld::Type::Input)
-        >= MAX_INPUT_IN_LINE[line]) return false;
-    if(x > container_[line].count()) return false;
-    int outputPlace = find(line, Ld::Type::Output);
-    if(outputPlace > 0 && x > outputPlace) return false;
-    int node = find(line, Ld::Type::Node);
-    if(node > -1 && x <= node) return false;
+    if(!setToNearestAddresItem(poz)) return false;
+    if(getNumberObjectInLine(poz.line, Ld::Type::Input)
+        >= MAX_INPUT_IN_LINE[poz.line]) return false;
+    int outputPlace = find(poz.line, Ld::Type::Output);
+    if(outputPlace > 0 && poz.x > outputPlace) return false;
+    int node = find(poz.line, Ld::Type::Node);
+    if(node > -1 && poz.x <= node) return false;
     return true;
 }
 
-bool ContainerLd::checkAddOutputCondition(const Ld::Output *obj, uint line, uint x) const
+bool ContainerLd::checkAddOutputCondition(const Ld::Output *obj, Position poz) const
 {
     if(!obj) return false;
-    if(line >= container_.count()) return false;
-    if(line != 0) return false;
-    if(getNumberObjectInLine(line, Ld::Type::Output) >= 1) return false;
-    if(x > container_[line].count()) return false;
+    if(!setToNearestAddresItem(poz, true)) return false;
+    if(poz.line > 0) return false;
+    if(getNumberObjectInLine(poz.line, Ld::Type::Output) >= 1) return false;
+    if(poz.x > container_[poz.line].count()) return false;
 
     return true;
 }
 
-bool ContainerLd::checkRemoveCondition(uint line, uint x) const
+bool ContainerLd::checkRemoveCondition(Position poz) const
 {
-    if(line >= container_.count()) return false;
-    if(x >= container_[line].count()) return false;
-    Ld::Base *obj = container_[line][x];
+    if(!setToNearestAddresItem(poz, false)) return false;
+    Ld::Base *obj = container_[poz.line][poz.x];
     if(!obj) return false;
     if(obj->getType() < Ld::Type::Drag) return false;
-    Ld::Base *nextObj = container_[line][x+1];
+    Ld::Base *nextObj = container_[poz.line][poz.x+1];
     if(!nextObj) return false;
 
     return true;
 }
 
-bool ContainerLd::checkMoveCondition(uint fromLine, uint fromX, uint toLine, uint toX) const
+bool ContainerLd::checkMoveCondition(Position fromPoz, Position toPoz) const
 {
-    toX = (toX / 2) * 2 + 1;
-    fromX = (fromX / 2) * 2 + 1;
-    if(fromLine >= container_.count()) return false;
-    if(fromX >= container_[fromLine].count()) return false;
-    if(toLine >= container_.count()) return false;
-    if(toX >= container_[toLine].count() + 1) return false;
+    if(!setToNearestAddresItem(fromPoz)) return false;
+    if(!setToNearestAddresItem(toPoz)) return false;
 
-    Ld::Base *fromObj = container_[fromLine][fromX];
+    Ld::Base *fromObj = container_[fromPoz.line][fromPoz.x];
     if(!fromObj) return false;
     if(fromObj->getType() < Ld::Type::Drag) return false;
-    Ld::Base *nextObj = container_[fromLine][fromX];
+    Ld::Base *nextObj = container_[fromPoz.line][fromPoz.x];
     if(!nextObj) return false;
 
-    const Ld::Drag *moveObj = getAddressItem(fromLine, fromX);
+    const Ld::Drag *moveObj = getAddressItem(fromPoz);
     if(!moveObj) return false;
     if(moveObj->getType() >= Ld::Type::Input){
-        if(toLine >= container_.count()) return false;
-        if(find(toLine, Ld::Type::Output) >= 0
-            && toX > find(toLine, Ld::Type::Output)) return false;
+        if(toPoz.line >= container_.count()) return false;
+        if(find(toPoz.line, Ld::Type::Output) >= 0
+            && toPoz.x > find(toPoz.line, Ld::Type::Output)) return false;
 
-        int node = find(toLine, Ld::Type::Node);
-        if(fromLine == toLine){
-            if(fromX < toX){
-                if((node > fromX && node < toX) &&
-                    (getNumberObjectInLine(toLine, Ld::Type::Input)
-                     >= MAX_INPUT_IN_LINE[toLine])) return false;
+        int node = find(toPoz.line, Ld::Type::Node);
+        if(fromPoz.line == toPoz.line){
+            if(fromPoz.x < toPoz.x){
+                if((node > fromPoz.x && node < toPoz.x) &&
+                    (getNumberObjectInLine(toPoz.line, Ld::Type::Input)
+                     >= MAX_INPUT_IN_LINE[toPoz.line])) return false;
             }
             else{
-                if(node < fromX && node >= toX) return false;
+                if(node < fromPoz.x && node >= toPoz.x) return false;
             }
         }
         else{
-            if(getNumberObjectInLine(toLine, Ld::Type::Input)
-                >= MAX_INPUT_IN_LINE[toLine]) return false;
-            if(node > -1 && toX <= node) return false;
+            if(getNumberObjectInLine(toPoz.line, Ld::Type::Input)
+                >= MAX_INPUT_IN_LINE[toPoz.line]) return false;
+            if(node > -1 && toPoz.x <= node) return false;
         }
 
     }
     else if(moveObj->getType() >= Ld::Type::Output){
-        if(toLine != 0) return false;
-        if(fromX > toX) return false;
+        if(toPoz.line != 0) return false;
+        if(fromPoz.x > toPoz.x) return false;
     }
     return true;
 }
 
 
-int ContainerLd::find(uint line, Ld::Type type) const
+int ContainerLd::find(int line, Ld::Type type) const
 {
     if(line >= container_.count()) return -1;
     for(int x = 0; x < container_[line].count(); x++){
@@ -367,10 +367,10 @@ int ContainerLd::find(uint line, Ld::Type type) const
     return -1;
 }
 
-int ContainerLd::getNumberObjectInLine(uint line, Ld::Type type) const
+int ContainerLd::getNumberObjectInLine(int line, Ld::Type type) const
 {
     int numberObject = 0;
-    iteratorLine(line, {Ld::Type::Base}, [type, &numberObject](uint line, uint x, Ld::Base* obj){
+    iteratorLine(line, {Ld::Type::Base}, [type, &numberObject](Position poz, Ld::Base* obj){
         if(!obj){
             if(type == Ld::Type::None) numberObject++;
         }
@@ -381,8 +381,21 @@ int ContainerLd::getNumberObjectInLine(uint line, Ld::Type type) const
     return numberObject;
 }
 
+bool ContainerLd::setToNearestAddresItem(Position &pos, bool lastField) const
+{
+    if(pos.line < 0 || pos.line > container_.count() - 1) return false;
+    if(!lastField){
+        if(pos.x < 0 || pos.x > container_[pos.line].count() - 1) return false;
+    }
+    else{
+        if(pos.x < 0 || pos.x > container_[pos.line].count()) return false;
+    }
+    pos.x = (pos.x / 2) * 2 + 1;
+    return true;
+}
 
-void ContainerLd::addLineIfLineIsEmpty(uint line)
+
+void ContainerLd::addLineIfLineIsEmpty(int line)
 {
     if(line >= 3) return;
     if(line == container_.count()){
@@ -466,21 +479,21 @@ void ContainerLd::updateSize()
 {
     int curX = 0;
     qreal curY = 0;
-    iteratorLineX({Ld::Type::Base}, [this, &curX, &curY](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Base}, [this, &curX, &curY](Position poz, Ld::Base* obj){
         qreal width = 0;
         qreal height = LD_H;
         if(!obj) return;
-        if(x == 0){
-            if(x == container_[line].count() - 1
-                && line >= 1){
+        if(poz.x == 0){
+            if(poz.x == container_[poz.line].count() - 1
+                && poz.line >= 1){
                 height = LD_H/2;
             }
             curY += height;
         }
         if(obj->getType() >= Ld::Type::Drag) width = LD_W;
         else if(obj->getType() >= Ld::Type::Node) width = NODE_W;
-        else if(x == container_[line].count() - 1) {
-            if(line <= 1){
+        else if(poz.x == container_[poz.line].count() - 1) {
+            if(poz.line <= 1){
                 width = MAX_LENGTH_LINE - curX;
             }
             else{
@@ -488,14 +501,14 @@ void ContainerLd::updateSize()
             }
         }
         else if(obj->getType() >= Ld::Type::Line){
-            if(container_[line][x+1]->getType() >= Ld::Type::Output){
+            if(container_[poz.line][poz.x+1]->getType() >= Ld::Type::Output){
                 width = MAX_LENGTH_LINE - curX - LD_W * 2;
             }
-            else if(x == 0) {
+            else if(poz.x == 0) {
                 width = LD_W;
             }
-            else if(container_[line][x-1]->getType() >= Ld::Type::Node ||
-                     container_[line][x+1]->getType() >= Ld::Type::Node){
+            else if(container_[poz.line][poz.x-1]->getType() >= Ld::Type::Node ||
+                     container_[poz.line][poz.x+1]->getType() >= Ld::Type::Node){
                 width = LINE_BESIDE_NODE;
             }
             else{
@@ -506,10 +519,10 @@ void ContainerLd::updateSize()
 
         obj->setSize({static_cast<qreal>(width), height});
         obj->setX(curX);
-        obj->setY(line * LD_H);
+        obj->setY(poz.line * LD_H);
         curX += width;
     },
-    [&curX](uint line){
+    [&curX](int line){
         curX = 0;
         });
     setHeight(curY);
@@ -517,26 +530,26 @@ void ContainerLd::updateSize()
 
 void ContainerLd::updateLdObjectData()
 {
-    iteratorLineX({Ld::Type::Drop, Ld::Type::Drag}, [this](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Drop, Ld::Type::Drag}, [this](Position poz, Ld::Base* obj){
         if(obj->getType() >= Ld::Type::Drag){
             static_cast<Ld::Drag*>(obj)->setDragData(new DragNetworkData(obj,
-                        obj->getData(), this, QPoint{(int)line, (int)x}));
+                        obj->getData(), this, QPoint{(int)poz.line, (int)poz.x}));
         }
         else if(obj->getType() >= Ld::Type::Drop){
             static_cast<Ld::Drop*>(obj)->setDropValidator(
                 new DropNetworkValidator(obj, this,
-                                         QPoint{(int)line, (int)x}));
+                                         QPoint{(int)poz.line, (int)poz.x}));
         }
     });
 }
 
 void ContainerLd::updateLineDisplay()
 {
-    iteratorLineX({Ld::Type::Line}, [this](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Line}, [this](Position poz, Ld::Base* obj){
         auto lineLd = static_cast<Ld::Line*>(obj);
-        if(x == 0){
-            if(x == container_[line].count() - 1){
-                if(line == 0){
+        if(poz.x == 0){
+            if(poz.x == container_[poz.line].count() - 1){
+                if(poz.line == 0){
                     lineLd->setDisplayType(Ld::Line::DisplayType::fromLeftToRigth);
                 }
                 else{
@@ -547,7 +560,7 @@ void ContainerLd::updateLineDisplay()
                 lineLd->setDisplayType(Ld::Line::DisplayType::fromLeft);
             }
         }
-        else if(x==container_[line].count()-1){
+        else if(poz.x==container_[poz.line].count()-1){
             lineLd->setDisplayType(Ld::Line::DisplayType::toRight);
         }
         else{
@@ -558,9 +571,11 @@ void ContainerLd::updateLineDisplay()
 
 void ContainerLd::updateNodeDisplay()
 {
-    iteratorLineX({Ld::Type::Node}, [this](uint line, uint x, Ld::Base* obj){
+    iteratorLineX({Ld::Type::Node}, [this](Position poz, Ld::Base* obj){
         Ld::Node* node = static_cast<Ld::Node*>(obj);
-        node->displayLine(getItem(line, x+1), getItem(line-1, x), getItem(line+1, x));
+        node->displayLine(getItem(poz + Position{0, 1}),
+                          getItem(poz + Position{-1, 0}),
+                          getItem(poz + Position{1, 0}));
     });
 }
 
@@ -575,13 +590,13 @@ QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
 {
     int count = 0;
     containerLd.iteratorLineX(
-        {Ld::Type::Address}, [&count](uint line, uint x, Ld::Base* obj){
+        {Ld::Type::Address}, [&count](Position poz, Ld::Base* obj){
             count++;
         });
     stream << count;
     containerLd.iteratorXLine(
-        {Ld::Type::Address}, [&stream](uint line, uint x, Ld::Base* obj){
-            stream << line << x << obj->getData();
+        {Ld::Type::Address}, [&stream](Position poz, Ld::Base* obj){
+            stream << poz.line << poz.x << obj->getData();
         });
     return stream;
 }
@@ -591,7 +606,7 @@ QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
 {
     int count;
     stream >> count;
-    uint line, x;
+    int line, x;
     QByteArray ldByteArray;
     for(int i = 0; i < count; i++){
         stream >> line >> x >> ldByteArray;
@@ -601,7 +616,7 @@ QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
             delete newObj;
             return stream;
         }
-        containerLd.add(static_cast<Ld::Drag*>(newObj), line, x);
+        containerLd.add(static_cast<Ld::Drag*>(newObj), {line, x});
         delete newObj;
     }
     return stream;

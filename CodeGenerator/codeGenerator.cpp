@@ -101,12 +101,12 @@ void CodeGenerator::addStructureNetwork(uint i, Network *network)
     bool isOutput = false;
     QString networkCode{};
     containerLd.iteratorXLine({Ld::Type::Address},
-        [this, &isInput, &isOutput, &networkCode](uint line, uint x, Ld::Base* obj){
+        [this, &isInput, &isOutput, &networkCode](Position pos, Ld::Base* obj){
             Ld::Type type = obj->getType();
             if(type >= Ld::Type::Input){
-                if(line == 0){
+                if(pos.line == 0){
                     isInput = true;
-                    if(x != 1){
+                    if(pos.x != 1){
                         networkCode += "&";
                     }
                 }

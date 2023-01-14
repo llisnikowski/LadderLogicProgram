@@ -22,12 +22,12 @@ TEST(ContainterLd, constructor)
 
     EXPECT_EQ(array[0].count(), 1);
 
-    EXPECT_TRUE(qobject_cast<const Ld::Line*>(container.getItem(0, 0)));
-    EXPECT_FALSE(container.getItem(1, 0));
-    EXPECT_FALSE(container.getItem(0, 1));
-    EXPECT_FALSE(container.getItem(1, 1));
-    EXPECT_FALSE(container.getItem(3, 0));
-    EXPECT_FALSE(container.getItem(0, 20));
+    EXPECT_TRUE(qobject_cast<const Ld::Line*>(container.getItem({0, 0})));
+    EXPECT_FALSE(container.getItem({1, 0}));
+    EXPECT_FALSE(container.getItem({0, 1}));
+    EXPECT_FALSE(container.getItem({1, 1}));
+    EXPECT_FALSE(container.getItem({3, 0}));
+    EXPECT_FALSE(container.getItem({0, 20}));
 }
 
 TEST(ContainterLd, iterator)

@@ -38,6 +38,18 @@ constexpr float LINE_BESIDE_NODE{32};
 constexpr uint MAX_INPUT_IN_LINE[] = {3, 1, 1};
 constexpr uint NODE_POSITION = 3;
 
+struct Position
+{
+    Position(int line, int x)
+        :line{line}, x{x}
+    {}
+    int line;
+    int x;
+    Position operator+(Position p2){
+        return {this->line + p2.line, this->x + p2.x};
+    }
+};
+
 class ContainerLd : public QQuickItem
 {
     Q_OBJECT
@@ -50,23 +62,23 @@ public:
     using Array = QVector<Line>;
 
 
-    using ItArg = void(uint line, uint x, Ld::Base* obj);
-    using ItArgConst = void(uint line, uint x, Ld::Base* obj);
-    using ItEndLineArg = void(uint line);
-    using ItEndXArg = void(uint x);
+    using ItArg = void(Position poz, Ld::Base* obj);
+    using ItArgConst = void(Position poz, Ld::Base* obj);
+    using ItEndLineArg = void(int line);
+    using ItEndXArg = void(int x);
     void iteratorLineX(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun = nullptr);
     void iteratorXLine(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndXArg> endXFun = nullptr);
-    void iteratorLine(uint line, QVector<Ld::Type> types, std::function<ItArg> fun);
-    void iteratorLine(uint line, QVector<Ld::Type> types, std::function<ItArgConst> fun) const;
-    void iteratorX(uint x, QVector<Ld::Type> types, std::function<ItArg> fun);
+    void iteratorLine(int line, QVector<Ld::Type> types, std::function<ItArg> fun);
+    void iteratorLine(int line, QVector<Ld::Type> types, std::function<ItArgConst> fun) const;
+    void iteratorX(int x, QVector<Ld::Type> types, std::function<ItArg> fun);
 
     const Array & getArray() const {return container_;}
-    Ld::Base* getItem(uint line, uint x);
-    const Ld::Base *getItem(uint line, uint x) const;
-    Ld::Address *getAddressItem(uint line, uint x);
-    const Ld::Address *getAddressItem(uint line, uint x) const;
+    Ld::Base* getItem(Position poz);
+    const Ld::Base *getItem(Position poz) const;
+    Ld::Address *getAddressItem(Position poz);
+    const Ld::Address *getAddressItem(Position poz) const;
 
     QString getSchemat();
     int getId() const;
@@ -79,22 +91,23 @@ signals:
     void addLdObject(ContainerLd*);
 
 public:
-    bool add(Ld::Drag *obj, uint line, uint x);
-    bool addInput(Ld::Input *obj, uint line, uint x);
-    bool addOuput(Ld::Output *obj, uint line, uint x);
-    bool remove(uint line, uint x);
-    bool move(uint fromLine, uint fromX, uint toLine, uint toX);
+    bool add(Ld::Drag *obj, Position poz);
+    bool addInput(Ld::Input *obj, Position poz);
+    bool addOuput(Ld::Output *obj, Position poz);
+    bool remove(Position poz);
+    bool move(Position fromPoz, Position toPoz);
 
-    bool checkAddCondition(const Ld::Drag *obj, uint line, uint x) const;
-    bool checkAddInputCondition(const Ld::Input *obj, uint line, uint x) const;
-    bool checkAddOutputCondition(const Ld::Output *obj, uint line, uint x) const;
-    bool checkRemoveCondition(uint line, uint x) const;
-    bool checkMoveCondition(uint fromLine, uint fromX, uint toLine, uint toX) const;
+    bool checkAddCondition(const Ld::Drag *obj, Position poz) const;
+    bool checkAddInputCondition(const Ld::Input *obj, Position poz) const;
+    bool checkAddOutputCondition(const Ld::Output *obj, Position poz) const;
+    bool checkRemoveCondition(Position poz) const;
+    bool checkMoveCondition(Position fromPoz, Position toPoz) const;
 
 private:
-    int find(uint line, Ld::Type type) const;
-    int getNumberObjectInLine(uint line, Ld::Type type) const;
-    void addLineIfLineIsEmpty(uint line);
+    int find(int line, Ld::Type type) const;
+    int getNumberObjectInLine(int line, Ld::Type type) const;
+    bool setToNearestAddresItem(Position &pos, bool lastField = true) const;
+    void addLineIfLineIsEmpty(int line);
     void insertNode();
     void removeUnnecesseryNode();
     void removeEmptyLine();
