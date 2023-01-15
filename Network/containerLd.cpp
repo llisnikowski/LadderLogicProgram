@@ -497,15 +497,18 @@ void ContainerLd::updateSize()
                 width = MAX_LENGTH_LINE - curX;
             }
             else{
-                width = 2 * LD_W + LINE_BESIDE_NODE + NODE_W;
+                width = 1.5 * LD_W + LINE_BESIDE_NODE + NODE_W;
             }
         }
         else if(obj->getType() >= Ld::Type::Line){
             if(container_[poz.line][poz.x+1]->getType() >= Ld::Type::Output){
-                width = MAX_LENGTH_LINE - curX - LD_W * 2;
+                width = MAX_LENGTH_LINE - curX - LD_W * 1.5;
             }
             else if(poz.x == 0) {
-                width = LD_W;
+                width = LD_W / 2;
+            }
+            else if(poz.x == container_[poz.line].count() - 1){
+                width = LD_W / 2;
             }
             else if(container_[poz.line][poz.x-1]->getType() >= Ld::Type::Node ||
                      container_[poz.line][poz.x+1]->getType() >= Ld::Type::Node){
