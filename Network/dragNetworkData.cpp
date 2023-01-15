@@ -5,22 +5,22 @@
 #include "containerLd.hpp"
 
 DragNetworkData::DragNetworkData(QObject *parent)
-    :Ld::DragData{parent}, comp_{}, containerLd_{}, id_{}, position_{}
+    :Ld::DragData{parent}, ldData_{}, containerLd_{}, containerId_{}, position_{}
 {
 
 }
 
-DragNetworkData::DragNetworkData(QObject *parent, QByteArray comp,
+DragNetworkData::DragNetworkData(QObject *parent, QByteArray ldData,
                                  int id, Position position)
-    :Ld::DragData{parent}, comp_{comp}, containerLd_{}, id_{id}, position_{position}
+    :Ld::DragData{parent}, ldData_{ldData}, containerLd_{}, containerId_{id}, position_{position}
 {
 }
 
-DragNetworkData::DragNetworkData(QObject *parent, QByteArray comp,
+DragNetworkData::DragNetworkData(QObject *parent, QByteArray ldData,
                                  ContainerLd *containerLd, Position position)
-    :Ld::DragData{parent}, comp_{comp}, containerLd_{containerLd}, position_{position}
+    :Ld::DragData{parent}, ldData_{ldData}, containerLd_{containerLd}, containerId_{}, position_{position}
 {
-    if(containerLd_) id_ = containerLd_->getId();
+    if(containerLd_) containerId_ = containerLd_->getId();
 }
 
 void DragNetworkData::doAction(Qt::DropAction action)
@@ -32,21 +32,21 @@ void DragNetworkData::doAction(Qt::DropAction action)
 
 QByteArray DragNetworkData::getData() const
 {
-    int id = id_;
+    int id = containerId_;
     if(containerLd_){
         id = containerLd_->getId();
     }
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << comp_ << id << position_;
+    dataStream << ldData_ << id << position_;
     return itemData;
 }
 
 bool DragNetworkData::setData(const QByteArray & data)
 {
     QDataStream dataStream(data);
-    dataStream >> comp_ ;
-    dataStream >> id_;
+    dataStream >> ldData_ ;
+    dataStream >> containerId_;
     dataStream >> position_;
     if(dataStream.status() != QDataStream::Ok){
         return false;
@@ -56,26 +56,26 @@ bool DragNetworkData::setData(const QByteArray & data)
 
 Ld::Base *DragNetworkData::getLdObj() const
 {
-    return getLdObject(comp_);
+    return getLdObject(ldData_);
 }
 
 
 QByteArray DragNetworkData::getLd() const
 {
-    return comp_;
+    return ldData_;
 }
 void DragNetworkData::setLd(const Ld::Base &comp)
 {
-    comp_ = comp.getData();
+    ldData_ = comp.getData();
 }
 
 int DragNetworkData::getId() const
 {
-    return id_;
+    return containerId_;
 }
 void DragNetworkData::setId(int id)
 {
-    id_ = id;
+    containerId_ = id;
 }
 
 Position DragNetworkData::getPosition() const
@@ -90,7 +90,7 @@ void DragNetworkData::setPosition(Position position)
 void DragNetworkData::setContainer(ContainerLd *containerLd)
 {
     containerLd_ = containerLd;
-    if(containerLd_) id_ = containerLd_->getId();
+    if(containerLd_) containerId_ = containerLd_->getId();
 }
 
 

@@ -26,6 +26,35 @@ Rectangle{
         id: labelContext
         x: mouseArea.mouseX
         y: mouseArea.mouseY
+
+        MenuItem {
+            height: 30
+            font.pixelSize: 12
+            text: "Przenieś w górę"
+            onClicked: {
+            }
+        }
+        MenuItem {
+            height: 30
+            font.pixelSize: 12
+            text: "Przenieś w dół"
+            onClicked: {
+            }
+        }
+        MenuItem {
+            height: 30
+            font.pixelSize: 12
+            text: "Wstaw poniżej"
+            onClicked: {
+            }
+        }
+        MenuItem {
+            height: 30
+            font.pixelSize: 12
+            text: "Wstaw powyżej"
+            onClicked: {
+            }
+        }
         MenuItem {
             height: 30
             font.pixelSize: 12

@@ -30,11 +30,12 @@ inline bool operator >=(Type derivative, Type base){
     return !(~static_cast<int>(derivative) & static_cast<int>(base));
 }
 
-inline bool operator <(Type derivative, Type base){
+inline bool operator !=(Type derivative, Type base){
     return (~static_cast<int>(derivative) & static_cast<int>(base));
 }
 
 bool operator >(Type derivative, Type base) = delete;
+bool operator <(Type derivative, Type base) = delete;
 bool operator <=(Type derivative, Type base) = delete;
 
 

@@ -169,7 +169,7 @@ int ContainerLd::getId() const
 }
 
 
-bool ContainerLd::add(Ld::Drag *obj, Position poz)
+bool ContainerLd::add(Ld::Address *obj, Position poz)
 {
     if(!obj) return false;
     if(obj->getType() >= Ld::Type::Input){
@@ -261,7 +261,7 @@ bool ContainerLd::move(Position fromPoz, Position toPoz)
     return true;
 }
 
-bool ContainerLd::checkAddCondition(const Ld::Drag *obj, Position poz) const
+bool ContainerLd::checkAddCondition(const Ld::Address *obj, Position poz) const
 {
     if(!setToNearestAddresItem(poz)) return false;
     if(!obj) return false;
@@ -293,7 +293,7 @@ bool ContainerLd::checkAddOutputCondition(const Ld::Output *obj, Position poz) c
     if(!setToNearestAddresItem(poz, true)) return false;
     if(poz.line > 0) return false;
     if(getNumberObjectInLine(poz.line, Ld::Type::Output) >= 1) return false;
-    if(poz.x > container_[poz.line].count()) return false;
+    if(poz.x != container_[poz.line].count()) return false;
 
     return true;
 }
@@ -303,7 +303,7 @@ bool ContainerLd::checkRemoveCondition(Position poz) const
     if(!setToNearestAddresItem(poz, false)) return false;
     Ld::Base *obj = container_[poz.line][poz.x];
     if(!obj) return false;
-    if(obj->getType() < Ld::Type::Drag) return false;
+    if(obj->getType() != Ld::Type::Address) return false;
     Ld::Base *nextObj = container_[poz.line][poz.x+1];
     if(!nextObj) return false;
 
@@ -317,11 +317,11 @@ bool ContainerLd::checkMoveCondition(Position fromPoz, Position toPoz) const
 
     Ld::Base *fromObj = container_[fromPoz.line][fromPoz.x];
     if(!fromObj) return false;
-    if(fromObj->getType() < Ld::Type::Drag) return false;
+    if(fromObj->getType() != Ld::Type::Address) return false;
     Ld::Base *nextObj = container_[fromPoz.line][fromPoz.x];
     if(!nextObj) return false;
 
-    const Ld::Drag *moveObj = getAddressItem(fromPoz);
+    const Ld::Address *moveObj = getAddressItem(fromPoz);
     if(!moveObj) return false;
     if(moveObj->getType() >= Ld::Type::Input){
         if(toPoz.line >= container_.count()) return false;
@@ -490,7 +490,7 @@ void ContainerLd::updateSize()
             }
             curY += height;
         }
-        if(obj->getType() >= Ld::Type::Drag) width = LD_W;
+        if(obj->getType() >= Ld::Type::Address) width = LD_W;
         else if(obj->getType() >= Ld::Type::Node) width = NODE_W;
         else if(poz.x == container_[poz.line].count() - 1) {
             if(poz.line <= 1){
@@ -614,11 +614,11 @@ QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
         stream >> pos >> ldByteArray;
         Ld::Base *newObj = getLdObject(ldByteArray);
         if(!newObj) return stream;
-        if(!(newObj->getType() >= Ld::Type::Drag)){
+        if(!(newObj->getType() >= Ld::Type::Address)){
             delete newObj;
             return stream;
         }
-        containerLd.add(static_cast<Ld::Drag*>(newObj), pos);
+        containerLd.add(static_cast<Ld::Address*>(newObj), pos);
         delete newObj;
     }
     return stream;

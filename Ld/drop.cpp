@@ -56,10 +56,10 @@ void Drop::dragEnterEvent(QDragEnterEvent *event)
         if(dragAction_ != Qt::IgnoreAction){
             droppingItem_ = true;
             event->accept();
+            update();
         }
     }
     event->setDropAction(dragAction_);
-    update();
 }
 
 /*!

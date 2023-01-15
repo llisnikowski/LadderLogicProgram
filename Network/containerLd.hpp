@@ -5,7 +5,7 @@
 #include <QVector>
 #include <cstddef>
 #include "address.hpp"
-#include "drag.hpp"
+#include "address.hpp"
 #include "input.hpp"
 #include "output.hpp"
 #include "type.hpp"
@@ -82,13 +82,13 @@ signals:
     void addLdObject(ContainerLd*);
 
 public:
-    bool add(Ld::Drag *obj, Position poz);
+    bool add(Ld::Address *obj, Position poz);
     bool addInput(Ld::Input *obj, Position poz);
     bool addOuput(Ld::Output *obj, Position poz);
     bool remove(Position poz);
     bool move(Position fromPoz, Position toPoz);
 
-    bool checkAddCondition(const Ld::Drag *obj, Position poz) const;
+    bool checkAddCondition(const Ld::Address *obj, Position poz) const;
     bool checkAddInputCondition(const Ld::Input *obj, Position poz) const;
     bool checkAddOutputCondition(const Ld::Output *obj, Position poz) const;
     bool checkRemoveCondition(Position poz) const;

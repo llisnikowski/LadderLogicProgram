@@ -25,7 +25,7 @@ TEST_P(TypeConditional, comparisonOperator) {
           Ld::Type::Weektimer, Ld::Type::Text, Ld::Type::EmptyDrop}){
         EXPECT_TRUE((parameters.type >= testType)
                     == parameters.trueType.contains(testType));
-        EXPECT_TRUE((parameters.type < testType)
+        EXPECT_TRUE((parameters.type != testType)
                     != parameters.trueType.contains(testType));
     }
 

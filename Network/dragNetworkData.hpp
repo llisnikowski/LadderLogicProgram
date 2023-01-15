@@ -14,9 +14,9 @@ class DragNetworkData : public Ld::DragData
 {
 public:
     explicit DragNetworkData(QObject *parent = nullptr);
-    explicit DragNetworkData(QObject *parent, QByteArray comp,
+    explicit DragNetworkData(QObject *parent, QByteArray ldData,
                              int id, Position position);
-    explicit DragNetworkData(QObject *parent, QByteArray comp,
+    explicit DragNetworkData(QObject *parent, QByteArray ldData,
                              ContainerLd *containerLd,
                              Position position);
 
@@ -35,9 +35,9 @@ public:
     void setContainer(ContainerLd *containerLd);
 
 private:
-    QByteArray comp_;
+    QByteArray ldData_;
     ContainerLd *containerLd_;
-    int id_;
+    int containerId_;
     Position position_;
 };
 

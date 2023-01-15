@@ -6,7 +6,6 @@ SplitView{
     anchors.fill: parent
     orientation: Qt.Horizontal
     clip: true
-    SplitView.fillHeight: true
 
     LdSymbolsBar {
         id: symbolsView
@@ -19,7 +18,6 @@ SplitView{
         id: programView
         clip: true
         SplitView.minimumWidth: 200
-        SplitView.maximumWidth: 1000
         implicitWidth: 500
         SplitView.preferredWidth: 1000
         SplitView.fillWidth: true
@@ -29,7 +27,7 @@ SplitView{
         clip: true
         implicitWidth: 600
         SplitView.minimumWidth: 150
-        SplitView.maximumWidth: 1000
+        SplitView.maximumWidth: 1200
         orientation: Qt.Vertical
 
         Item{
@@ -46,7 +44,6 @@ SplitView{
             SplitView.minimumHeight: 100
             implicitHeight: rightView.height / 3
             SplitView.maximumHeight: 700
-            SplitView.fillWidth: true
             Component.onCompleted: {
                 consoleLog.parent = this
             }
