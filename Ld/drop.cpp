@@ -47,15 +47,15 @@ void Drop::setDropValidator(DropValidator *validator)
  */
 void Drop::dragEnterEvent(QDragEnterEvent *event)
 {
-    event->accept();
-    if(!droppingItem_){
-        droppingItem_ = true;
-        if(!dropValidator_){
-            dragAction_ = Qt::IgnoreAction;
-        }
-        else{
-            dragAction_ = dropValidator_->valid(
-                event->mimeData()->data("application/x-dnditemdata"));
+    if(!dropValidator_){
+        dragAction_ = Qt::IgnoreAction;
+    }
+    else{
+        dragAction_ = dropValidator_->valid(
+            event->mimeData()->data("application/x-dnditemdata"));
+        if(dragAction_ != Qt::IgnoreAction){
+            droppingItem_ = true;
+            event->accept();
         }
     }
     event->setDropAction(dragAction_);

@@ -6,8 +6,8 @@
 
 #include "drag.hpp"
 #include "dragData.hpp"
+#include "qpixmap.h"
 #include <QMimeData>
-#include <QPixmap>
 #include <QPainter>
 #include <QDrag>
 #include <functional>
@@ -98,6 +98,7 @@ QDrag *Drag::createQDrag(QMouseEvent &event)
     drag->setHotSpot(event.pos() - QPoint(0,0));
     return drag;
 }
+
 
 /*!
  * \brief Tworzy kontener danych dla wydarzenia przeciągania.
