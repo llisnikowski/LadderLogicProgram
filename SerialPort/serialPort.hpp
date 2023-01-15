@@ -16,8 +16,7 @@ class SerialPort : public QObject
                    NOTIFY foundDevicesChanged)
     Q_PROPERTY(int selectDevice READ getSelectDevice WRITE setSelectDevice
                    NOTIFY selectDeviceChanged)
-    Q_PROPERTY(bool deviceConnected READ getDeviceConnected
-                   WRITE setDeviceConnected NOTIFY deviceConnectedChanged)
+    Q_PROPERTY(bool deviceConnected READ getDeviceConnected NOTIFY deviceConnectedChanged)
 public:
     explicit SerialPort(QObject *parent = nullptr);
     ~SerialPort();
@@ -29,13 +28,11 @@ public slots:
 
 public:
     bool send(const QString &message);
-    void read();
 
     void setLogObject(LogInterface *logObject);
 
     bool getDeviceConnected() const;
-    void setDeviceConnected(bool connected);
-    QStringList &getFoundDevices();
+    const QStringList &getFoundDevices() const;
     int getSelectDevice() const;
     void setSelectDevice(int device);
 
@@ -45,6 +42,8 @@ signals:
     void selectDeviceChanged();
 
 private:
+    void read();
+
     QSerialPort serialPort_;
     QStringList foundDevices_;
     LogInterface *logObject_;

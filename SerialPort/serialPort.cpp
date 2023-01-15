@@ -4,6 +4,8 @@ SerialPort::SerialPort(QObject *parent)
     : QObject{parent}, serialPort_{this}, foundDevices_{}, logObject_{},
     selectDeviceIndex_{}, deviceConnected_{}
 {
+    QObject::connect(&serialPort_, &QSerialPort::readyRead,
+                     this, &SerialPort::read);
 }
 
 SerialPort::~SerialPort()
@@ -16,14 +18,15 @@ void SerialPort::searchDevices()
 {
     if(logObject_)
         logObject_->addToLogs("Szukam urządzeń...");
-    QList<QSerialPortInfo> devices;
-    devices = QSerialPortInfo::availablePorts();
+    QList<QSerialPortInfo> devices = QSerialPortInfo::availablePorts();
     foundDevices_.clear();
     for(int i = 0; i < devices.count(); i++) {
         if(logObject_){
-            logObject_->addToLogs("Znalaziono urządzenie: " + devices.at(i).portName() + " " + devices.at(i).description());
+            logObject_->addToLogs("Znalaziono urządzenie: " +
+                devices.at(i).portName() + " " + devices.at(i).description());
         }
-            foundDevices_.append(devices.at(i).portName() + "\t" + devices.at(i).description());
+        foundDevices_.append(devices.at(i).portName() + "\t"
+                             + devices.at(i).description());
     }
     emit foundDevicesChanged();
 }
@@ -33,6 +36,11 @@ void SerialPort::connect()
     if(foundDevices_.count() == 0) {
         if(logObject_)
             logObject_->addToLogs("Nie wykryto żadnych urządzeń!");
+        return;
+    }
+    if(selectDeviceIndex_ >= foundDevices_.count()) {
+        if(logObject_)
+            logObject_->addToLogs("Nie wybrano urządzenia!");
         return;
     }
 
@@ -45,11 +53,9 @@ void SerialPort::connect()
         serialPort_.setParity(QSerialPort::NoParity);
         serialPort_.setStopBits(QSerialPort::OneStop);
         serialPort_.setFlowControl(QSerialPort::NoFlowControl);
-        QObject::connect(&serialPort_, &QSerialPort::readyRead,
-                         this, &SerialPort::read);
         if(logObject_)
             logObject_->addToLogs("Otwarto port szeregowy.");
-        setDeviceConnected(true);
+        emit deviceConnectedChanged();
     } else {
         if(logObject_)
             logObject_->addToLogs("Otwarcie porty szeregowego się nie powiodło!");
@@ -62,7 +68,7 @@ void SerialPort::disconnect()
         serialPort_.close();
         if(logObject_)
             logObject_->addToLogs("Zamknięto połączenie.");
-        setDeviceConnected(false);
+        emit deviceConnectedChanged();
     } else {
         if(logObject_)
             logObject_->addToLogs("Port nie jest otwarty!");
@@ -72,7 +78,7 @@ void SerialPort::disconnect()
 bool SerialPort::send(const QString &message)
 {
     if(serialPort_.isOpen() && serialPort_.isWritable()) {
-        serialPort_.write(message.toStdString().c_str());
+        serialPort_.write(message.toLocal8Bit());
         return true;
     }
     if(logObject_)
@@ -101,16 +107,10 @@ void SerialPort::setLogObject(LogInterface *logObject)
 
 bool SerialPort::getDeviceConnected() const
 {
-    return deviceConnected_;
+    return serialPort_.isOpen();
 }
 
-void SerialPort::setDeviceConnected(bool connected)
-{
-    deviceConnected_ = connected;
-    emit deviceConnectedChanged();
-}
-
-QStringList &SerialPort::getFoundDevices()
+const QStringList &SerialPort::getFoundDevices() const
 {
     return foundDevices_;
 }
