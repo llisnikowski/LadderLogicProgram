@@ -11,13 +11,13 @@ DragNetworkData::DragNetworkData(QObject *parent)
 }
 
 DragNetworkData::DragNetworkData(QObject *parent, QByteArray comp,
-                                 int id, QPoint position)
+                                 int id, Position position)
     :Ld::DragData{parent}, comp_{comp}, containerLd_{}, id_{id}, position_{position}
 {
 }
 
 DragNetworkData::DragNetworkData(QObject *parent, QByteArray comp,
-                                 ContainerLd *containerLd, QPoint position)
+                                 ContainerLd *containerLd, Position position)
     :Ld::DragData{parent}, comp_{comp}, containerLd_{containerLd}, position_{position}
 {
     if(containerLd_) id_ = containerLd_->getId();
@@ -27,7 +27,7 @@ void DragNetworkData::doAction(Qt::DropAction action)
 {
     if(action != Qt::MoveAction) return;
     if(!containerLd_) return;
-    containerLd_->remove({position_.x(), position_.y()});
+    containerLd_->remove({position_});
 }
 
 QByteArray DragNetworkData::getData() const
@@ -78,11 +78,11 @@ void DragNetworkData::setId(int id)
     id_ = id;
 }
 
-QPoint DragNetworkData::getPosition() const
+Position DragNetworkData::getPosition() const
 {
     return position_;
 }
-void DragNetworkData::setPosition(QPoint position)
+void DragNetworkData::setPosition(Position position)
 {
     position_ = position;
 }

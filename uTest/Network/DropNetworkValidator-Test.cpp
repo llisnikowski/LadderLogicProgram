@@ -33,8 +33,8 @@ TEST(DrogNetworkData, setGetPosition)
 {
     DropNetworkValidator dragData;
     dragData.setPosition({7, 99});
-    EXPECT_EQ(dragData.getPosition().x(), 7);
-    EXPECT_EQ(dragData.getPosition().y(), 99);
+    EXPECT_EQ(dragData.getPosition().line, 7);
+    EXPECT_EQ(dragData.getPosition().x, 99);
 }
 
 

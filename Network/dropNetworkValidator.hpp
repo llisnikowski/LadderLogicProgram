@@ -3,7 +3,7 @@
 
 #include "containerLd.hpp"
 #include "dropValidator.hpp"
-#include <QPoint>
+#include "position.hpp"
 
 class Network;
 
@@ -12,19 +12,19 @@ class DropNetworkValidator : public Ld::DropValidator
 public:
     explicit DropNetworkValidator(QObject *parent = nullptr);
     DropNetworkValidator(QObject *parent, ContainerLd *container,
-                                  QPoint position);
+                                  Position position);
 
     Qt::DropAction valid(const QByteArray &dragArrayData) override;
     void doAction(const QByteArray &dragArrayData) override;
 
     const ContainerLd *getContainer() const;
     void setContainer(ContainerLd *containerLd);
-    QPoint getPosition() const;
-    void setPosition(QPoint position);
+    Position getPosition() const;
+    void setPosition(Position position);
 
 private:
     ContainerLd *containerLd_;
-    QPoint position_;
+    Position position_;
 
 };
 

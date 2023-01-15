@@ -10,6 +10,7 @@
 #include "output.hpp"
 #include "type.hpp"
 #include <functional>
+#include "position.hpp"
 
 namespace Ld {
 class Base;
@@ -38,17 +39,7 @@ constexpr float LINE_BESIDE_NODE{32};
 constexpr uint MAX_INPUT_IN_LINE[] = {3, 1, 1};
 constexpr uint NODE_POSITION = 3;
 
-struct Position
-{
-    Position(int line, int x)
-        :line{line}, x{x}
-    {}
-    int line;
-    int x;
-    Position operator+(Position p2){
-        return {this->line + p2.line, this->x + p2.x};
-    }
-};
+
 
 class ContainerLd : public QQuickItem
 {

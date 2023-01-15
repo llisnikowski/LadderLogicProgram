@@ -533,12 +533,11 @@ void ContainerLd::updateLdObjectData()
     iteratorLineX({Ld::Type::Drop, Ld::Type::Drag}, [this](Position poz, Ld::Base* obj){
         if(obj->getType() >= Ld::Type::Drag){
             static_cast<Ld::Drag*>(obj)->setDragData(new DragNetworkData(obj,
-                        obj->getData(), this, QPoint{(int)poz.line, (int)poz.x}));
+                        obj->getData(), this, poz));
         }
         else if(obj->getType() >= Ld::Type::Drop){
             static_cast<Ld::Drop*>(obj)->setDropValidator(
-                new DropNetworkValidator(obj, this,
-                                         QPoint{(int)poz.line, (int)poz.x}));
+                new DropNetworkValidator(obj, this, poz));
         }
     });
 }
@@ -596,7 +595,7 @@ QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
     stream << count;
     containerLd.iteratorXLine(
         {Ld::Type::Address}, [&stream](Position poz, Ld::Base* obj){
-            stream << poz.line << poz.x << obj->getData();
+            stream << poz << obj->getData();
         });
     return stream;
 }
@@ -606,17 +605,17 @@ QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
 {
     int count;
     stream >> count;
-    int line, x;
+    Position pos;
     QByteArray ldByteArray;
     for(int i = 0; i < count; i++){
-        stream >> line >> x >> ldByteArray;
+        stream >> pos >> ldByteArray;
         Ld::Base *newObj = getLdObject(ldByteArray);
         if(!newObj) return stream;
         if(!(newObj->getType() >= Ld::Type::Drag)){
             delete newObj;
             return stream;
         }
-        containerLd.add(static_cast<Ld::Drag*>(newObj), {line, x});
+        containerLd.add(static_cast<Ld::Drag*>(newObj), pos);
         delete newObj;
     }
     return stream;

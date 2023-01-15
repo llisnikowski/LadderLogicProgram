@@ -3,10 +3,10 @@
 #include "contact.hpp"
 #include "containerLd.hpp"
 #include "dragNetworkData.hpp"
-#include <QPoint>
 #include <QIODevice>
 #include "node.hpp"
 #include <QDebug>
+#include "position.hpp"
 
 using namespace testing;
 
@@ -32,13 +32,13 @@ TEST(DragNetworkData, setData)
     QDataStream dataStream(&outputData, QIODevice::ReadOnly);
     QByteArray ldSymbol;
     int networkNr;
-    QPoint point;
-    dataStream >> ldSymbol >> networkNr >> point;
+    Position position;
+    dataStream >> ldSymbol >> networkNr >> position;
 
     EXPECT_TRUE(ldSymbol == contact.getData());
     ASSERT_EQ(networkNr, 12);
-    EXPECT_EQ(point.x(), 7);
-    EXPECT_EQ(point.y(), 5);
+    EXPECT_EQ(position.line, 7);
+    EXPECT_EQ(position.x, 5);
 
     DragNetworkData dragData2;
     EXPECT_TRUE(dragData2.setData(outputData));
@@ -73,8 +73,8 @@ TEST(DragNetworkData, setGetPosition)
 {
     DragNetworkData dragData;
     dragData.setPosition({7, 99});
-    EXPECT_EQ(dragData.getPosition().x(), 7);
-    EXPECT_EQ(dragData.getPosition().y(), 99);
+    EXPECT_EQ(dragData.getPosition().line, 7);
+    EXPECT_EQ(dragData.getPosition().x, 99);
 }
 
 
