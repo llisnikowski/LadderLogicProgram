@@ -20,6 +20,7 @@ bool Saver::save()
     }
     QDataStream out(&file);
     out << *networkList_;
+    file.close();
     return true;
 }
 
@@ -38,6 +39,7 @@ bool Saver::load()
     QDataStream in(&file);
     networkList_->clearList();
     in >> *networkList_;
+    file.close();
     return true;
 }
 
