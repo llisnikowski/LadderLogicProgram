@@ -1,31 +1,19 @@
 #include "codeGenerator.hpp"
 #include "networkList.hpp"
 #include "network.hpp"
-#include "consoleLog.hpp"
-#include "type.hpp"
-#include "contact.hpp"
-#include "coil.hpp"
-#include "timer.hpp"
-#include "counter.hpp"
-#include "weektimer.hpp"
-#include "text.hpp"
 #include <type_traits>
-
-using InputType = std::false_type;
-using OutputType = std::true_type;
-
-template <typename T>
-OutputType isOutputType;
-template <>
-InputType isOutputType<Ld::Contact>;
-template <>
-InputType isOutputType<Ld::Weektimer>;
-
+#include "type.hpp"
+#include "counter.hpp"
+#include "text.hpp"
+#include "timer.hpp"
+#include "weektimer.hpp"
 
 CodeGenerator::CodeGenerator(QObject *parent)
     : QObject{parent}, networkList_{}, logObject_{}, code_{},
-    parametersArray_{this}
+    generateErrors_{this}, structureGenerator_{this}, parametersArray_{this}
 {
+    structureGenerator_.setGenerateErrors(&generateErrors_);
+    parametersArray_.setGenerateErrors(&generateErrors_);
 }
 
 void CodeGenerator::setNetworkList(NetworkList *networkList)
@@ -40,35 +28,17 @@ void CodeGenerator::setLogObject(LogInterface *logObject)
 
 bool CodeGenerator::startGenerating()
 {
-    parametersArray_.clear();
-    try {
-        if(!networkList_) return false;
-        code_.clear();
-        code_ += ":START\r\n";
-        for(uint i = 0; i < networkList_->count(); i++){
-            addStructureNetwork(i, networkList_->getNetwork(i));
-        }
-        parametersArray_.getCode(code_);
-        code_ += ":END";
-    }
-    catch(const BadGenerated & badGenerated) {
-        if(logObject_){
-            logObject_->addToLogs(badGenerated.what());
-        }
-        return false;
-    }
-
-
-
-    emit codeReady(code_);
+    clear();
+    if(!networkList_) return false;
+    generate();
+    if(!checkGeneration()) return false;
+    mergeCodes();
 
 #if(DISPLAY_CODE)
-    qDebug()<<"---| KOD |---";
-    qDebug() << code_;
-    qDebug()<<"------";
-    qDebug().noquote() << code_;
+    debugDisplayCode();
 #endif
 
+    emit codeReady(code_);
     return true;
 }
 
@@ -77,141 +47,86 @@ const QString &CodeGenerator::getCode() const
     return code_;
 }
 
-void CodeGenerator::addHeader(uint i)
+void CodeGenerator::clear()
 {
-    if(i >= 100){
-        throw BadGenerated{"Przekroczono limit networków (max 100)"};
+    generateErrors_.clearErrors();
+    structureGenerator_.clear();
+    parametersArray_.clear();
+    code_.clear();
+}
+
+void CodeGenerator::generate()
+{
+    for(uint i = 0; i < networkList_->count(); i++){
+        auto network = networkList_->getNetwork(i);
+        if(!network) continue;
+        structureGenerator_.addNetwork(*network);
+        addObjectsFromContainer(network->getContainerLd());
     }
-    code_ += ":N";
-    code_ += QString::number((i/10)%10);
-    code_ += QString::number(i%10);
-    code_ += QString(' ');
 }
 
-void CodeGenerator::addEnd()
+void CodeGenerator::addObjectsFromContainer(ContainerLd &containerLd)
 {
-    code_ += "\r\n";
-}
-
-void CodeGenerator::addStructureNetwork(uint i, Network *network)
-{
-    ContainerLd &containerLd = network->getContainerLd();
-    lastNetwork_ = network->getNr();
-    bool isInput = false;
-    bool isOutput = false;
-    QString networkCode{};
-    containerLd.iteratorXLine({Ld::Type::Address},
-        [this, &isInput, &isOutput, &networkCode](Position pos, Ld::Base* obj){
+    containerLd.iteratorLineX(
+        {Ld::Type::Address},
+        [this](Position poz, Ld::Base* obj){
             Ld::Type type = obj->getType();
             if(type >= Ld::Type::Input){
-                if(pos.line == 0){
-                    isInput = true;
-                    if(pos.x != 1){
-                        networkCode += "&";
-                    }
-                }
-                else{
-                    networkCode += "|";
-                }
-                if(type == Ld::Type::Contact){
-                    getAddress(static_cast<Ld::Contact&>(*obj), networkCode);
-                }
-                else if(type == Ld::Type::Weektimer){
-                    getAddress(static_cast<Ld::Weektimer&>(*obj), networkCode);
+                if(type == Ld::Type::Weektimer){
+                    parametersArray_.checkAndSet(static_cast<Ld::Weektimer&>(*obj));
                 }
             }
             else if(obj->getType() >= Ld::Type::Output){
-                isOutput = true;
-                if(type == Ld::Type::Coil){
-                    getAddress(static_cast<Ld::Coil&>(*obj), networkCode);
-                }
-                else if(type == Ld::Type::Timer){
-                    getAddress(static_cast<Ld::Timer&>(*obj), networkCode);
+                if(type == Ld::Type::Timer){
+                    parametersArray_.checkAndSet(static_cast<Ld::Timer&>(*obj));
                 }
                 else if(type == Ld::Type::Counter){
-                    getAddress(static_cast<Ld::Counter&>(*obj),networkCode);
+                    parametersArray_.checkAndSet(static_cast<Ld::Counter&>(*obj));
                 }
                 else if(type == Ld::Type::Text){
-                    getAddress(static_cast<Ld::Text&>(*obj), networkCode);
+                    parametersArray_.checkAndSet(static_cast<Ld::Text&>(*obj));
                 }
             }
-    });
-    if(!isInput && isOutput){
-        throw BadGenerated{"Brak wejścia w networku nr: "
-                           + std::to_string(lastNetwork_)};
-    }
-    else if(!isOutput && isInput){
-        throw BadGenerated{"Brak wyjścia w networku nr: "
-                           + std::to_string(lastNetwork_)};
-    }
-    else if(isInput && isOutput){
-        addHeader(i);
-        code_ += networkCode;
-        addEnd();
-    }
+        });
 }
 
-template <typename T>
-void CodeGenerator::getAddress(T &obj, QString &output)
+void CodeGenerator::mergeCodes()
 {
-    LdProperty::AddressField & address = obj.getAddress();
-    if(address.getTextValue() == "" || !address.textIsValid()){
-        throw BadGenerated{"Niepoprawny adress obiektu w networku nr: "
-                           + std::to_string(lastNetwork_)};
-    }
-    QString addressText{};
-    if constexpr(!isOutputType<T>){
-        if constexpr(std::is_same<T, Ld::Contact>::value){
-            addressText = address.getAddressType();
-            if(obj.getPropertyType().getValue())
-                addressText = addressText.toLower();
-            addressText += address.getAddressNr();
-        }
-        else{
-            addressText = address.getFullAddress();
-            parametersArray_.set(obj);
-        }
-    }
-    else{
-        if constexpr(std::is_same<T, Ld::Coil>::value){
-            switch(obj.getPropertyType().getValue()){
-            case 1:
-                addressText += 'S';
-                break;
-            case 2:
-                addressText += 'R';
-                break;
-            default:
-                addressText += '=';
-                break;
-            }
-            addressText += address.getFullAddress();;
-        }
-        else if constexpr(std::is_same<T, Ld::Counter>::value){
-            switch(obj.getPropertyType().getValue()){
-            case 1:
-                addressText += "=D" + address.getAddressNr();
-                break;
-            case 2:
-                addressText += 'R' + address.getFullAddress();
-                break;
-            default:
-                addressText += '=' + address.getFullAddress();
-                parametersArray_.set(obj);
-                break;
-            }
-        }
-        else {
-            addressText = "=" + address.getFullAddress();
-            parametersArray_.set(obj);
-        }
-    }
+    code_ += getHeader();
+    code_ += structureGenerator_.getCode();
+    code_ += parametersArray_.getCode();
+    code_ += getFooter();
+}
 
-    output += addressText;
+bool CodeGenerator::checkGeneration()
+{
+    if(!generateErrors_.isOk()){
+        for(auto errorMessage : generateErrors_.getErrorMessages()){
+            logObject_->addToLogs(errorMessage);
+        }
+        return false;
+    }
+    return true;
 }
 
 
+void CodeGenerator::debugDisplayCode()
+{
+    qDebug()<<"---| KOD |---";
+    qDebug() << code_;
+    qDebug()<<"------";
+    qDebug().noquote() << code_;
+}
 
+QString CodeGenerator::getHeader()
+{
+    return ":START\r\n";
+}
+
+QString CodeGenerator::getFooter()
+{
+    return ":END";
+}
 
 
 

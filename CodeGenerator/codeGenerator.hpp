@@ -3,15 +3,18 @@
 
 #include <QObject>
 #include <QString>
-#include <exception>
-#include "parametersArray.hpp"
+#include "generateErrors.hpp"
 #include "logInterface.hpp"
+#include "parametersGenetator.hpp"
+#include "structureGenerator.hpp"
 
-#define DISPLAY_CODE 0
+#define DEBUG_DISPLAY_CODE 0
 
 class NetworkList;
 class Network;
 class ConsoleLog;
+class ParametersGenetator;
+class ContainerLd;
 namespace Ld {
 class Coil;
 class Counter;
@@ -19,7 +22,6 @@ class Address;
 } // namespace Ld
 
 
-using BadGenerated = std::logic_error;
 
 class CodeGenerator : public QObject
 {
@@ -33,22 +35,28 @@ public:
 
     bool startGenerating();
     const QString &getCode() const;
+
 signals:
     void codeReady(const QString &);
 
 private:
-    void addHeader(uint i);
-    void addEnd();
-    void addStructureNetwork(uint i, Network *network);
-
+    void clear();
+    void generate();
     template <typename T>
     void getAddress(T &obj, QString &output);
+    void addObjectsFromContainer(ContainerLd &containerLd);
+    void mergeCodes();
+    bool checkGeneration();
+    void debugDisplayCode();
+    QString getHeader();
+    QString getFooter();
 
     NetworkList *networkList_;
     LogInterface *logObject_;
     QString code_;
-    ParametersArray parametersArray_;
-    int lastNetwork_;
+    GenerateErrors generateErrors_;
+    StructureGenerator structureGenerator_;
+    ParametersGenetator parametersArray_;
 };
 
 #endif // CODEGENERATOR_HPP

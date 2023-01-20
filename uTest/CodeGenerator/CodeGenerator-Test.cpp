@@ -69,7 +69,7 @@ TEST_F(CodeGenetor_Test, contact)
     Ld::Contact contact;
     container.add(&contact, {0, 1});
 
-    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(2);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
     static_cast<Ld::Contact*>(container.getItem({0, 1}))->getAddress() = "I01";
@@ -84,7 +84,7 @@ TEST_F(CodeGenetor_Test, coil)
     container.remove({0, 1});
     container.add(&coil, {0, 1});
 
-    EXPECT_CALL(logError_, addToLogs(_)).Times(1);
+    EXPECT_CALL(logError_, addToLogs(_)).Times(2);
     EXPECT_FALSE(codeGenerator_.startGenerating());
 
     static_cast<Ld::Coil*>(container.getItem({0, 1}))->getAddress() = "Q00";
@@ -227,7 +227,7 @@ TEST_F(CodeGenetor_Test, Timer)
     Ld::Timer timer;
     timer.getAddress() = "T02";
     timer.getPropertyType() = 2;
-    timer.getTime() = 1234;
+    timer.getTime() = 234;
     timer.getTime().setUnits(0);
     container.add(&timer, {0, 3});
 
@@ -237,7 +237,7 @@ TEST_F(CodeGenetor_Test, Timer)
                               ":N01 I05SQ01\r\n"
                               ":N02 i06RQ01\r\n"
                               ":N03 i07=T02\r\n"
-                              ":T02 s1234m2\r\n"
+                              ":T02 s0234m2\r\n"
                               ":END"
                           })).Times(1);
     EXPECT_TRUE(codeGenerator_.startGenerating());
@@ -262,7 +262,7 @@ TEST_F(CodeGenetor_Test, CounterAdd)
                               ":N02 i06RQ01\r\n"
                               ":N03 i07=T02\r\n"
                               ":N04 I07=C04\r\n"
-                              ":T02 s1234m2\r\n"
+                              ":T02 s0234m2\r\n"
                               ":C04 0064\r\n"
                               ":END"
                           })).Times(1);
@@ -290,7 +290,7 @@ TEST_F(CodeGenetor_Test, CounterReset)
                               ":N03 i07=T02\r\n"
                               ":N04 I07=C04\r\n"
                               ":N05 I08RC04\r\n"
-                              ":T02 s1234m2\r\n"
+                              ":T02 s0234m2\r\n"
                               ":C04 0064\r\n"
                               ":END"
                           })).Times(1);
@@ -319,7 +319,7 @@ TEST_F(CodeGenetor_Test, CounterDir)
                               ":N04 I07=C04\r\n"
                               ":N05 I08RC04\r\n"
                               ":N06 I09=D04\r\n"
-                              ":T02 s1234m2\r\n"
+                              ":T02 s0234m2\r\n"
                               ":C04 0064\r\n"
                               ":END"
                           })).Times(1);
@@ -350,7 +350,7 @@ TEST_F(CodeGenetor_Test, Weektimer)
                               ":N05 I08RC04\r\n"
                               ":N06 I09=D04\r\n"
                               ":N07 Z00=Q05\r\n"
-                              ":T02 s1234m2\r\n"
+                              ":T02 s0234m2\r\n"
                               ":C04 0064\r\n"
                               ":Z00 1143 1345 01101100\r\n"
                               ":END"
@@ -381,7 +381,7 @@ TEST_F(CodeGenetor_Test, Text)
                               ":N06 I09=D04\r\n"
                               ":N07 Z00=Q05\r\n"
                               ":N08 I10=X02\r\n"
-                              ":T02 s1234m2\r\n"
+                              ":T02 s0234m2\r\n"
                               ":C04 0064\r\n"
                               ":Z00 1143 1345 01101100\r\n"
                               ":X02 Text1 Text2 Text3 Text4\r\n"
