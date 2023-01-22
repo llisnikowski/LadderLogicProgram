@@ -54,11 +54,13 @@ public:
 
 
     using ItArg = void(Position poz, Ld::Base* obj);
-    using ItArgConst = void(Position poz, Ld::Base* obj);
+    using ItArgConst = void(Position poz, const Ld::Base* obj);
     using ItEndLineArg = void(int line);
     using ItEndXArg = void(int x);
     void iteratorLineX(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun = nullptr);
+    void iteratorLineX(QVector<Ld::Type> types, std::function<ItArgConst> fun,
+                       std::function<ItEndLineArg> endLineFun = nullptr) const;
     void iteratorXLine(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndXArg> endXFun = nullptr);
     void iteratorLine(int line, QVector<Ld::Type> types, std::function<ItArg> fun);
@@ -67,13 +69,12 @@ public:
 
     const Array & getArray() const {return container_;}
     Ld::Base* getItem(Position poz);
-    const Ld::Base *getItem(Position poz) const;
+    const Ld::Base* getItem(Position poz) const;
     Ld::Address *getAddressItem(Position poz);
     const Ld::Address *getAddressItem(Position poz) const;
 
     QString getSchemat();
     int getId() const;
-    void setId(int id){id_ = id;}
 
     friend QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd);
     friend QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd);
@@ -96,9 +97,10 @@ public:
 
 private:
     int find(int line, Ld::Type type) const;
+    int getNumberObject(Ld::Type type) const;
     int getNumberObjectInLine(int line, Ld::Type type) const;
     bool setToNearestAddresItem(Position &pos, bool lastField = true) const;
-    void addLineIfLineIsEmpty(int line);
+    void addNewRow(int line);
     void insertNode();
     void removeUnnecesseryNode();
     void removeEmptyLine();

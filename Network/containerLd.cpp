@@ -8,6 +8,7 @@
 #include "node.hpp"
 #include "factoryLd.hpp"
 #include "type.hpp"
+#include <memory>
 
 int ContainerLd::currentId = 0;
 
@@ -15,7 +16,7 @@ ContainerLd::ContainerLd(QQuickItem *parent)
     : QQuickItem{parent},
     id_{currentId++}, container_{}
 {
-    addLineIfLineIsEmpty(0);
+    addNewRow(0);
     updateLineDisplay();
     updateSize();
     updateLdObjectData();
@@ -67,6 +68,16 @@ const Ld::Address *ContainerLd::getAddressItem(Position poz) const
 
 void ContainerLd::iteratorLineX(QVector<Ld::Type> types, std::function<ItArg> fun,
                        std::function<ItEndLineArg> endLineFun)
+{
+    if(!fun) return;
+    for(int line = 0; line < container_.count(); line++){
+        iteratorLine(line, types, fun);
+        if(endLineFun) endLineFun(line);
+    }
+}
+
+void ContainerLd::iteratorLineX(QVector<Ld::Type> types, std::function<ItArgConst> fun,
+                                std::function<ItEndLineArg> endLineFun) const
 {
     if(!fun) return;
     for(int line = 0; line < container_.count(); line++){
@@ -178,7 +189,6 @@ bool ContainerLd::add(Ld::Address *obj, Position poz)
     else if(obj->getType() >= Ld::Type::Output){
         if(addOuput(static_cast<Ld::Output*>(obj), poz)) return false;
     }
-
     return true;
 }
 
@@ -191,7 +201,7 @@ bool ContainerLd::addInput(Ld::Input *obj, Position poz)
     container_[poz.line].insert(poz.x + 1, FactoryLd::create<Ld::Line>(this));
 
     insertNode();
-    addLineIfLineIsEmpty(poz.line + 1);
+    addNewRow(poz.line + 1);
     updateLineDisplay();
     updateSize();
     updateLdObjectData();
@@ -242,7 +252,7 @@ bool ContainerLd::move(Position fromPoz, Position toPoz)
         toPoz.x -= 2;
     }
 
-    Ld::Drag *moveObj = getAddressItem(fromPoz);
+    Ld::Address *moveObj = getAddressItem(fromPoz);
     Ld::Base *moveNextObj = getItem(fromPoz + Position{0, 1});
     container_[fromPoz.line][fromPoz.x] = nullptr;
     container_[fromPoz.line][fromPoz.x+1] = nullptr;
@@ -252,7 +262,7 @@ bool ContainerLd::move(Position fromPoz, Position toPoz)
 
     insertNode();
     shiftUp();
-    addLineIfLineIsEmpty((fromPoz.line > toPoz.line ? fromPoz.line : toPoz.line) + 1);
+    addNewRow((fromPoz.line > toPoz.line ? fromPoz.line : toPoz.line) + 1);
     removeUnnecesseryNode();
     removeEmptyLine();
     updateLineDisplay();
@@ -367,16 +377,20 @@ int ContainerLd::find(int line, Ld::Type type) const
     return -1;
 }
 
+int ContainerLd::getNumberObject(Ld::Type type) const
+{
+    int numberObject = 0;
+    iteratorLineX({type}, [&numberObject](Position poz, const Ld::Base* obj){
+        numberObject++;
+    });
+    return numberObject;
+}
+
 int ContainerLd::getNumberObjectInLine(int line, Ld::Type type) const
 {
     int numberObject = 0;
-    iteratorLine(line, {Ld::Type::Base}, [type, &numberObject](Position poz, Ld::Base* obj){
-        if(!obj){
-            if(type == Ld::Type::None) numberObject++;
-        }
-        else if(obj->getType() >= type){
-            numberObject++;
-        }
+    iteratorLine(line, {type}, [&numberObject](Position poz, const Ld::Base* obj){
+        numberObject++;
     });
     return numberObject;
 }
@@ -395,7 +409,7 @@ bool ContainerLd::setToNearestAddresItem(Position &pos, bool lastField) const
 }
 
 
-void ContainerLd::addLineIfLineIsEmpty(int line)
+void ContainerLd::addNewRow(int line)
 {
     if(line >= 3) return;
     if(line == container_.count()){
@@ -587,14 +601,9 @@ void ContainerLd::updateNodeDisplay()
 
 
 
-
 QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
 {
-    int count = 0;
-    containerLd.iteratorLineX(
-        {Ld::Type::Address}, [&count](Position poz, Ld::Base* obj){
-            count++;
-        });
+    int count = containerLd.getNumberObject(Ld::Type::Address);
     stream << count;
     containerLd.iteratorXLine(
         {Ld::Type::Address}, [&stream](Position poz, Ld::Base* obj){
@@ -602,7 +611,6 @@ QDataStream &operator<<(QDataStream &stream, ContainerLd &containerLd)
         });
     return stream;
 }
-
 
 QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
 {
@@ -612,14 +620,12 @@ QDataStream &operator>>(QDataStream &stream, ContainerLd &containerLd)
     QByteArray ldByteArray;
     for(int i = 0; i < count; i++){
         stream >> pos >> ldByteArray;
-        Ld::Base *newObj = getLdObject(ldByteArray);
+        std::unique_ptr<Ld::Base> newObj{getLdObject(ldByteArray)};
         if(!newObj) return stream;
-        if(!(newObj->getType() >= Ld::Type::Address)){
-            delete newObj;
+        if(newObj->getType() != Ld::Type::Address){
             return stream;
         }
-        containerLd.add(static_cast<Ld::Address*>(newObj), pos);
-        delete newObj;
+        containerLd.add(static_cast<Ld::Address*>(newObj.get()), pos);
     }
     return stream;
 }

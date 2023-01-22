@@ -63,10 +63,9 @@ TEST(DragNetworkData, setGetId)
 TEST(DragNetworkData, setGetContainerLd)
 {
     ContainerLd container;
-    container.setId(54);
     DragNetworkData dragData;
     dragData.setContainer(&container);
-    EXPECT_EQ(dragData.getId(), 54);
+    EXPECT_EQ(dragData.getId(), container.getId());
 }
 
 TEST(DragNetworkData, setGetPosition)

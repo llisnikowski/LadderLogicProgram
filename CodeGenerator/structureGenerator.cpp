@@ -4,21 +4,21 @@
 #include "type.hpp"
 #include "contact.hpp"
 #include "coil.hpp"
-#include "timer.hpp"
 #include "counter.hpp"
-#include "weektimer.hpp"
-#include "text.hpp"
 #include "generateErrors.hpp"
 
-using InputType = std::false_type;
-using OutputType = std::true_type;
 
-template <typename T>
-OutputType isOutputType;
-template <>
-InputType isOutputType<Ld::Contact>;
-template <>
-InputType isOutputType<Ld::Weektimer>;
+template<>
+QString StructureGenerator::getAddress<Ld::Input>(Ld::Input &obj);
+template<>
+QString StructureGenerator::getAddress<Ld::Contact>(Ld::Contact &obj);
+template<>
+QString StructureGenerator::getAddress<Ld::Output>(Ld::Output &obj);
+template<>
+QString StructureGenerator::getAddress<Ld::Coil>(Ld::Coil &obj);
+template<>
+QString StructureGenerator::getAddress<Ld::Counter>(Ld::Counter &obj);
+
 
 StructureGenerator::StructureGenerator(QObject *parent)
     : QObject{parent}, networkNr_{}, code_{}, generateErrors_{}
@@ -50,6 +50,43 @@ const QString &StructureGenerator::getCode() const
     return code_;
 }
 
+QString StructureGenerator::getInputSeparator(Position pos)
+{
+    if(pos.line == 0){
+        if(pos.x != 1){
+            return "&";
+        }
+    }
+    else{
+        return "|";
+    }
+    return "";
+}
+
+void StructureGenerator::checkInputAndOutput(uint8_t inOut)
+{
+    if(!generateErrors_) return;
+    if(inOut == onlyOut){
+        generateErrors_->addError("Brak wejścia w networku nr: "
+                                  + QString::number(networkNr_));
+    }
+    else if(inOut == onlyIn){
+        generateErrors_->addError("Brak wyjścia w networku nr: "
+                                  + QString::number(networkNr_));
+    }
+}
+
+uint8_t StructureGenerator::inputOrOutput(Ld::Base &obj)
+{
+    if(obj.getType() >= Ld::Type::Input){
+        return onlyIn;
+    }
+    else if(obj.getType() >= Ld::Type::Output){
+        return onlyOut;
+    }
+    return noInNoOut;
+}
+
 QString StructureGenerator::getPrefix()
 {
     if(networkNr_ >= 100){
@@ -69,59 +106,18 @@ QString StructureGenerator::getPostfix()
 QString StructureGenerator::getStructure(Network &network)
 {
     QString networkCode{};
-    ContainerLd &containerLd = network.getContainerLd();
-    bool isInput = false;
-    bool isOutput = false;
-    containerLd.iteratorXLine(
+    uint8_t inOutState = noInNoOut;
+    network.getContainerLd().iteratorXLine(
         {Ld::Type::Address},
-        [this, &isInput, &isOutput, &networkCode](Position pos, Ld::Base* obj){
-            Ld::Type type = obj->getType();
-            if(type >= Ld::Type::Input){
-                if(pos.line == 0){
-                    isInput = true;
-                    if(pos.x != 1){
-                        networkCode += "&";
-                    }
-                }
-                else{
-                    networkCode += "|";
-                }
-                if(type == Ld::Type::Contact){
-                    networkCode += getAddress(static_cast<Ld::Contact&>(*obj));
-                }
-                else if(type == Ld::Type::Weektimer){
-                    networkCode += getAddress(static_cast<Ld::Weektimer&>(*obj));
-                }
+        [this, &inOutState, &networkCode](Position pos, Ld::Base* obj){
+            inOutState |= inputOrOutput(*obj);
+            if(obj->getType() >= Ld::Type::Input){
+                networkCode += getInputSeparator(pos);
             }
-            else if(obj->getType() >= Ld::Type::Output){
-                isOutput = true;
-                if(type == Ld::Type::Coil){
-                    networkCode += getAddress(static_cast<Ld::Coil&>(*obj));
-                }
-                else if(type == Ld::Type::Timer){
-                    networkCode += getAddress(static_cast<Ld::Timer&>(*obj));
-                }
-                else if(type == Ld::Type::Counter){
-                    networkCode += getAddress(static_cast<Ld::Counter&>(*obj));
-                }
-                else if(type == Ld::Type::Text){
-                    networkCode += getAddress(static_cast<Ld::Text&>(*obj));
-                }
-            }
+            networkCode += getAddress(static_cast<Ld::Address&>(*obj));
         });
 
-    if(!isInput && isOutput){
-        if(generateErrors_){
-            generateErrors_->addError("Brak wejścia w networku nr: "
-                                       + QString::number(networkNr_));
-        }
-    }
-    else if(!isOutput && isInput){
-        if(generateErrors_){
-            generateErrors_->addError("Brak wyjścia w networku nr: "
-                                       + QString::number(networkNr_));
-        }
-    }
+    checkInputAndOutput(inOutState);
 
     return networkCode;
 }
@@ -136,50 +132,121 @@ QString StructureGenerator::getAddress(T &obj)
                                        + QString::number(networkNr_));
         }
     }
-    QString addressText{};
-    if constexpr(!isOutputType<T>){
-        if constexpr(std::is_same<T, Ld::Contact>::value){
-            addressText = address.getAddressType();
-            if(obj.getPropertyType().getValue())
-                addressText = addressText.toLower();
-            addressText += address.getAddressNr();
-        }
-        else{
-            addressText = address.getFullAddress();
-        }
+    if(obj.getType() >= Ld::Type::Input){
+        return getAddress(static_cast<Ld::Input&>(obj));
     }
-    else{
-        if constexpr(std::is_same<T, Ld::Coil>::value){
-            switch(obj.getPropertyType().getValue()){
-            case 1:
-                addressText += 'S';
-                break;
-            case 2:
-                addressText += 'R';
-                break;
-            default:
-                addressText += '=';
-                break;
-            }
-            addressText += address.getFullAddress();;
-        }
-        else if constexpr(std::is_same<T, Ld::Counter>::value){
-            switch(obj.getPropertyType().getValue()){
-            case 1:
-                addressText += "=D" + address.getAddressNr();
-                break;
-            case 2:
-                addressText += 'R' + address.getFullAddress();
-                break;
-            default:
-                addressText += '=' + address.getFullAddress();
-                break;
-            }
-        }
-        else {
-            addressText = "=" + address.getFullAddress();
-        }
+    else if(obj.getType() >= Ld::Type::Output){
+        return getAddress(static_cast<Ld::Output&>(obj));
     }
+    return "";
+}
 
+
+
+
+template<>
+QString StructureGenerator::getAddress<Ld::Input>(Ld::Input &obj)
+{
+    if(obj.getType() >= Ld::Type::Contact){
+        return getAddress(static_cast<Ld::Contact&>(obj));
+    }
+    LdProperty::AddressField & address = obj.getAddress();
+    return address.getFullAddress();
+}
+
+template<>
+QString StructureGenerator::getAddress<Ld::Contact>(Ld::Contact &obj)
+{
+    QString addressText{};
+    LdProperty::AddressField & address = obj.getAddress();
+    addressText = address.getAddressType();
+    if(obj.getPropertyType().getValue())
+        addressText = addressText.toLower();
+    addressText += address.getAddressNr();
     return addressText;
 }
+
+template<>
+QString StructureGenerator::getAddress<Ld::Output>(Ld::Output &obj)
+{
+    if (obj.getType() >= Ld::Type::Coil){
+        return getAddress(static_cast<Ld::Coil&>(obj));
+    }
+    else if(obj.getType() >= Ld::Type::Counter){
+        return getAddress(static_cast<Ld::Counter&>(obj));
+    }
+    return "=" + obj.getAddress().getFullAddress();
+}
+
+template<>
+QString StructureGenerator::getAddress<Ld::Coil>(Ld::Coil &obj)
+{
+    LdProperty::AddressField & address = obj.getAddress();
+    switch(obj.getPropertyType().getValue()){
+    case 1:
+        return 'S' + address.getFullAddress();
+    case 2:
+        return 'R' + address.getFullAddress();
+    default:
+        return '=' + address.getFullAddress();
+    }
+}
+
+template<>
+QString StructureGenerator::getAddress<Ld::Counter>(Ld::Counter &obj)
+{
+    LdProperty::AddressField & address = obj.getAddress();
+    switch(obj.getPropertyType().getValue()){
+    case 1:
+        return "=D" + address.getAddressNr();
+    case 2:
+        return 'R' + address.getFullAddress();
+    default:
+        return '=' + address.getFullAddress();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

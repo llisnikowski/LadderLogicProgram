@@ -15,6 +15,7 @@ class Text;
 
 constexpr uint SINGLE_TYPE_PARAMETER_COUNT {16};
 
+
 class ParametersGenetator : public QObject
 {
 public:
@@ -25,9 +26,15 @@ public:
     void clear();
 
     template <typename T>
-    void checkAndSet(T &obj, int network=-1);
+    void checkAndSet(T &obj);
 
 private:
+    enum {
+        repeating = -1,
+        addressFail = -2,
+        skip = -3
+    };
+
     template <typename T>
     int check(T &obj);
     template <typename T>
@@ -89,23 +96,44 @@ QChar ParametersGenetator::getChar()
 }
 
 template <typename T>
-void ParametersGenetator::checkAndSet(T &obj, int network)
+void ParametersGenetator::checkAndSet(T &obj)
 {
     int nr = check(obj);
-    if(nr == -1) return;
-    set(nr, obj);
+    if(nr >= 0){
+        set(nr, obj);
+    }
+    if(generateErrors_){
+        if(nr == repeating){
+            generateErrors_->addError("Powtórzony adres obiektu "
+                                      + obj.getAddress().getTextValue());
+        }
+        else if(nr == addressFail){
+            generateErrors_->addError("Niepoprawny adres obiektu: "
+                                      + obj.getAddress().getTextValue());
+        }
+    }
 }
 
 template<typename T>
 int ParametersGenetator::check(T &obj)
 {
     auto &address = obj.getAddress();
-    if(!address.textIsValid()) return -1;
+    if(!address.textIsValid()) return addressFail;
     QString addressText = address.getAddressNr();
     uint addressNr = addressText.toUInt();
-    if(addressNr >= SINGLE_TYPE_PARAMETER_COUNT) return -1;
+    if(addressNr >= SINGLE_TYPE_PARAMETER_COUNT) return addressFail;
     if(parametersArray<T>()[addressNr].used == 1){
-        return -1;
+        if constexpr(std::is_same<T, Ld::Counter>::value){
+            if(obj.getPropertyType().getValue() == 0){
+                return repeating;
+            }
+            else{
+                return skip;
+            }
+        }
+        else{
+            return repeating;
+        }
     }
     return addressNr;
 }

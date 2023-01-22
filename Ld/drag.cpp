@@ -95,7 +95,6 @@ QDrag *Drag::createQDrag(QMouseEvent &event)
     QDrag *drag = new QDrag(this);
     drag->setMimeData(createDragData(event));
     drag->setPixmap(createDragPixmap());
-//    drag->setHotSpot(event.pos() - QPoint(0,0));
     drag->setHotSpot(QPoint(drag->pixmap().width()/2,
                             drag->pixmap().height()/2));
     return drag;

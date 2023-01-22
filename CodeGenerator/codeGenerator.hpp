@@ -41,12 +41,12 @@ signals:
 
 private:
     void clear();
-    void generate();
+    bool generate();
     template <typename T>
     void getAddress(T &obj, QString &output);
     void addObjectsFromContainer(ContainerLd &containerLd);
     void mergeCodes();
-    bool checkGeneration();
+    bool checkGenerateErrors();
     void debugDisplayCode();
     QString getHeader();
     QString getFooter();
@@ -56,7 +56,7 @@ private:
     QString code_;
     GenerateErrors generateErrors_;
     StructureGenerator structureGenerator_;
-    ParametersGenetator parametersArray_;
+    ParametersGenetator parametersGenetator_;
 };
 
 #endif // CODEGENERATOR_HPP

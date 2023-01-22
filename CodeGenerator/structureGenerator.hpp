@@ -2,10 +2,16 @@
 #define STRUCTUREGENERATOR_HPP
 
 #include <QObject>
+#include "position.hpp"
 
 
 class Network;
 class GenerateErrors;
+namespace Ld{
+class Base;
+}
+
+
 
 class StructureGenerator : public QObject
 {
@@ -21,6 +27,17 @@ public:
     const QString &getCode() const;
 
 private:
+    enum{
+        noInNoOut = 0,
+        onlyIn =    1,
+        onlyOut =   2,
+        inAndOut =  4
+    };
+
+    QString getInputSeparator(Position pos);
+    void checkInputAndOutput(uint8_t inOut);
+    uint8_t inputOrOutput(Ld::Base &obj);
+
     QString getPrefix();
     QString getPostfix();
     QString getStructure(Network &network);
@@ -33,5 +50,7 @@ private:
 
     GenerateErrors *generateErrors_;
 };
+
+
 
 #endif // STRUCTUREGENERATOR_HPP
