@@ -41,9 +41,9 @@ private:
     void set(int addressNr, T &obj);
 
     template <typename T>
-    CodeParameter<T> *parametersArray();
+    constexpr CodeParameter<T> *parametersArray();
     template <typename T>
-    QChar getChar();
+    constexpr QChar getChar();
 
     template <typename T>
     QString getPrefix(uint nr);
@@ -61,7 +61,7 @@ private:
 
 
 template<typename T>
-CodeParameter<T> *ParametersGenetator::parametersArray()
+constexpr CodeParameter<T> *ParametersGenetator::parametersArray()
 {
     if constexpr(std::is_same<T, Ld::Timer>::value){
         return timersParametrs_;
@@ -78,7 +78,7 @@ CodeParameter<T> *ParametersGenetator::parametersArray()
 }
 
 template<typename T>
-QChar ParametersGenetator::getChar()
+constexpr QChar ParametersGenetator::getChar()
 {
     if constexpr(std::is_same<T, Ld::Timer>::value){
         return 'T';
