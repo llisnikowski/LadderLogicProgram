@@ -16,7 +16,12 @@ ApplicationWindow {
         }
     }
 
-    Content{
-        anchors.fill: parent
+//    Content{
+//        anchors.fill: parent
+//    }
+
+    Image {
+        source: "img/timer/timer1.png"
     }
 }
+
