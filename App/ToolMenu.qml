@@ -42,13 +42,13 @@ Item {
                 interfaceButtons.upload();
             }
         }
-        ToolButton {
-            id: plcModeButton
-            text: " Start "
-            onClicked: {
-                interfaceButtons.plcMode();
-            }
-        }
+//        ToolButton {
+//            id: plcModeButton
+//            text: " Start "
+//            onClicked: {
+//                interfaceButtons.plcMode();
+//            }
+//        }
         ToolButton {
             id: setTimeButton
             text: "Ustaw czas"

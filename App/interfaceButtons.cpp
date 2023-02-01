@@ -1,4 +1,9 @@
 #include "interfaceButtons.hpp"
+#include "serialPort.hpp"
+#include <QDateTime>
+#include <QTimer>
+#include <functional>
+
 
 InterfaceButtons::InterfaceButtons(QObject *parent)
     : QObject{parent}, logObject_{}, serialPort_{}, saver_{}, lastSavePath_{}
@@ -21,6 +26,7 @@ void InterfaceButtons::newProject()
     if(!networkList_) return;
     networkList_->clearList();
     networkList_->addNewNetwork();
+    lastSavePath_ = "";
 }
 
 void InterfaceButtons::open()
@@ -78,5 +84,30 @@ void InterfaceButtons::plcMode()
 
 void InterfaceButtons::setCurrentTime()
 {
+    if(!serialPort_) return;
+    QString currentTimeStr = QTime::currentTime().toString(":Thhmm\r\n");
+    auto currentDate = QDate::currentDate();
+    QString currentDateStr = currentDate.toString(":DyyMMdd")
+                             + QString::number(currentDate.dayOfWeek())
+                             + "\r\n";
+    serialPort_->send(currentTimeStr);
+    QTimer::singleShot(700, [this,currentDateStr](){
+        serialPort_->send(currentDateStr);
+    });
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
