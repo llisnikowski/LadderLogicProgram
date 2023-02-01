@@ -28,7 +28,7 @@ Timer::Timer(QQuickItem *parent)
                      this, &QQuickItem::update);
 
     addProperty(&waveforms_);
-    waveforms_.setUrl(QUrl("img/timer/timer1.png"));
+    waveforms_.setUrl(QUrl("qrc:/img/timer/timer1.png"));
 
     addProperty(&timeMode_);
     timeMode_.setPropertyName("Czas");

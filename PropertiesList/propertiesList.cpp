@@ -5,6 +5,7 @@
 #include "textField.hpp"
 #include "textWithComboboxField.hpp"
 #include "daysOfWeekField.hpp"
+#include "image.hpp"
 #include <QQmlEngine>
 
 PropertiesList::PropertiesList(QObject *parent)
@@ -86,6 +87,12 @@ void PropertiesList::displayProperties()
         else if(qobject_cast<LdProperty::MultitextField*>(property)){
             auto obj = createQQuickItem("qrc:/multitextFieldProperty.qml",
                         {{"rootModel", QVariant::fromValue(property)}});
+            propertiesList_.append(obj);
+            emit addPropertyItem(obj);
+        }
+        else if(qobject_cast<LdProperty::Image*>(property)){
+            auto obj = createQQuickItem("qrc:/imageProperty.qml",
+                                        {{"rootModel", QVariant::fromValue(property)}});
             propertiesList_.append(obj);
             emit addPropertyItem(obj);
         }

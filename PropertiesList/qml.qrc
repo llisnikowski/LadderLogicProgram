@@ -6,5 +6,6 @@
         <file>textWithComboboxFieldProperty.qml</file>
         <file>daysOfWeekFieldProperty.qml</file>
         <file>multitextFieldProperty.qml</file>
+        <file>imageProperty.qml</file>
     </qresource>
 </RCC>
