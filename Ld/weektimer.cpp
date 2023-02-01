@@ -37,7 +37,7 @@ Base *Weektimer::clone(QQuickItem *parent)
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Weektimer::paint(QPainter *painter)
+void Weektimer::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));

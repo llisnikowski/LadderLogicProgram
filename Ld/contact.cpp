@@ -25,7 +25,9 @@ Contact::Contact(QQuickItem *parent)
                      this, [this](bool focus){if(focus) emit clicked();});
 
     address_.setPlaceholder("I/Q/M/T/C/P##");
-    address_.setRegExp("^([IiQqTtCc](0?\\d|[1-2]\\d|3[01]))|([Mm](\\d{1,2}))$");
+    address_.setRegExp("^([IiQqTtCc](0?\\d|[1-2]\\d|3[01]))"
+                       "|([Mm](\\d{1,2}))"
+                       "|([Pp](0?[0-3]))$");
 }
 
 Base *Contact::clone(QQuickItem *parent)
@@ -44,7 +46,7 @@ Type Contact::getType() const
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Contact::paint(QPainter *painter)
+void Contact::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
@@ -52,11 +54,6 @@ void Contact::paint(QPainter *painter)
 
     if(type_.getValue()){
         painterLd.drawContactSlash();
-    }
-
-    if(selected_){
-        painter->setPen(QPen(Qt::black, 2));
-        painterLd.drawFrame();
     }
 }
 

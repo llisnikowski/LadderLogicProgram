@@ -37,12 +37,18 @@ Base *Counter::clone(QQuickItem *parent)
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Counter::paint(QPainter *painter)
+void Counter::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
     painterLd.drawCoil();
     painterLd.printCenterLetter('C');
+
+}
+
+void Counter::paintAdditions(QPainter *painter)
+{
+    PainterLd painterLd{painter, size()};
     if(type_ == 0){
         painterLd.printBottomText("Add", -3);
         if(counter_.getTextValue().isEmpty()){
@@ -55,12 +61,7 @@ void Counter::paint(QPainter *painter)
     else if(type_ == 1) painterLd.printBottomText("Dir");
     else if(type_ == 2) painterLd.printBottomText("Reset");
 
-    if(selected_){
-        painter->setPen(QPen(Qt::black, 2));
-        painterLd.drawFrame();
-    }
-
-
+    Drag::paintAdditions(painter);
 }
 
 Type Counter::getType() const

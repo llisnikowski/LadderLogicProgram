@@ -40,7 +40,7 @@ Base *Text::clone(QQuickItem *parent)
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Text::paint(QPainter *painter)
+void Text::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));

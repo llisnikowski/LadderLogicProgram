@@ -17,7 +17,8 @@ public:
     explicit Counter(QQuickItem *parent = nullptr);
     Base *clone(QQuickItem *parent = nullptr) override;
 
-    void paint(QPainter *painter) override;
+    void paintBase(QPainter *painter) override;
+    void paintAdditions(QPainter *painter) override;
 
     Type getType() const override;
     QByteArray getData() const override;

@@ -48,7 +48,7 @@ Type Coil::getType() const
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Coil::paint(QPainter *painter)
+void Coil::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
@@ -60,12 +60,8 @@ void Coil::paint(QPainter *painter)
     else if(type_.getValue() == 2){
         painterLd.printCenterLetter('R');
     }
-
-    if(selected_){
-        painter->setPen(QPen(Qt::black, 2));
-        painterLd.drawFrame();
-    }
 }
+
 
 QByteArray Coil::getData() const
 {

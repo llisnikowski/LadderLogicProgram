@@ -19,7 +19,7 @@ Ld::Base *ImitatorLd::clone(QQuickItem *parent)
     return copyObject;
 }
 
-void ImitatorLd::paint(QPainter *painter)
+void ImitatorLd::paintBase(QPainter *painter)
 {
     Ld::PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
