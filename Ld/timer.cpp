@@ -7,7 +7,8 @@
 namespace Ld {
 
 Timer::Timer(QQuickItem *parent)
-    :Output{parent}, timeCourse_{this}, timeMode_{this}, times_{}
+    :Output{parent}, timeCourse_{this}, timeMode_{this}, times_{{this},{this}},
+    waveforms_{this}
 {
     address_.setPlaceholder("T##");
     address_.setRegExp("^[Tt](0?\\d|[1-2]\\d|3[01])$");
@@ -25,6 +26,9 @@ Timer::Timer(QQuickItem *parent)
                      this, &QQuickItem::update);
     QObject::connect(&times_[1], &LdProperty::TextField::textValueChanged,
                      this, &QQuickItem::update);
+
+    addProperty(&waveforms_);
+    waveforms_.setUrl(QUrl("qrc:/img/timer/timer1.png"));
 
     addProperty(&timeMode_);
     timeMode_.setPropertyName("Czas");
@@ -59,6 +63,12 @@ Timer::Timer(QQuickItem *parent)
 
     });
 
+    QObject::connect(&timeCourse_, &LdProperty::ComboboxField::valueChanged,
+                     this, [this](){
+                         waveforms_.setUrl(QUrl(
+                             QString("img/timer/timer%1.png").arg(timeCourse_.getValue()+1)));
+                     });
+
 }
 
 Base *Timer::clone(QQuickItem *parent)
@@ -69,6 +79,7 @@ Base *Timer::clone(QQuickItem *parent)
     copyObject->timeMode_ = this->timeMode_;
     copyObject->times_[0] = this->times_[0];
     copyObject->times_[1] = this->times_[1];
+    copyObject->waveforms_ = this->waveforms_;
     return copyObject;
 }
 
@@ -123,7 +134,8 @@ QByteArray Timer::getData() const
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
     dataStream << QString("Ld") << static_cast<int>(getType()) << address_
-               << timeCourse_ << timeMode_ << times_[0] << times_[1];
+               << timeCourse_ << timeMode_ << times_[0] << times_[1]
+               << waveforms_;
     return itemData;
 }
 

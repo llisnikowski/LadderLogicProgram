@@ -19,4 +19,6 @@ ApplicationWindow {
     Content{
         anchors.fill: parent
     }
+
 }
+

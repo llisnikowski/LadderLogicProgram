@@ -52,6 +52,7 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
         stream >> timer->timeMode_;
         stream >> timer->times_[0];
         stream >> timer->times_[1];
+        stream >> timer->waveforms_;
         *ld = timer;
         break;
     }

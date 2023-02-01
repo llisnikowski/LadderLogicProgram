@@ -59,6 +59,7 @@ set(PROJECT_RESOURSES
     App/qml.qrc
     Network/qml.qrc
     LdProperty/qml.qrc
+    Ld/qml.qrc
     PropertiesList/qml.qrc
     ConsoleLog/qml.qrc
     SerialPort/qml.qrc

@@ -2,6 +2,7 @@
 #define TIMER_HPP
 
 #include "comboboxField.hpp"
+#include "image.hpp"
 #include "output.hpp"
 #include "textField.hpp"
 #include "typeField.hpp"
@@ -33,6 +34,7 @@ protected:
     LdProperty::TypeField timeCourse_;
     LdProperty::ComboboxField timeMode_;
     LdProperty::TextField times_[2];
+    LdProperty::Image waveforms_;
 };
 
 } //namespace Ld

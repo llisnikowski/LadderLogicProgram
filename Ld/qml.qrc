@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/timer/timer1.png</file>
+        <file>img/timer/timer2.png</file>
+        <file>img/timer/timer3.png</file>
+        <file>img/timer/timer4.png</file>
+        <file>img/timer/timer5.png</file>
+        <file>img/timer/timer6.png</file>
+        <file>img/timer/timer7.png</file>
+    </qresource>
+</RCC>
