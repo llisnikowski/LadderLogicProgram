@@ -25,7 +25,9 @@ Contact::Contact(QQuickItem *parent)
                      this, [this](bool focus){if(focus) emit clicked();});
 
     address_.setPlaceholder("I/Q/M/T/C/P##");
-    address_.setRegExp("^([IiQqTtCc](0?\\d|[1-2]\\d|3[01]))|([Mm](\\d{1,2}))$");
+    address_.setRegExp("^([IiQqTtCc](0?\\d|[1-2]\\d|3[01]))"
+                       "|([Mm](\\d{1,2}))"
+                       "|([Pp](0?[0-3]))$");
 }
 
 Base *Contact::clone(QQuickItem *parent)
