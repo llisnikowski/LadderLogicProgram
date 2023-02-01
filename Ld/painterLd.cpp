@@ -258,6 +258,17 @@ void PainterLd::printCenterLetter(QChar letter)
     painter_->drawText(litterRect, Qt::AlignCenter, letter);
 }
 
+void PainterLd::printBottomText(QString text, qreal offsetY)
+{
+    QFont font = painter_->font();
+    font.setPixelSize(BOTTOM_TEXT_SIZE);
+    font.setBold(BOTTOM_TEXT_BOLD);
+    painter_->setFont(font);
+    QRectF litterRect {{CORRECT_CENTER_LETTER_OFFSET_X,
+                       CORRECT_BOTTOM_TEXT_OFFSET_Y + offsetY}, objectSize_};
+    painter_->drawText(litterRect, Qt::AlignCenter, text);
+}
+
 
 } //namespace Ld
 

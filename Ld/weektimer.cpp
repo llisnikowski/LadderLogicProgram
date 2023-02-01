@@ -20,8 +20,8 @@ Weektimer::Weektimer(QQuickItem *parent)
     timeOn_.setRegExp("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
     timeOff_.setRegExp("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
 
-    address_.setPlaceholder("Z[00-15]");
-    address_.setRegExp("^[Zz]((0?\\d)|(1[0-5]))$");
+    address_.setPlaceholder("Z##");
+    address_.setRegExp("^[Zz](0?\\d|[1-2]\\d|3[01])$");
 }
 
 Base *Weektimer::clone(QQuickItem *parent)

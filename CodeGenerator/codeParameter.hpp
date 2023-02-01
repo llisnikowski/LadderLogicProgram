@@ -11,7 +11,6 @@ class Text;
 template <typename T>
 struct CodeParameter
 {
-    bool used{};
 };
 
 template <>
@@ -21,8 +20,8 @@ struct CodeParameter<Ld::Timer>
     QString get();
 
     bool used{};
-    uint8_t mode{};
-    uint16_t time{};
+    uint8_t timeCourse{};
+    uint8_t time[2]{};
     char timeUnit{};
 };
 
@@ -55,7 +54,9 @@ struct CodeParameter<Ld::Text>
     QString get();
 
     bool used{};
-    QString text[4]{};
+    int line{};
+    QString text{};
+    QString parametr{};
 };
 
 

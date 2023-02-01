@@ -27,8 +27,9 @@ Coil::Coil(QQuickItem *parent)
     QObject::connect(&type_, &LdProperty::ComboboxField::itemFocus,
                      this, [this](bool focus){if(focus) emit clicked();});
 
-    address_.setPlaceholder("Q/M[00-15]");
-    address_.setRegExp("^[QqMm]((0?\\d)|(1[0-5]))$");
+    address_.setPlaceholder("Q/M##");
+    address_.setRegExp("^([Qq](0?\\d|[1-2]\\d|3[01]))|([Mm](\\d{1,2}))$");
+
 }
 
 Base *Coil::clone(QQuickItem *parent)

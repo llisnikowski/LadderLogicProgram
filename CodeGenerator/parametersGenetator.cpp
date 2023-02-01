@@ -19,16 +19,16 @@ void ParametersGenetator::setGenerateErrors(GenerateErrors *generateErrors)
 QString ParametersGenetator::getCode()
 {
     QString code;
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+    for(int i = 0; i < NUMBER_OF_TIMER; i++){
         code += get<Ld::Timer>(i);
     }
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+    for(int i = 0; i < NUMBER_OF_COUNTER; i++){
         code += get<Ld::Counter>(i);
     }
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+    for(int i = 0; i < NUMBER_OF_WEEKTIMER; i++){
         code += get<Ld::Weektimer>(i);
     }
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+    for(int i = 0; i < NUMBER_OF_TEXT; i++){
         code += get<Ld::Text>(i);
     }
     return code;
@@ -36,10 +36,16 @@ QString ParametersGenetator::getCode()
 
 void ParametersGenetator::clear()
 {
-    for(int i = 0; i < SINGLE_TYPE_PARAMETER_COUNT; i++){
+    for(int i = 0; i < NUMBER_OF_TIMER; i++){
         timersParametrs_[i].used = 0;
+    }
+    for(int i = 0; i < NUMBER_OF_COUNTER; i++){
         countersParametrs_[i].used = 0;
+    }
+    for(int i = 0; i < NUMBER_OF_WEEKTIMER; i++){
         weekTimesParametrs_[i].used = 0;
+    }
+    for(int i = 0; i < NUMBER_OF_TEXT; i++){
         textParameters_[i].used = 0;
     }
 }

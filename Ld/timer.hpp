@@ -1,9 +1,10 @@
 #ifndef TIMER_HPP
 #define TIMER_HPP
 
+#include "comboboxField.hpp"
 #include "output.hpp"
+#include "textField.hpp"
 #include "typeField.hpp"
-#include "textWithComboboxField.hpp"
 
 namespace Ld {
 
@@ -23,12 +24,14 @@ public:
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
-    LdProperty::TypeField &getPropertyType();
-    LdProperty::TextWithComboboxField &getTime();
+    LdProperty::TypeField &getTimeCourse();
+    LdProperty::ComboboxField &getTimeMode();
+    LdProperty::TextField &getTime(int i);
 
 protected:
-    LdProperty::TypeField type_;
-    LdProperty::TextWithComboboxField time_;
+    LdProperty::TypeField timeCourse_;
+    LdProperty::ComboboxField timeMode_;
+    LdProperty::TextField times_[2];
 };
 
 } //namespace Ld

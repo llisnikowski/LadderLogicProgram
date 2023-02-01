@@ -1,8 +1,8 @@
 #ifndef TEXT_HPP
 #define TEXT_HPP
 
+#include "comboboxField.hpp"
 #include "output.hpp"
-#include "multitextfield.hpp"
 
 namespace Ld {
 
@@ -23,10 +23,14 @@ public:
     Type getType() const override;
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
-    LdProperty::MultitextField &getTexts();
+    LdProperty::ComboboxField &getLine();
+    LdProperty::TextField &getText();
+    LdProperty::TextField &getDisplayParametr();
 
 protected:
-    LdProperty::MultitextField texts_;
+    LdProperty::ComboboxField line_;
+    LdProperty::TextField text_;
+    LdProperty::TextField displayParametr_;
 };
 
 } //namespace Ld

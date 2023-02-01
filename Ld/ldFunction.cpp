@@ -48,8 +48,10 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
     {
         auto timer = new Ld::Timer;
         stream >> timer->address_;
-        stream >> timer->type_;
-        stream >>timer->time_;
+        stream >> timer->timeCourse_;
+        stream >> timer->timeMode_;
+        stream >> timer->times_[0];
+        stream >> timer->times_[1];
         *ld = timer;
         break;
     }
@@ -63,7 +65,7 @@ QDataStream & operator >>(QDataStream & stream, Ld::Base **ld)
     case static_cast<int>(Ld::Type::Text):
     {
         auto text = new Ld::Text;
-        stream >> text->address_ >> text->texts_;
+        stream >> text->address_ >> text->line_ >> text->text_ >> text->displayParametr_;
         *ld = text;
         break;
     }

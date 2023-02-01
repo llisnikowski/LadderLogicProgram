@@ -24,8 +24,8 @@ Contact::Contact(QQuickItem *parent)
     QObject::connect(&type_, &LdProperty::ComboboxField::itemFocus,
                      this, [this](bool focus){if(focus) emit clicked();});
 
-    address_.setPlaceholder("I/Q/M/T/C/P[00-15]");
-    address_.setRegExp("^([IiQqMmTtCc]((0?\\d)|(1[0-5]))$|^([pP]0?[0-7]))$");
+    address_.setPlaceholder("I/Q/M/T/C/P##");
+    address_.setRegExp("^([IiQqTtCc](0?\\d|[1-2]\\d|3[01]))|([Mm](\\d{1,2}))$");
 }
 
 Base *Contact::clone(QQuickItem *parent)

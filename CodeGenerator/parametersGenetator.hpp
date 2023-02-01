@@ -13,7 +13,10 @@ class Weektimer;
 class Text;
 }
 
-constexpr uint SINGLE_TYPE_PARAMETER_COUNT {16};
+constexpr uint NUMBER_OF_TIMER {16};
+constexpr uint NUMBER_OF_COUNTER {16};
+constexpr uint NUMBER_OF_WEEKTIMER {16};
+constexpr uint NUMBER_OF_TEXT {99};
 
 
 class ParametersGenetator : public QObject
@@ -41,6 +44,8 @@ private:
     void set(int addressNr, T &obj);
 
     template <typename T>
+    constexpr int maxNumber();
+    template <typename T>
     constexpr CodeParameter<T> *parametersArray();
     template <typename T>
     constexpr QChar getChar();
@@ -50,15 +55,31 @@ private:
     template <typename T>
     QString get(uint nr);
 
-    CodeParameter <Ld::Timer>timersParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
-    CodeParameter <Ld::Counter>countersParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
-    CodeParameter <Ld::Weektimer>weekTimesParametrs_[SINGLE_TYPE_PARAMETER_COUNT];
-    CodeParameter <Ld::Text>textParameters_[SINGLE_TYPE_PARAMETER_COUNT];
+    CodeParameter <Ld::Timer>timersParametrs_[NUMBER_OF_TIMER];
+    CodeParameter <Ld::Counter>countersParametrs_[NUMBER_OF_COUNTER];
+    CodeParameter <Ld::Weektimer>weekTimesParametrs_[NUMBER_OF_WEEKTIMER];
+    CodeParameter <Ld::Text>textParameters_[NUMBER_OF_TEXT];
 
     GenerateErrors *generateErrors_;
 };
 
 
+template<typename T>
+constexpr int ParametersGenetator::maxNumber()
+{
+    if constexpr(std::is_same<T, Ld::Timer>::value){
+        return NUMBER_OF_TIMER;
+    }
+    else if constexpr(std::is_same<T, Ld::Counter>::value){
+        return NUMBER_OF_COUNTER;
+    }
+    else if constexpr(std::is_same<T, Ld::Weektimer>::value){
+        return NUMBER_OF_WEEKTIMER;
+    }
+    else if constexpr(std::is_same<T, Ld::Text>::value){
+        return NUMBER_OF_TEXT;
+    }
+}
 
 template<typename T>
 constexpr CodeParameter<T> *ParametersGenetator::parametersArray()
@@ -121,7 +142,7 @@ int ParametersGenetator::check(T &obj)
     if(!address.textIsValid()) return addressFail;
     QString addressText = address.getAddressNr();
     uint addressNr = addressText.toUInt();
-    if(addressNr >= SINGLE_TYPE_PARAMETER_COUNT) return addressFail;
+    if(addressNr >= maxNumber<T>()) return addressFail;
     if(parametersArray<T>()[addressNr].used == 1){
         if constexpr(std::is_same<T, Ld::Counter>::value){
             if(obj.getPropertyType().getValue() == 0){

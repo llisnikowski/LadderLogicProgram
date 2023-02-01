@@ -8,60 +8,31 @@ void CodeParameter<Ld::Timer>::set(Ld::Timer &obj)
 {
     used = 1;
 
-    auto &timerTime = obj.getTime();
-    mode = obj.getPropertyType();
-    time = timerTime.getTextValue().toUShort();
-    timeUnit = timerTime.getUnits();
+    timeCourse = obj.getTimeCourse().getValue();
 
-    uint32_t timeValue = timerTime.getTextValue().toUShort();
-    uint8_t unit = timerTime.getUnits();
+    switch (obj.getTimeMode()){
+    case 0:
+        timeUnit = 's';
+        break;
+    case 1:
+        timeUnit = 'm';
+        break;
+    case 2:
+        timeUnit = 'h';
+        break;
+    }
 
-    if(unit == 0){  // ms
-        if(timeValue <= 9999){
-            timeUnit = 's';   //ssmm
-        }
-        else{
-            timeValue /= 100;
-            unit = 1;
-        }
-    }
-    if(unit == 1){ //s
-        if(timeValue <= 99*60 + 59){
-            time = time/60 * 100 + time % 60;
-            timeUnit = 'm';   //mmss
-        }
-        else{
-            timeValue /= 60;
-            unit = 2;
-        }
-    }
-    if(unit == 2){
-        if(time <= 99*60 + 59){
-            time = time/60 * 100 + time % 60;
-            timeUnit = 'h';   //hhmm
-        }
-        else{
-            timeValue /= 60;
-            unit = 3;
-        }
-    }
-    if(unit == 3){
-        if(timeValue < 99){
-            time = time * 100;
-        }
-        else{
-            time = 9900;
-        }
-        timeUnit = 'h';   //hhmm
-    }
+    time[0] = obj.getTime(0).getTextValue().toInt() % 100;
+    time[1] = obj.getTime(1).getTextValue().toInt() % 100;
 }
 
 QString CodeParameter<Ld::Timer>::get()
 {
     if(!used) return "";
     QString parametrCode = QString(timeUnit);
-    parametrCode += QString("%1").arg(time, 4, 10, QChar('0'));
-    parametrCode += 'm' + QString::number(mode % 10);
+    parametrCode += QString("%1").arg(time[0], 2, 10, QChar('0'));
+    parametrCode += QString("%1").arg(time[1], 2, 10, QChar('0'));
+    parametrCode += 'm' + QString::number(timeCourse % 10);
     parametrCode += "\r\n";
     return parametrCode;
 }
@@ -111,10 +82,24 @@ QString CodeParameter<Ld::Weektimer>::get()
 void CodeParameter<Ld::Text>::set(Ld::Text &obj)
 {
     used = 1;
-
-    auto &textList = obj.getTexts().getTextsList();
-    for(int i = 0; i < 4; i++){
-        text[i] = textList[i];
+    line = obj.getLine().getValue() % 8;
+    text = obj.getText().getTextValue();
+    auto &displayParametr = obj.getDisplayParametr();
+    if(displayParametr.textIsValid()){
+        auto rawText = displayParametr.getTextValue();
+        parametr = rawText[0].toUpper();
+        if(rawText.length() <= 1){
+            parametr += "00";
+        }
+        else if(rawText.length() == 2){
+            parametr +=  QString("0") + rawText[1];
+        }
+        else{
+            parametr += QString(rawText[1]) + rawText[2];
+        }
+    }
+    else{
+        parametr = "";
     }
 }
 
@@ -122,11 +107,9 @@ QString CodeParameter<Ld::Text>::get()
 {
     if(!used) return "";
     QString parametrCode;
-
-    for(int i = 0; i < 4; i++){
-        parametrCode += text[i];
-        if(i < 3) parametrCode += QString(" ");
-    }
+    parametrCode += QString::number(line) + ",";
+    parametrCode += text + ",";
+    parametrCode += parametr;
     parametrCode += "\r\n";
     return parametrCode;
 }

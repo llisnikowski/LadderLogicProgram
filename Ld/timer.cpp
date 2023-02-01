@@ -7,65 +7,68 @@
 namespace Ld {
 
 Timer::Timer(QQuickItem *parent)
-    :Output{parent}, type_{this}, time_{this}
+    :Output{parent}, timeCourse_{this}, timeMode_{this}, times_{}
 {
-    addProperty(&type_);
-    type_.setModel({"Imp1", "Imp2", "Ton", "Tof", "Imp3", "Tof2", "Gen"});
-    QObject::connect(&type_, &LdProperty::ComboboxField::valueChanged,
+    address_.setPlaceholder("T##");
+    address_.setRegExp("^[Tt](0?\\d|[1-2]\\d|3[01])$");
+
+    addProperty(&timeCourse_);
+    timeCourse_.setModel({"Imp1", "Imp2", "Ton", "Tof", "Imp3", "Tof2", "Gen"});
+    QObject::connect(&timeCourse_, &LdProperty::ComboboxField::valueChanged,
                      this, &QQuickItem::update);
-    QObject::connect(&type_, &LdProperty::ComboboxField::itemFocus,
+    QObject::connect(&timeCourse_, &LdProperty::ComboboxField::itemFocus,
                      this, [this](bool focus){if(focus) emit clicked();});
-    addProperty(&time_);
 
-    address_.setPlaceholder("Txx");
-    address_.setRegExp("^[Tt]((0?\\d)|(1[0-5]))$");
+    QObject::connect(&timeMode_, &LdProperty::ComboboxField::valueChanged,
+                     this, &QQuickItem::update);
+    QObject::connect(&times_[0], &LdProperty::TextField::textValueChanged,
+                     this, &QQuickItem::update);
+    QObject::connect(&times_[1], &LdProperty::TextField::textValueChanged,
+                     this, &QQuickItem::update);
 
-    time_.setPropertyName("Czas");
-    time_.setPlaceholder("1-10000");
-    time_.setModel({"10ms", "s", "min", "h"});
-    time_.setRegExp("^\\d{0,6}$");
-    connect(&time_, &LdProperty::TextWithComboboxField::unitsChanged, this, [this](){
-        int units = time_.getUnits();
-        switch (units)
+    addProperty(&timeMode_);
+    timeMode_.setPropertyName("Czas");
+    timeMode_.setModel({"s:ms", "min:s", "h:s"});
+
+    addProperty(&times_[0]);
+    times_[0].setPropertyName("s");
+    times_[0].setPlaceholder("0-99");
+    times_[0].setRegExp("^\\d{0,2}$");
+
+    addProperty(&times_[1]);
+    times_[1].setPropertyName("10ms");
+    times_[1].setPlaceholder("0-99");
+    times_[1].setRegExp("^\\d{0,2}$");
+
+    connect(&timeMode_, &LdProperty::ComboboxField::valueChanged, this, [this](){
+        switch (timeMode_.getValue())
         {
         case 0:
-            time_.setPlaceholder("1-10000");
+            times_[0].setPropertyName("s");
+            times_[1].setPropertyName("10ms");
             break;
         case 1:
-            time_.setPlaceholder("1-6000");
+            times_[0].setPropertyName("min");
+            times_[1].setPropertyName("s");
             break;
-        case 2:
-            time_.setPlaceholder("1-6000");
-            break;
-        case 3:
-            time_.setPlaceholder("1-100");
+        default:
+            times_[0].setPropertyName("h");
+            times_[1].setPropertyName("min");
             break;
         }
 
     });
-//    time_.setValidator([](QString &text)->bool{
-//        QStringList textList = text.split(':');
-//        if(textList.count() < 2){
-//            text = text.remove(QRegularExpression{"[^\\d]"});
-//            return false;
-//        }
-//        textList[0] = textList[0].remove(QRegularExpression{"[^\\d{0,2}]"});
-//        textList[1] = textList[1].remove(QRegularExpression{"[^\\d{0,2}]"});
-//        text = textList[0] + ":" + textList[1];
-//        int textInt0 = textList[0].toInt();
-//        int textInt1 = textList[1].toInt();
-//        if(textInt0 < 0 || textInt0 > 99) return false;
-//        if(textInt1 < 0 || textInt1 > 99) return false;
-//        return true;
-//    });
+
 }
 
 Base *Timer::clone(QQuickItem *parent)
 {
     Timer *copyObject = new Timer{parent};
     copyObject->address_ = this->address_;
-    copyObject->type_ = this->type_;
-    copyObject->time_ = this->time_;
+    copyObject->timeCourse_ = this->timeCourse_;
+    copyObject->timeMode_ = this->timeMode_;
+    copyObject->times_[0] = this->times_[0];
+    copyObject->times_[1] = this->times_[1];
     return copyObject;
 }
 
@@ -78,6 +81,28 @@ void Timer::paint(QPainter *painter)
     painter->setPen(QPen(Qt::white, 2));
     painterLd.drawCoil();
     painterLd.printCenterLetter('T');
+    int czas[2] = {times_[0], times_[1]};
+    QString timeText;
+    switch (timeMode_.getValue())
+    {
+    case 0:
+        timeText = QString("T=%1.%2s")
+                             .arg(czas[0], 1, 10, QChar('0'))
+                             .arg(czas[1], 2, 10, QChar('0'));
+
+        break;
+    case 1:
+        timeText = QString("T=%1:%2m")
+                             .arg(czas[0], 1, 10, QChar('0'))
+                             .arg(czas[1], 2, 10, QChar('0'));
+        break;
+    default:
+        timeText = QString("T=%1:%2h")
+                             .arg(czas[0], 1, 10, QChar('0'))
+                             .arg(czas[1], 2, 10, QChar('0'));
+        break;
+    }
+    painterLd.printBottomText(timeText);
 
     if(selected_){
         painter->setPen(QPen(Qt::black, 2));
@@ -95,19 +120,26 @@ QByteArray Timer::getData() const
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
     dataStream << QString("Ld") << static_cast<int>(getType()) << address_
-               << type_ << time_;
+               << timeCourse_ << timeMode_ << times_[0] << times_[1];
     return itemData;
 }
 
-LdProperty::TypeField &Timer::getPropertyType()
+LdProperty::TypeField &Timer::getTimeCourse()
 {
-    return type_;
+    return timeCourse_;
 }
 
-LdProperty::TextWithComboboxField &Timer::getTime()
+LdProperty::ComboboxField &Timer::getTimeMode()
 {
-    return time_;
+    return timeMode_;
 }
+
+LdProperty::TextField &Timer::getTime(int i)
+{
+    if(i==0) return times_[0];
+    return times_[1];
+}
+
 
 
 } //namespace Ld

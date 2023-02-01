@@ -8,7 +8,7 @@
 #include "parametersGenetator.hpp"
 #include "structureGenerator.hpp"
 
-#define DEBUG_DISPLAY_CODE 0
+#define DEBUG_DISPLAY_CODE 1
 
 class NetworkList;
 class Network;

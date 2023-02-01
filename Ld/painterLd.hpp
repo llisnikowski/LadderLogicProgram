@@ -26,9 +26,12 @@ constexpr qreal COIL_ARC_ANGLE {90};
 constexpr qreal COIL_ARC_RADIOUS_FACTORY {0.2};
 constexpr qreal COIL_ARC_OFFSET_FACTORY {0.02};
 constexpr int CENTER_LETTER_SIZE {16};
+constexpr int BOTTOM_TEXT_SIZE {10};
 constexpr bool CENTER_LETTER_BOLD {true};
+constexpr bool BOTTOM_TEXT_BOLD {false};
 constexpr qreal CORRECT_CENTER_LETTER_OFFSET_X {0.0};
 constexpr qreal CORRECT_CENTER_LETTER_OFFSET_Y {-2.0};
+constexpr qreal CORRECT_BOTTOM_TEXT_OFFSET_Y {20.0};
 constexpr qreal NODE_POINT_SIZE_FACTORY {0.16};
 /*! @} */
 
@@ -57,6 +60,7 @@ public:
     void fillColor(QColor color = {0,0,0,40});
     void drawFrame(qreal frameWidth = 2);
     void printCenterLetter(QChar letter);
+    void printBottomText(QString text, qreal offsetY=0);
 
 private:
     void drawContactContour();

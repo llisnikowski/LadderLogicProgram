@@ -226,9 +226,10 @@ TEST_F(CodeGenetor_Test, Timer)
 
     Ld::Timer timer;
     timer.getAddress() = "T02";
-    timer.getPropertyType() = 2;
-    timer.getTime() = 234;
-    timer.getTime().setUnits(0);
+    timer.getTimeCourse() = 2;
+    timer.getTimeMode() = 0;
+    timer.getTime(0) = 2;
+    timer.getTime(1) = 34;
     container.add(&timer, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
@@ -367,7 +368,9 @@ TEST_F(CodeGenetor_Test, Text)
     container.add(&contact, {0, 1});
 
     text.getAddress() = "X02";
-    text.getTexts().setTextsList({"Text1", "Text2", "Text3", "Text4"});
+    text.getLine().setValue(3);
+    text.getText().setTextValue("Wartosc licznika");
+    text.getDisplayParametr().setTextValue("C4");
     container.add(&text, {0, 3});
 
     EXPECT_CALL(logCode_, addToLogs(QString{
@@ -384,7 +387,7 @@ TEST_F(CodeGenetor_Test, Text)
                               ":T02 s0234m2\r\n"
                               ":C04 0064\r\n"
                               ":Z00 1143 1345 01101100\r\n"
-                              ":X02 Text1 Text2 Text3 Text4\r\n"
+                              ":X02 3,Wartosc licznika,C04\r\n"
                               ":END"
                           })).Times(1);
     EXPECT_TRUE(codeGenerator_.startGenerating());
