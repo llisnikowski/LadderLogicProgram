@@ -12,7 +12,7 @@ Item {
         id:selectTypeCombobox
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenterOffset:6;
+        anchors.verticalCenterOffset:0;
         anchors.horizontalCenterOffset:(64-width)/2-2;
         width:15;
         height:36;
