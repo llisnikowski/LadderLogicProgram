@@ -34,6 +34,10 @@ public:
     void setDragData(DragData *data);
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 
+    void paint(QPainter *painter) override;
+    virtual void paintBase(QPainter *painter) = 0;
+    virtual void paintAdditions(QPainter *painter);
+
 protected:
     void mouseMoveEvent(QMouseEvent *event) override;
     virtual void paintDrag(QPainter &painter);

@@ -23,7 +23,7 @@ public:
     Base *clone(QQuickItem *parent = nullptr) override;
 
     Type getType() const override;
-    void paint(QPainter *painter) override;
+    void paintBase(QPainter *painter) override;
     QByteArray getData() const override;
     friend QDataStream & ::operator >>(QDataStream &, Ld::Base **);
 

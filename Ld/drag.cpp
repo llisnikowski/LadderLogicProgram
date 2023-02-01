@@ -6,6 +6,7 @@
 
 #include "drag.hpp"
 #include "dragData.hpp"
+#include "painterLd.hpp"
 #include "qpixmap.h"
 #include <QMimeData>
 #include <QPainter>
@@ -39,6 +40,21 @@ void Drag::setDragData(DragData *data)
 {
     if(dragData_) delete dragData_;
     dragData_ = data;
+}
+
+void Drag::paint(QPainter *painter)
+{
+    paintBase(painter);
+    paintAdditions(painter);
+}
+
+void Drag::paintAdditions(QPainter *painter)
+{
+    PainterLd painterLd{painter, size()};
+    if(selected_){
+        painter->setPen(QPen(Qt::black, 2));
+        painterLd.drawFrame();
+    }
 }
 
 
@@ -78,7 +94,7 @@ void Drag::mouseMoveEvent(QMouseEvent *event)
  */
 void Drag::paintDrag(QPainter &painter)
 {
-    paint(&painter);
+    paintBase(&painter);
 }
 
 /*!

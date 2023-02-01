@@ -46,7 +46,7 @@ Type Contact::getType() const
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Contact::paint(QPainter *painter)
+void Contact::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
@@ -54,11 +54,6 @@ void Contact::paint(QPainter *painter)
 
     if(type_.getValue()){
         painterLd.drawContactSlash();
-    }
-
-    if(selected_){
-        painter->setPen(QPen(Qt::black, 2));
-        painterLd.drawFrame();
     }
 }
 

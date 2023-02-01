@@ -75,40 +75,43 @@ Base *Timer::clone(QQuickItem *parent)
 /*!
  * \brief Funkcja rysująca obiekt na ekranie
  */
-void Timer::paint(QPainter *painter)
+void Timer::paintBase(QPainter *painter)
 {
     PainterLd painterLd{painter, size()};
     painter->setPen(QPen(Qt::white, 2));
     painterLd.drawCoil();
     painterLd.printCenterLetter('T');
+}
+
+void Timer::paintAdditions(QPainter *painter)
+{
+    PainterLd painterLd{painter, size()};
     int czas[2] = {times_[0], times_[1]};
     QString timeText;
     switch (timeMode_.getValue())
     {
     case 0:
         timeText = QString("T=%1.%2s")
-                             .arg(czas[0], 1, 10, QChar('0'))
-                             .arg(czas[1], 2, 10, QChar('0'));
+                       .arg(czas[0], 1, 10, QChar('0'))
+                       .arg(czas[1], 2, 10, QChar('0'));
 
         break;
     case 1:
         timeText = QString("T=%1:%2m")
-                             .arg(czas[0], 1, 10, QChar('0'))
-                             .arg(czas[1], 2, 10, QChar('0'));
+                       .arg(czas[0], 1, 10, QChar('0'))
+                       .arg(czas[1], 2, 10, QChar('0'));
         break;
     default:
         timeText = QString("T=%1:%2h")
-                             .arg(czas[0], 1, 10, QChar('0'))
-                             .arg(czas[1], 2, 10, QChar('0'));
+                       .arg(czas[0], 1, 10, QChar('0'))
+                       .arg(czas[1], 2, 10, QChar('0'));
         break;
     }
     painterLd.printBottomText(timeText);
-
-    if(selected_){
-        painter->setPen(QPen(Qt::black, 2));
-        painterLd.drawFrame();
-    }
+    Drag::paintAdditions(painter);
 }
+
+
 
 Type Timer::getType() const
 {
