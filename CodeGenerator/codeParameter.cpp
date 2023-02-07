@@ -99,7 +99,7 @@ void CodeParameter<Ld::Text>::set(Ld::Text &obj)
         }
     }
     else{
-        parametr = "";
+        parametr = "---";
     }
 }
 
