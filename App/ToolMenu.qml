@@ -56,5 +56,21 @@ Item {
                 interfaceButtons.setCurrentTime();
             }
         }
+        ToolButton {
+            id: info
+            text: " Info "
+            property ApplicationWindow connectWindow;
+            onClicked: {
+                if(!connectWindow){
+                    var component = Qt.createComponent("Info.qml")
+                    connectWindow = component.createObject(window)
+                    connectWindow.show()
+                    connectWindow.closing.connect(closeConnectWindow)
+                }
+            }
+            function closeConnectWindow(){
+                connectWindow = null
+            }
+        }
     }
 }
