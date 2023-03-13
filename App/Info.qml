@@ -36,9 +36,10 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.margins: 7
             width: parent.width
-            height: 40
+            height: 50
 
-            text: "Autor:\n" + "Łukasz Liśnikowski, l.lisnikowski@gmail.com"
+            text: "Autor:\n" + "Łukasz Liśnikowski, l.lisnikowski@gmail.com \n"+
+                  "Project Link: https://github.com/llisnikowski/LadderLogicProgram"
             font.pixelSize: 13
             color: "white"
             readOnly: true
